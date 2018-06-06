@@ -7,14 +7,11 @@ package ca.gamemaking.asteroid.lang;
  *
  * @author mlajoie
  */
-public class Lang_EN extends Lang_BaseClass{
+public class Lang_FR extends Lang_BaseClass{
 
     @Override
     public String getLaunch() {
-        return "Launching Asteroid...";
+        return "Lancement d'Astéroïde...";
     }
-
-    
     
 }
-
