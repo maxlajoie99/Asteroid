@@ -13,5 +13,10 @@ public class Lang_FR extends Lang_BaseClass{
     public String getLaunch() {
         return "Lancement d'Astéroïde...";
     }
+
+    @Override
+    public String getTitle() {
+        return "Astéroïde";
+    }
     
 }

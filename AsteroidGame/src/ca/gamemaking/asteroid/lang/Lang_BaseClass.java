@@ -10,5 +10,5 @@ package ca.gamemaking.asteroid.lang;
 public abstract class Lang_BaseClass {
     
     public abstract String getLaunch();
-    
+    public abstract String getTitle();
 }

@@ -14,6 +14,11 @@ public class Lang_EN extends Lang_BaseClass{
         return "Launching Asteroid...";
     }
 
+    @Override
+    public String getTitle() {
+        return "Asteroid";
+    }
+
     
     
 }

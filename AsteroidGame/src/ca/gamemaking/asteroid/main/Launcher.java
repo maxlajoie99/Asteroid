@@ -3,6 +3,7 @@
  */
 package ca.gamemaking.asteroid.main;
 
+import ca.gamemaking.asteroid.lang.LangChooserDialog;
 import ca.gamemaking.asteroid.lang.Lang_BaseClass;
 import ca.gamemaking.asteroid.lang.Lang_EN;
 import ca.gamemaking.asteroid.menu.MenuFrame;
@@ -16,17 +17,19 @@ public class Launcher {
     static MenuFrame mainMenu;
     static Lang_BaseClass lang;
     
-    public MenuFrame getMainMenu(){
+    public static MenuFrame getMainMenu(){
         return mainMenu;
     }
     
-    public Lang_BaseClass getLanguage(){
+    public static Lang_BaseClass getLanguage(){
         return lang;
     }
     
     public static void main(String[] args){
-        lang = new Lang_EN();
         
+        LangChooserDialog lcDialog = new LangChooserDialog(null, "Lang");
+        
+        lang = lcDialog.getValue();
         System.out.println(lang.getLaunch());
         
         mainMenu = new MenuFrame();

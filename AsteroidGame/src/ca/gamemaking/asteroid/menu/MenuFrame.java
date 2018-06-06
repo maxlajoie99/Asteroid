@@ -3,7 +3,7 @@
  */
 package ca.gamemaking.asteroid.menu;
 
-import ca.gamemaking.asteroid.lang.Lang_EN;
+import ca.gamemaking.asteroid.main.Launcher;
 import javax.swing.JFrame;
 
 /**
@@ -55,7 +55,7 @@ public class MenuFrame extends JFrame {
 
     public void run() {
         this.setName("Asteroid");
-        this.setTitle("Asteroid");
+        this.setTitle(Launcher.getLanguage().getTitle());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setResizable(false);
