@@ -1,0 +1,7 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Copyright © Maxime Lajoie - 2018 - All right reserved
+<#if licenseLast??>
+${licenseLast}
+</#if>

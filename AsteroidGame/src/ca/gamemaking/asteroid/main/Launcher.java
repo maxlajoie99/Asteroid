@@ -1,10 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright © Maxime Lajoie - 2018 - All right reserved
  */
 package ca.gamemaking.asteroid.main;
 
+import ca.gamemaking.asteroid.lang.Lang_EN;
 import ca.gamemaking.asteroid.menu.MenuFrame;
 
 /**
@@ -21,7 +20,7 @@ public class Launcher {
     
     public static void main(String[] args){
         
-        System.out.println("Launching Asteroid");
+        System.out.println();
         
         mainMenu = new MenuFrame();
         mainMenu.run();

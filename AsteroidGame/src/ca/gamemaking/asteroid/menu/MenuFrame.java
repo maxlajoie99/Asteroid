@@ -1,10 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright © Maxime Lajoie - 2018 - All right reserved
  */
 package ca.gamemaking.asteroid.menu;
 
+import ca.gamemaking.asteroid.lang.Lang_EN;
 import javax.swing.JFrame;
 
 /**
@@ -19,9 +18,11 @@ public class MenuFrame extends JFrame {
     public MenuFrame() {
         initComponents();
         initUI();
+        
     }
     
     private void initUI(){
+
         
         
     }
@@ -52,11 +53,12 @@ public class MenuFrame extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     public void run() {
-        this.pack();
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setName("Asteroid");
+        this.setTitle("Asteroid");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
