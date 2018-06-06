@@ -19,4 +19,8 @@ public class Lang_FR extends Lang_BaseClass{
         return "Astéroïde";
     }
     
+    @Override
+    public String toString(){
+        return "Français";
+    }
 }

@@ -30,6 +30,9 @@ public class Launcher {
         LangChooserDialog lcDialog = new LangChooserDialog(null, "Lang");
         
         lang = lcDialog.getValue();
+        if (lang == null)
+            lang = new Lang_EN();
+        
         System.out.println(lang.getLaunch());
         
         mainMenu = new MenuFrame();
