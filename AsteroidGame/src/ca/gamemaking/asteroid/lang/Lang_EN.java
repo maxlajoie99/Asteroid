@@ -1,5 +1,5 @@
 /*
- * Copyright © Maxime Lajoie - 2018 - All right reserved
+ * Copyright 2018 © Maxime Lajoie - Tous droits réservés
  */
 package ca.gamemaking.asteroid.lang;
 
