@@ -19,7 +19,7 @@ public class Lang {
     }
     
     public String getText(String text){
-        return null;
+        return fields.get(text);
     }
     
 }
