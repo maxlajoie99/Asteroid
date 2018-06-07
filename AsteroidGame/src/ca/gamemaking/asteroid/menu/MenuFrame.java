@@ -3,7 +3,7 @@
  */
 package ca.gamemaking.asteroid.menu;
 
-import ca.gamemaking.asteroid.main.Launcher;
+import ca.gamemaking.asteroid.Launcher;
 import javax.swing.JFrame;
 
 /**

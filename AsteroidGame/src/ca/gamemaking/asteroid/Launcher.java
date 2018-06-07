@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 © Maxime Lajoie - Tous droits réservés
  */
-package ca.gamemaking.asteroid.main;
+package ca.gamemaking.asteroid;
 
 import ca.gamemaking.asteroid.lang.LangChooserDialog;
 import ca.gamemaking.asteroid.lang.Lang_BaseClass;
