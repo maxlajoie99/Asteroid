@@ -55,7 +55,7 @@ public class MenuFrame extends JFrame {
 
     public void run() {
         this.setName("Asteroid");
-        this.setTitle(Launcher.getLanguage().getTitle());
+        this.setTitle(Launcher.getLanguage().getText("title"));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setResizable(false);

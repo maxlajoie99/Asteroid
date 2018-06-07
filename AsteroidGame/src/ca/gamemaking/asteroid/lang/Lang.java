@@ -7,8 +7,14 @@ package ca.gamemaking.asteroid.lang;
  *
  * @author mlajoie
  */
-public abstract class Lang_BaseClass {
+public class Lang {
     
-    public abstract String getLaunch();
-    public abstract String getTitle();
+    public Lang(String name){
+        
+    }
+    
+    public String getText(String text){
+        return null;
+    }
+    
 }

@@ -23,7 +23,7 @@ public class LangChooserDialog extends JDialog{
     
     private JComboBox cbLangs;
     
-    private Lang_BaseClass value;
+    private String value;
     
     public LangChooserDialog(Frame f, String title){
         super(f,title,true);
@@ -54,7 +54,7 @@ public class LangChooserDialog extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                value = (Lang_BaseClass)cbLangs.getSelectedItem();
+                value = cbLangs.getSelectedItem().toString();
                 
                 LangChooserDialog.this.setVisible(false);
             }
@@ -65,17 +65,17 @@ public class LangChooserDialog extends JDialog{
         this.getContentPane().add(pane, BorderLayout.CENTER);
     }
     
-    private List<Lang_BaseClass> getLangs(){
+    private List<String> getLangs(){
         
-        List<Lang_BaseClass> list = new ArrayList();
+        List<String> list = new ArrayList();
         
-        list.add(new Lang_EN());
-        list.add(new Lang_FR());
+        list.add("English");
+        list.add("French");
         
         return list;
     }
     
-    public Lang_BaseClass getValue(){
+    public String getValue(){
         return value;
     }
     
