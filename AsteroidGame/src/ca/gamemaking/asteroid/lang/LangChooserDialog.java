@@ -70,7 +70,7 @@ public class LangChooserDialog extends JDialog{
         List<String> list = new ArrayList();
         
         list.add("English");
-        //list.add("French"); //not yet
+        list.add("Français");
         
         return list;
     }

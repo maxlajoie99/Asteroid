@@ -6,6 +6,7 @@ package ca.gamemaking.asteroid.lang.json;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,7 +21,14 @@ public class LangReaderJSON {
             file = new ObjectMapper().readValue(LangReaderJSON.class.getResourceAsStream(name + ".json"), HashMap.class);
             
         } catch (Exception e) {
-            
+            if (name != "English"){
+                JOptionPane.showMessageDialog(null, "This lang doesn't exist, reverting to English");
+                file = ReadFile("English");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Default language not available, exiting");
+                System.exit(0);
+            }
         }
         
         return file;
