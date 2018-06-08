@@ -35,6 +35,7 @@ public class Launcher {
         
         ResolutionDialog resDialog = new ResolutionDialog(null, "Resolution");
         res = resDialog.getValue();
+        res.Adjust();
         
         LangDialog lcDialog = new LangDialog(null, "Lang");
         lang = new Lang(lcDialog.getValue());
