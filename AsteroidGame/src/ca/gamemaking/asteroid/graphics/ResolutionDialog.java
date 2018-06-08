@@ -4,7 +4,6 @@
 package ca.gamemaking.asteroid.graphics;
 
 import ca.gamemaking.asteroid.graphics.json.ResolutionReaderJSON;
-import ca.gamemaking.asteroid.lang.LangDialog;
 import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BorderLayout;
 import java.awt.Frame;
@@ -69,7 +68,10 @@ public class ResolutionDialog extends JDialog{
     }
     
     public Resolution getValue(){
-        return res;
+        if (res != null)
+            return res;
+        else
+            return (Resolution)cbResolutions.getSelectedItem();
     }
     
 }

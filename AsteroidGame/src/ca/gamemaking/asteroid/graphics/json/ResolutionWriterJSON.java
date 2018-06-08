@@ -3,7 +3,7 @@
  */
 package ca.gamemaking.asteroid.graphics.json;
 
-import ca.gamemaking.asteroid.graphics.BaseResolutions;
+import ca.gamemaking.asteroid.graphics.DefaultResolutions;
 import ca.gamemaking.asteroid.settings.Settings;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -30,7 +30,7 @@ public class ResolutionWriterJSON {
                 settingsDir.mkdir();
             
             ObjectMapper objmap = new ObjectMapper();
-            objmap.writeValue(new File(path + FILENAME), BaseResolutions.getResolutions());
+            objmap.writeValue(new File(path + FILENAME), DefaultResolutions.getResolutions());
             
         } catch (Exception e) {
             

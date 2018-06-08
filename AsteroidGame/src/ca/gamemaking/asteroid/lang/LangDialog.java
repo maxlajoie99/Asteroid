@@ -76,7 +76,10 @@ public class LangDialog extends JDialog{
     }
     
     public String getValue(){
-        return value;
+        if (value != null)
+            return value;
+        else
+            return cbLangs.getSelectedItem().toString();
     }
     
 }
