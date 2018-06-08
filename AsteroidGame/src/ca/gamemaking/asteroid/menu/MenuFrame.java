@@ -12,11 +12,9 @@ import javax.swing.JFrame;
  */
 public class MenuFrame extends JFrame {
 
-    /**
-     * Creates new form MenuFrame
-     */
     public MenuFrame() {
         initComponents();
+        
         initUI();
         
     }
@@ -57,7 +55,7 @@ public class MenuFrame extends JFrame {
         this.setName("Asteroid");
         this.setTitle(Launcher.getLanguage().getText("title"));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setSize(Launcher.getResolution().getX(), Launcher.getResolution().getY());
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);

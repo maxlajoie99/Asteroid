@@ -1,13 +1,15 @@
 /*
  * Copyright 2018 © Maxime Lajoie - Tous droits réservés
  */
-package ca.gamemaking.asteroid.lang;
+package ca.gamemaking.asteroid.graphics;
 
+import ca.gamemaking.asteroid.graphics.json.ResolutionReaderJSON;
+import ca.gamemaking.asteroid.lang.LangDialog;
+import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,20 +21,22 @@ import javax.swing.JPanel;
  *
  * @author mlajoie
  */
-public class LangChooserDialog extends JDialog{
+public class ResolutionDialog extends JDialog{
     
-    private JComboBox cbLangs;
+    private List<Resolution> resList;
+    private JComboBox cbResolutions;
     
-    private String value;
+    private Resolution res;
     
-    public LangChooserDialog(Frame f, String title){
-        super(f,title,true);
+    public ResolutionDialog(Frame f, String title){
         
-        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        super(f,title,true);
         this.toFront();
-        this.setSize(500,100);
+        this.setSize(300,100);
         this.setLocationRelativeTo(f);
         this.setResizable(false);
+        
+        resList = ResolutionReaderJSON.Read(Settings.SETTINGSPATH);
         
         initUI();
         
@@ -40,23 +44,22 @@ public class LangChooserDialog extends JDialog{
     }
     
     private void initUI(){
-        
         JPanel pane = new JPanel();
         
-        JLabel text = new JLabel("Please choose a language from the list before continuing...");
+        JLabel text = new JLabel("Game resolution : ");
         pane.add(text);
         
-        cbLangs = new JComboBox(getLangs().toArray());
-        pane.add(cbLangs);
+        cbResolutions = new JComboBox(resList.toArray());
+        pane.add(cbResolutions);
         
         JButton btn = new JButton("Confirm");
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                value = cbLangs.getSelectedItem().toString();
+                res = (Resolution)cbResolutions.getSelectedItem();
                 
-                LangChooserDialog.this.setVisible(false);
+                ResolutionDialog.this.setVisible(false);
             }
         });
         pane.add(btn);
@@ -65,18 +68,8 @@ public class LangChooserDialog extends JDialog{
         this.getContentPane().add(pane, BorderLayout.CENTER);
     }
     
-    private List<String> getLangs(){
-        
-        List<String> list = new ArrayList();
-        
-        list.add("English");
-        list.add("Français");
-        
-        return list;
-    }
-    
-    public String getValue(){
-        return value;
+    public Resolution getValue(){
+        return res;
     }
     
 }

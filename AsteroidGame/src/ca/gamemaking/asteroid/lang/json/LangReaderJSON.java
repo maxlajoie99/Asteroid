@@ -14,16 +14,16 @@ import javax.swing.JOptionPane;
  */
 public class LangReaderJSON {
     
-    public static Map<String,String> ReadFile(String name){
-        Map<String,String> file = new HashMap<String, String>();
+    public static Map<String,String> ReadFile(String langName){
+        Map<String,String> langMap = new HashMap<String, String>();
         try {
             
-            file = new ObjectMapper().readValue(LangReaderJSON.class.getResourceAsStream(name + ".json"), HashMap.class);
+            langMap = new ObjectMapper().readValue(LangReaderJSON.class.getResourceAsStream(langName + ".json"), HashMap.class);
             
         } catch (Exception e) {
-            if (name != "English"){
+            if (langName != "English"){
                 JOptionPane.showMessageDialog(null, "This lang doesn't exist, reverting to English");
-                file = ReadFile("English");
+                langMap = ReadFile("English");
             }
             else {
                 JOptionPane.showMessageDialog(null, "Default language not available, exiting");
@@ -31,7 +31,7 @@ public class LangReaderJSON {
             }
         }
         
-        return file;
+        return langMap;
     }
     
 }

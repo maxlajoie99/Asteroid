@@ -3,8 +3,10 @@
  */
 package ca.gamemaking.asteroid;
 
+import ca.gamemaking.asteroid.graphics.Resolution;
+import ca.gamemaking.asteroid.graphics.ResolutionDialog;
 import ca.gamemaking.asteroid.lang.Lang;
-import ca.gamemaking.asteroid.lang.LangChooserDialog;
+import ca.gamemaking.asteroid.lang.LangDialog;
 import ca.gamemaking.asteroid.menu.MenuFrame;
 
 /**
@@ -15,6 +17,7 @@ public class Launcher {
     
     static MenuFrame mainMenu;
     static Lang lang;
+    static Resolution res;
     
     public static MenuFrame getMainMenu(){
         return mainMenu;
@@ -24,10 +27,16 @@ public class Launcher {
         return lang;
     }
     
+    public static Resolution getResolution(){
+        return res;
+    }
+    
     public static void main(String[] args){
         
-        LangChooserDialog lcDialog = new LangChooserDialog(null, "Lang");
+        ResolutionDialog resDialog = new ResolutionDialog(null, "Resolution");
+        res = resDialog.getValue();
         
+        LangDialog lcDialog = new LangDialog(null, "Lang");
         lang = new Lang(lcDialog.getValue());
         
         System.out.println(lang.getText("launch"));
