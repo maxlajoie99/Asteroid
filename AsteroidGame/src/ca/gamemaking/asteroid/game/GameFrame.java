@@ -1,31 +1,81 @@
 /*
  * Copyright 2018 © Maxime Lajoie - Tous droits réservés
  */
-package ca.gamemaking.asteroid.menu;
+package ca.gamemaking.asteroid.game;
 
+import ca.gamemaking.asteroid.graphics.images.ImageLoader;
 import ca.gamemaking.asteroid.settings.Settings;
 import javax.swing.JFrame;
 import static ca.gamemaking.asteroid.settings.Settings.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Panel;
+import java.util.Random;
+import javax.swing.JPanel;
 
 /**
  *
  * @author mlajoie
  */
-public class MenuFrame extends JFrame {
+public class GameFrame extends JFrame {
 
-    public MenuFrame() {
+    Container contentPane;
+    JPanel background;
+    
+    Random rnd;
+    float scale = 1.0f;
+    
+    public GameFrame() {
         initComponents();
         
-        initUI();
+        scale = Settings.RESOLUTION.getX()/1280f;
+        rnd = new Random();
         
+        initUI();
     }
     
     private void initUI(){
-
+        contentPane = this.getContentPane();
+        
+        background = new JPanel(){
+            @Override
+            public void paint(Graphics g){
+                super.paint(g);
+                
+                g.setColor(Color.WHITE);
+                for (int i = 0; i < (int)(120 * scale); i++) {
+                    g.fillOval(rnd.nextInt(Settings.RESOLUTION.getX()), rnd.nextInt(Settings.RESOLUTION.getY()), 5, 5);
+                }
+                
+                int sizeX = (int)(ImageLoader.TITLE_IMG.getWidth()*scale);
+                int sizeY = (int)(ImageLoader.TITLE_IMG.getHeight()*scale);
+                int offsetY = Settings.RESOLUTION.getY()/4;
+                
+                g.drawImage(ImageLoader.TITLE_IMG, 
+                            Settings.RESOLUTION.getX()/2 - sizeX/2, 
+                            Settings.RESOLUTION.getY()/2 - sizeY/2 - offsetY, 
+                            sizeX, 
+                            sizeY, 
+                            null);
+            }
+        };
+        background.setBackground(Color.BLACK);
+        background.setSize(Settings.RESOLUTION.getX(),Settings.RESOLUTION.getY());
+        this.add(background);
+        
         
         
     }
 
+    @Override
+    public void paint(Graphics g){
+        super.paint(g);
+        
+        
+        
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

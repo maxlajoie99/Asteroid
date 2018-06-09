@@ -3,7 +3,6 @@
  */
 package ca.gamemaking.asteroid.graphics;
 
-import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;

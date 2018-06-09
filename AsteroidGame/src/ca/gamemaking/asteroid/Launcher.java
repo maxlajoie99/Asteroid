@@ -7,7 +7,7 @@ import ca.gamemaking.asteroid.graphics.Resolution;
 import ca.gamemaking.asteroid.graphics.ResolutionDialog;
 import ca.gamemaking.asteroid.lang.Lang;
 import ca.gamemaking.asteroid.lang.LangDialog;
-import ca.gamemaking.asteroid.menu.MenuFrame;
+import ca.gamemaking.asteroid.game.GameFrame;
 import ca.gamemaking.asteroid.settings.Settings;
 import ca.gamemaking.asteroid.settings.SettingsReader;
 import ca.gamemaking.asteroid.settings.SettingsWriter;
@@ -18,12 +18,12 @@ import ca.gamemaking.asteroid.settings.SettingsWriter;
  */
 public class Launcher {
     
-    static MenuFrame mainMenu;
+    static GameFrame gameFrame;
     static Lang lang;
     static Resolution res;
     
-    public static MenuFrame getMainMenu(){
-        return mainMenu;
+    public static GameFrame getGameFrame(){
+        return gameFrame;
     }
     
     public static void main(String[] args){
@@ -45,8 +45,8 @@ public class Launcher {
         
         System.out.println(Settings.LANGUAGE.getText("launch"));
         
-        mainMenu = new MenuFrame();
-        mainMenu.run();
+        gameFrame = new GameFrame();
+        gameFrame.run();
     }
     
 }
