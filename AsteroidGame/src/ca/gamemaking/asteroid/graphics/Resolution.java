@@ -25,6 +25,13 @@ public class Resolution {
         y = p_y;
     }
     
+    public Resolution(String resolution){
+        String[] pixels = resolution.split("x");
+        
+        x = Integer.parseInt(pixels[0]);
+        y = Integer.parseInt(pixels[1]);
+    }
+    
     public int getX(){
         return x;
     }
@@ -39,10 +46,15 @@ public class Resolution {
         GraphicsDevice[] gds = ge.getScreenDevices();
         
         for (GraphicsDevice gd : gds){
-            DisplayMode dm = gd.getDisplayMode();
-            System.out.println(dm.getWidth() +"x"+dm.getHeight());
+            int screenX = gd.getDisplayMode().getWidth();
+            int screenY = gd.getDisplayMode().getHeight();
             Insets i = Toolkit.getDefaultToolkit().getScreenInsets(gd.getDefaultConfiguration());
-            System.out.println(i.top +"-"+i.right+"-"+i.bottom+"-"+i.left);
+            
+            if (y > screenY - (i.top + i.bottom) && y <= screenY)
+                y -= (i.top + i.bottom);
+            
+            if (x > screenX - (i.right + i.left) && x <= screenX)
+                x -= (i.right + i.left);
         }
         
     }

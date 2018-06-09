@@ -13,13 +13,20 @@ import java.util.Map;
 public class Lang {
     
     Map<String, String> fields;
+    private String name;
     
     public Lang(String name){
-        fields = LangReaderJSON.ReadFile(name);
+        this.name = name;
+        fields = LangReaderJSON.ReadFile(this.name);
     }
     
     public String getText(String text){
         return fields.get(text);
+    }
+    
+    @Override
+    public String toString(){
+        return this.name;
     }
     
 }

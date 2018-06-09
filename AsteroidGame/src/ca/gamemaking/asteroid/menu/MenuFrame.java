@@ -3,8 +3,9 @@
  */
 package ca.gamemaking.asteroid.menu;
 
-import ca.gamemaking.asteroid.Launcher;
+import ca.gamemaking.asteroid.settings.Settings;
 import javax.swing.JFrame;
+import static ca.gamemaking.asteroid.settings.Settings.*;
 
 /**
  *
@@ -53,9 +54,9 @@ public class MenuFrame extends JFrame {
 
     public void run() {
         this.setName("Asteroid");
-        this.setTitle(Launcher.getLanguage().getText("title"));
+        this.setTitle(LANGUAGE.getText("title"));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(Launcher.getResolution().getX(), Launcher.getResolution().getY());
+        this.setSize(Settings.RESOLUTION.getX(), Settings.RESOLUTION.getY());
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);

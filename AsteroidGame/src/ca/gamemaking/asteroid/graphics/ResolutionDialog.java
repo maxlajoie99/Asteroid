@@ -51,6 +51,9 @@ public class ResolutionDialog extends JDialog{
         cbResolutions = new JComboBox(resList.toArray());
         pane.add(cbResolutions);
         
+        JLabel text2 = new JLabel("(Actual window may be smaller)");
+        pane.add(text2);
+        
         JButton btn = new JButton("Confirm");
         btn.addActionListener(new ActionListener() {
             @Override
