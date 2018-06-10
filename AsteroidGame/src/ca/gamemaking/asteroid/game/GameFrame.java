@@ -193,7 +193,7 @@ public class GameFrame extends JFrame {
     }
     
     private void ShowSettings(){
-        SettingsDialog sd = new SettingsDialog(null, "Settings", scale);
+        SettingsDialog sd = new SettingsDialog(this, Settings.LANGUAGE.getText("settings"), scale);
         
     }
     
