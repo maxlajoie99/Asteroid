@@ -9,10 +9,18 @@ import javax.swing.JFrame;
 import static ca.gamemaking.asteroid.settings.Settings.*;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Graphics;
-import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
+import javax.swing.JButton;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 /**
  *
@@ -37,6 +45,7 @@ public class GameFrame extends JFrame {
     
     private void initUI(){
         contentPane = this.getContentPane();
+        contentPane.setLayout(null);
         
         background = new JPanel(){
             @Override
@@ -60,12 +69,93 @@ public class GameFrame extends JFrame {
                             null);
             }
         };
+        background.setLayout(null);
         background.setBackground(Color.BLACK);
         background.setSize(Settings.RESOLUTION.getX(),Settings.RESOLUTION.getY());
-        this.add(background);
         
+        int offsetY = (int)(100*scale);
+        int btnWidth = (int)(250*scale);
+        int btnHeight = (int)(75*scale);
+        int btnX = Settings.RESOLUTION.getX()/2 - btnWidth/2;
+        int btnY = Settings.RESOLUTION.getY()/2 - btnHeight/2;
         
+        JButton btnStart = new JButton(Settings.LANGUAGE.getText("start"));
+        btnStart.setBounds(btnX,btnY,btnWidth,btnHeight);
+        btnStart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        background.add(btnStart);
         
+        JButton btnSettings = new JButton(Settings.LANGUAGE.getText("settings"));
+        btnSettings.setBounds(btnX,btnY + offsetY,btnWidth,btnHeight);
+        btnSettings.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        background.add(btnSettings);
+        
+        JButton btnExit = new JButton(Settings.LANGUAGE.getText("exit"));
+        btnExit.setBounds(btnX,btnY + offsetY*2,btnWidth,btnHeight);
+        btnExit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        background.add(btnExit);
+        int creditsWidth = (int)(100*scale);
+        int creditsHeight = (int)(25*scale);
+        int offsetCredits = (int)(5*scale);
+        JButton btnCredits = new JButton(Settings.LANGUAGE.getText("credits"));
+        btnCredits.setBounds(Settings.RESOLUTION.getX() - creditsWidth - offsetCredits - this.getInsets().right, 
+                             Settings.RESOLUTION.getY() - creditsHeight - offsetCredits - this.getInsets().top, 
+                             creditsWidth, 
+                             creditsHeight);
+        btnCredits.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JEditorPane creditsPane = new JEditorPane("text/html","<html>"
+                        +"<body style=\""+ "font-family:"+ new JLabel().getFont().getFamily() +"\">"
+                            +"<h1>"
+                                + Settings.LANGUAGE.getText("credits").toUpperCase()
+                            +"</h1>"
+                            +"<h2>"
+                                + Settings.LANGUAGE.getText("music")
+                            +"</h2>"
+                            +"<p style=\"margin-top:0px\">"
+                                + "\"" + Settings.LANGUAGE.getText("song1") + "\" " + Settings.LANGUAGE.getText("artist1") + "<br>"
+                                + "<a href=https://www.youtube.com/user/AhrixOfficial/>" + Settings.LANGUAGE.getText("website1") + "</a>"
+                            +"</p>"
+                        + "</body>"
+                        + "</html>");
+                
+                creditsPane.addHyperlinkListener(new HyperlinkListener() {
+                    @Override
+                    public void hyperlinkUpdate(HyperlinkEvent e) {
+                        if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)){
+                            Desktop d = Desktop.getDesktop();
+                            try {
+                                d.browse(e.getURL().toURI());
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }                            
+                        }
+                    }
+                });
+                creditsPane.setEditable(false);
+                creditsPane.setBackground(new JLabel().getBackground());
+                
+                JOptionPane.showMessageDialog(null, creditsPane, Settings.LANGUAGE.getText("credits"),JOptionPane.PLAIN_MESSAGE);
+            }
+        });
+        background.add(btnCredits);
+        
+        contentPane.add(background);
     }
 
     @Override

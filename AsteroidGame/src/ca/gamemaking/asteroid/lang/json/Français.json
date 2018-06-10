@@ -1,4 +1,12 @@
 {
     "title":"Astéroïde",
-    "launch":"Lancement d'Astéroïde..."
+    "launch":"Lancement d'Astéroïde...",
+    "start":"Débuter partie",
+    "settings":"Options",
+    "exit":"Quitter",
+    "credits":"Crédits",
+    "music":"Musique"
+    "song1":"Serenity",
+    "artist1":"par Ahrix",
+    "website1":"https://www.youtube.com/user/AhrixOfficial/"
 }

@@ -1,4 +1,12 @@
 {
     "title":"Asteroid",
-    "launch":"Launching Asteroid..."
+    "launch":"Launching Asteroid...",
+    "start":"Start game",
+    "settings":"Settings",
+    "exit":"Exit game",
+    "credits":"Credits",
+    "music":"Music",
+    "song1":"Serenity",
+    "artist1":"by Ahrix",
+    "website1":"https://www.youtube.com/user/AhrixOfficial/"
 }
