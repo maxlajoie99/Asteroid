@@ -5,7 +5,7 @@ package ca.gamemaking.asteroid.settings;
 
 import ca.gamemaking.asteroid.graphics.Resolution;
 import ca.gamemaking.asteroid.lang.Lang;
-import ca.gamemaking.asteroid.lang.json.LangReaderJSON;
+import ca.gamemaking.asteroid.settings.controls.Controls;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -23,6 +23,7 @@ public class SettingsReader {
         List<String> tempList = new ArrayList();
         String tempLang;
         String tempRes;
+        String tempControls;
         
         try {
             File settingsFile = new File(path + Settings.FILENAME);
@@ -33,15 +34,18 @@ public class SettingsReader {
             
             tempLang = (tempList.get(0) instanceof String) ? (String) tempList.get(0) : null;
             tempRes = (tempList.get(1) instanceof String) ? (String) tempList.get(1) : null;
+            tempControls = (tempList.get(2) instanceof String) ? (String) tempList.get(2) : null;
             
             System.out.println(tempLang);
             System.out.println(tempRes);
+            System.out.println(tempControls);
             
-            if (tempLang == null || tempRes == null)
+            if (tempLang == null || tempRes == null || tempControls == null)
                 return false;
             
             Settings.LANGUAGE = new Lang(tempLang);
             Settings.RESOLUTION = new Resolution(tempRes);
+            Settings.CONTROLS = new Controls(tempControls);
             
             return true;
             

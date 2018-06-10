@@ -5,7 +5,7 @@ package ca.gamemaking.asteroid.settings;
 
 import ca.gamemaking.asteroid.graphics.Resolution;
 import ca.gamemaking.asteroid.lang.Lang;
-import java.awt.event.KeyEvent;
+import ca.gamemaking.asteroid.settings.controls.Controls;
 import java.io.File;
 
 /**
@@ -22,9 +22,5 @@ public class Settings {
     public static Lang LANGUAGE;
     public static Resolution RESOLUTION;
     
-    public static KeyEvent UP;
-    public static KeyEvent DOWN;
-    public static KeyEvent LEFT;
-    public static KeyEvent RIGHT;
-    public static KeyEvent SPACE;
+    public static Controls CONTROLS;
 }

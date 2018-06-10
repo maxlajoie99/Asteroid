@@ -11,6 +11,7 @@ import ca.gamemaking.asteroid.game.GameFrame;
 import ca.gamemaking.asteroid.settings.Settings;
 import ca.gamemaking.asteroid.settings.SettingsReader;
 import ca.gamemaking.asteroid.settings.SettingsWriter;
+import ca.gamemaking.asteroid.settings.controls.Controls;
 
 /**
  *
@@ -39,6 +40,9 @@ public class Launcher {
             LangDialog lcDialog = new LangDialog(null, "Lang");
             lang = new Lang(lcDialog.getValue());
             Settings.LANGUAGE = lang;
+            
+            Controls ctrls = new Controls();
+            Settings.CONTROLS = ctrls;
             
             SettingsWriter.Write(Settings.SETTINGSPATH);
         }

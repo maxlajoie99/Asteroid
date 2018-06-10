@@ -26,7 +26,7 @@ public class SettingsWriter {
             
             settings.add(Settings.LANGUAGE.toString());
             settings.add(Settings.RESOLUTION.toString());
-            //Add controls
+            settings.add(Settings.CONTROLS.toString());
             
             objMap.writeValue(settingsFile, settings);
             
