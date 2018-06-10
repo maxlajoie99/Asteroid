@@ -60,9 +60,13 @@ public class SettingsDialog extends JFrame{
     private void initUI(){
         int btnWidth = (int)(125 * scale);
         int btnHeight = (int)(30 * scale);
+        int offset = (int)(5 * scale);
         
         JButton btnApply = new JButton(Settings.LANGUAGE.getText("apply"));
-        btnApply.setBounds(0,0,btnWidth,btnHeight);
+        btnApply.setBounds(sizeX - btnWidth*2 - offset*2 - this.getInsets().right - this.getInsets().left,
+                           sizeY - btnHeight - offset - this.getInsets().top - this.getInsets().bottom,
+                           btnWidth, btnHeight);
+        btnApply.setEnabled(false);
         btnApply.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,8 +75,8 @@ public class SettingsDialog extends JFrame{
         });
         
         JButton btnCancel = new JButton(Settings.LANGUAGE.getText("cancel"));
-        btnCancel.setBounds(sizeX - btnWidth - this.getInsets().right - this.getInsets().left,
-                            sizeY - btnHeight - this.getInsets().top - this.getInsets().bottom,
+        btnCancel.setBounds(sizeX - btnWidth - offset - this.getInsets().right - this.getInsets().left,
+                            sizeY - btnHeight - offset - this.getInsets().top - this.getInsets().bottom,
                             btnWidth, btnHeight);
         btnCancel.addActionListener(new ActionListener() {
             @Override
