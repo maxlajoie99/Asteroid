@@ -8,9 +8,11 @@ import ca.gamemaking.asteroid.music.MusicLoader;
 import ca.gamemaking.asteroid.settings.Settings;
 import javax.swing.JFrame;
 import static ca.gamemaking.asteroid.settings.Settings.*;
+import ca.gamemaking.asteroid.settings.SettingsDialog;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -82,26 +84,35 @@ public class GameFrame extends JFrame {
         
         JButton btnStart = new JButton(Settings.LANGUAGE.getText("start"));
         btnStart.setBounds(btnX,btnY,btnWidth,btnHeight);
+        btnStart.setFont(new Font(btnStart.getFont().getFamily(),
+                         Font.BOLD, 
+                         scale > 1.0f ? (int)(btnStart.getFont().getSize() * scale) : btnStart.getFont().getSize()));
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                StartGame();
             }
         });
         background.add(btnStart);
         
         JButton btnSettings = new JButton(Settings.LANGUAGE.getText("settings"));
         btnSettings.setBounds(btnX,btnY + offsetY,btnWidth,btnHeight);
+        btnSettings.setFont(new Font(btnSettings.getFont().getFamily(),
+                            Font.BOLD, 
+                            scale > 1.0f ? (int)(btnSettings.getFont().getSize() * scale) : btnSettings.getFont().getSize()));
         btnSettings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                ShowSettings();
             }
         });
         background.add(btnSettings);
         
         JButton btnExit = new JButton(Settings.LANGUAGE.getText("exit"));
         btnExit.setBounds(btnX,btnY + offsetY*2,btnWidth,btnHeight);
+        btnExit.setFont(new Font(btnExit.getFont().getFamily(),
+                        Font.BOLD, 
+                        scale > 1.0f ? (int)(btnExit.getFont().getSize() * scale) : btnExit.getFont().getSize()));
         btnExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -109,6 +120,7 @@ public class GameFrame extends JFrame {
             }
         });
         background.add(btnExit);
+        
         int creditsWidth = (int)(100*scale);
         int creditsHeight = (int)(25*scale);
         int offsetCredits = (int)(5*scale);
@@ -117,41 +129,13 @@ public class GameFrame extends JFrame {
                              Settings.RESOLUTION.getY() - creditsHeight - offsetCredits - this.getInsets().top, 
                              creditsWidth, 
                              creditsHeight);
+        btnCredits.setFont(new Font(btnCredits.getFont().getFamily(),
+                           Font.BOLD,
+                           (int)(btnCredits.getFont().getSize() * scale)));
         btnCredits.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JEditorPane creditsPane = new JEditorPane("text/html","<html>"
-                        +"<body style=\""+ "font-family:"+ new JLabel().getFont().getFamily() +"\">"
-                            +"<h1>"
-                                + Settings.LANGUAGE.getText("credits").toUpperCase()
-                            +"</h1>"
-                            +"<h2>"
-                                + Settings.LANGUAGE.getText("music")
-                            +"</h2>"
-                            +"<p style=\"margin-top:0px\">"
-                                + "\"" + Settings.LANGUAGE.getText("song1") + "\" " + Settings.LANGUAGE.getText("artist1") + "<br>"
-                                + "<a href=https://www.youtube.com/user/AhrixOfficial/>" + Settings.LANGUAGE.getText("website1") + "</a>"
-                            +"</p>"
-                        + "</body>"
-                        + "</html>");
-                
-                creditsPane.addHyperlinkListener(new HyperlinkListener() {
-                    @Override
-                    public void hyperlinkUpdate(HyperlinkEvent e) {
-                        if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)){
-                            Desktop d = Desktop.getDesktop();
-                            try {
-                                d.browse(e.getURL().toURI());
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }                            
-                        }
-                    }
-                });
-                creditsPane.setEditable(false);
-                creditsPane.setBackground(new JLabel().getBackground());
-                
-                JOptionPane.showMessageDialog(null, creditsPane, Settings.LANGUAGE.getText("credits"),JOptionPane.PLAIN_MESSAGE);
+                ShowCredits();
             }
         });
         background.add(btnCredits);
@@ -202,6 +186,50 @@ public class GameFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         MusicLoader.Serenity();
+    }
+        
+    private void StartGame(){
+        
+    }
+    
+    private void ShowSettings(){
+        SettingsDialog sd = new SettingsDialog(null, "Settings", scale);
+        
+    }
+    
+    private void ShowCredits(){
+        JEditorPane creditsPane = new JEditorPane("text/html","<html>"
+                        +"<body style=\""+ "font-family:"+ new JLabel().getFont().getFamily() +"\">"
+                            +"<h1>"
+                                + Settings.LANGUAGE.getText("credits").toUpperCase()
+                            +"</h1>"
+                            +"<h2>"
+                                + Settings.LANGUAGE.getText("music")
+                            +"</h2>"
+                            +"<p style=\"margin-top:0px\">"
+                                + "\"" + Settings.LANGUAGE.getText("song1") + "\" " + Settings.LANGUAGE.getText("artist1") + "<br>"
+                                + "<a href="+Settings.LANGUAGE.getText("website1")+">" + Settings.LANGUAGE.getText("website1") + "</a>"
+                            +"</p>"
+                        + "</body>"
+                        + "</html>");
+                
+                creditsPane.addHyperlinkListener(new HyperlinkListener() {
+                    @Override
+                    public void hyperlinkUpdate(HyperlinkEvent e) {
+                        if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)){
+                            Desktop d = Desktop.getDesktop();
+                            try {
+                                d.browse(e.getURL().toURI());
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }                            
+                        }
+                    }
+                });
+                creditsPane.setEditable(false);
+                creditsPane.setBackground(new JLabel().getBackground());
+                
+                JOptionPane.showMessageDialog(null, creditsPane, Settings.LANGUAGE.getText("credits"),JOptionPane.PLAIN_MESSAGE);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
