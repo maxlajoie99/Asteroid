@@ -4,6 +4,7 @@
 package ca.gamemaking.asteroid.game;
 
 import ca.gamemaking.asteroid.graphics.images.ImageLoader;
+import ca.gamemaking.asteroid.music.MusicLoader;
 import ca.gamemaking.asteroid.settings.Settings;
 import javax.swing.JFrame;
 import static ca.gamemaking.asteroid.settings.Settings.*;
@@ -200,6 +201,7 @@ public class GameFrame extends JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        MusicLoader.Serenity();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
