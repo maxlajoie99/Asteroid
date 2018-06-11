@@ -21,7 +21,8 @@ public class LangReaderJSON {
             langMap = new ObjectMapper().readValue(LangReaderJSON.class.getResourceAsStream(langName + ".json"), HashMap.class);
             
         } catch (Exception e) {
-            if (langName != "English"){
+            e.printStackTrace();
+            if (!"English".equals(langName)){
                 JOptionPane.showMessageDialog(null, "This lang doesn't exist, reverting to English");
                 langMap = ReadFile("English");
             }

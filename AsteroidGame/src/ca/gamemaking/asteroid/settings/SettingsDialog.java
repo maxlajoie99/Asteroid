@@ -4,6 +4,7 @@
 package ca.gamemaking.asteroid.settings;
 
 import ca.gamemaking.asteroid.graphics.json.ResolutionReaderJSON;
+import ca.gamemaking.asteroid.lang.LangDialog;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -30,6 +31,9 @@ public class SettingsDialog extends JFrame{
     
     JButton btnApply;
     JButton btnCancel;
+    
+    JComboBox cbRes;
+    JComboBox cbLang;
     
     int sizeX;
     int sizeY;
@@ -106,6 +110,31 @@ public class SettingsDialog extends JFrame{
     private void initResolution(){
         int heightSixth = sizeY/6  - this.getInsets().top - this.getInsets().bottom;
         int labelWidth = (int)(150 * scale);
+        int posX = sizeX/2 + (int)(25 * scale);
+        
+        JLabel langText = new JLabel(Settings.LANGUAGE.getText("lang") + ":");
+        int textSize = langText.getFont().getSize()*2;
+        langText.setFont(new Font(langText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        langText.setBounds(posX, heightSixth, labelWidth, textSize);
+        
+        cbLang = new JComboBox(LangDialog.getLangs().toArray());
+        cbLang.setBounds(langText.getLocation().x + labelWidth, heightSixth, labelWidth, langText.getSize().height);
+        cbLang.setSelectedItem(Settings.LANGUAGE.toString());
+        
+        cbLang.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                ApplyEnabled();
+            }
+        });
+        
+        contentPane.add(langText);
+        contentPane.add(cbLang);
+    }
+    
+    private void initLang(){
+        int heightSixth = sizeY/6  - this.getInsets().top - this.getInsets().bottom;
+        int labelWidth = (int)(150 * scale);
         int posX = (int)(25 * scale);
         
         JLabel resText = new JLabel(Settings.LANGUAGE.getText("resolution") + ":");
@@ -113,7 +142,7 @@ public class SettingsDialog extends JFrame{
         resText.setFont(new Font(resText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
         resText.setBounds(posX, heightSixth, labelWidth, textSize);
         
-        JComboBox cbRes = new JComboBox(ResolutionReaderJSON.Read(Settings.SETTINGSDIR).toArray());
+        cbRes = new JComboBox(ResolutionReaderJSON.Read(Settings.SETTINGSDIR).toArray());
         cbRes.setBounds(resText.getLocation().x + labelWidth, heightSixth, labelWidth, resText.getSize().height);
         
         int index = -1;
@@ -131,25 +160,29 @@ public class SettingsDialog extends JFrame{
             cbRes.setSelectedIndex(cbRes.getItemCount() - 1);
         }
         
-        /*cbRes.addItemListener(new ItemListener() {
+        cbRes.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (cbRes.getSelectedItem().toString() == null ? Settings.RESOLUTION.toString() == null : cbRes.getSelectedItem().toString().equals(Settings.RESOLUTION.toString()))
-                    btnApply.setEnabled(false);
-                else
-                    btnApply.setEnabled(true);
+                ApplyEnabled();
             }
-        });*/
+        });
         
         contentPane.add(resText);
         contentPane.add(cbRes);
     }
     
-    private void initLang(){
+    private void initControls(){
         
     }
     
-    private void initControls(){
+    private void ApplyEnabled(){
         
+        System.out.println(cbRes.getSelectedItem().toString() + "!=" + Settings.RESOLUTION.toString() + "||" + cbLang.getSelectedItem().toString() + "!=" + Settings.LANGUAGE.toString());
+        
+        if ((cbRes.getSelectedItem().toString() == null ? Settings.RESOLUTION.toString() != null : !cbRes.getSelectedItem().toString().equals(Settings.RESOLUTION.toString())) 
+            || (cbLang.getSelectedItem().toString() == null ? Settings.LANGUAGE.toString() != null : !cbLang.getSelectedItem().toString().equals(Settings.LANGUAGE.toString())))
+            btnApply.setEnabled(true);
+        else
+            btnApply.setEnabled(false);
     }
 }

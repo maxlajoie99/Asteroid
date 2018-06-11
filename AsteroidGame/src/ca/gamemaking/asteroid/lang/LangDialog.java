@@ -65,7 +65,7 @@ public class LangDialog extends JDialog{
         this.getContentPane().add(pane, BorderLayout.CENTER);
     }
     
-    private List<String> getLangs(){
+    public static List<String> getLangs(){
         
         List<String> list = new ArrayList();
         
