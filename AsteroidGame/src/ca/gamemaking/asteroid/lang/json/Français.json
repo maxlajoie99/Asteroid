@@ -14,7 +14,9 @@
     "resolution":"Résolution",
     "lang":"Langue",
     "forward":"Avant",
-    "right":"Tourner à droite",
-    "left":"Tourner à gauche",
-    "shoot":"Tirer"
+    "right":"Droite",
+    "left":"Gauche",
+    "shoot":"Tirer",
+    "confKey":"Configurer le contrôle",
+    "input":"Appuyez sur une touche pour continuer"
 }

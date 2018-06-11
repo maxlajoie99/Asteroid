@@ -8,7 +8,7 @@ import ca.gamemaking.asteroid.music.MusicLoader;
 import ca.gamemaking.asteroid.settings.Settings;
 import javax.swing.JFrame;
 import static ca.gamemaking.asteroid.settings.Settings.*;
-import ca.gamemaking.asteroid.settings.SettingsDialog;
+import ca.gamemaking.asteroid.settings.SettingsFrame;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -193,7 +193,7 @@ public class GameFrame extends JFrame {
     }
     
     private void ShowSettings(){
-        SettingsDialog sd = new SettingsDialog(this, Settings.LANGUAGE.getText("settings"), scale);
+        SettingsFrame sd = new SettingsFrame(this, Settings.LANGUAGE.getText("settings"), scale);
         
     }
     

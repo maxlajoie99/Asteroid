@@ -16,5 +16,7 @@
     "forward":"Forward",
     "right":"Turn Right",
     "left":"Turn Left",
-    "shoot":"Shoot"
+    "shoot":"Shoot",
+    "confKey":"Configure control",
+    "input":"Press any key to continue"
 }

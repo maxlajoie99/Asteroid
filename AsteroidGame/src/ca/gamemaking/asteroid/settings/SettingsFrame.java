@@ -6,6 +6,7 @@ package ca.gamemaking.asteroid.settings;
 import ca.gamemaking.asteroid.graphics.json.ResolutionReaderJSON;
 import ca.gamemaking.asteroid.lang.LangDialog;
 import ca.gamemaking.asteroid.settings.controls.Controls;
+import ca.gamemaking.asteroid.settings.controls.InputDialog;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -27,7 +28,7 @@ import javax.swing.JOptionPane;
  *
  * @author maxla
  */
-public class SettingsDialog extends JFrame{
+public class SettingsFrame extends JFrame{
     
     float scale;
     Container contentPane;
@@ -46,7 +47,7 @@ public class SettingsDialog extends JFrame{
     int sizeX;
     int sizeY;
     
-    public SettingsDialog(JFrame parent, String title, float scale){
+    public SettingsFrame(JFrame parent, String title, float scale){
         this.pack();
         this.setTitle(title);
         
@@ -224,7 +225,7 @@ public class SettingsDialog extends JFrame{
     }
     
     public void actionPerformed(ActionEvent e){
-        JOptionPane.showMessageDialog(null, "");
+        InputDialog id = new InputDialog(null, Settings.LANGUAGE.getText("confKey"));
     }
     
     private void ApplyEnabled(){
