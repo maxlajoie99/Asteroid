@@ -5,6 +5,7 @@ package ca.gamemaking.asteroid.settings;
 
 import ca.gamemaking.asteroid.graphics.json.ResolutionReaderJSON;
 import ca.gamemaking.asteroid.lang.LangDialog;
+import ca.gamemaking.asteroid.settings.controls.Controls;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
@@ -19,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,6 +37,11 @@ public class SettingsDialog extends JFrame{
     
     JComboBox cbRes;
     JComboBox cbLang;
+    
+    JButton btnForward;
+    JButton btnRight;
+    JButton btnLeft;
+    JButton btnShoot;
     
     int sizeX;
     int sizeY;
@@ -172,13 +180,54 @@ public class SettingsDialog extends JFrame{
     }
     
     private void initControls(){
+        int heightSixth = sizeY/6;
+        int labelWidth = (int)(150 * scale);
+        int posX1 = (int)(25 * scale);
+        int posX2 = sizeX/2 + (int)(25 * scale);
         
+        JLabel rightText = new JLabel(Settings.LANGUAGE.getText("right") + ":");
+        int textSize = rightText.getFont().getSize()*2;
+        rightText.setFont(new Font(rightText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        rightText.setBounds(posX1, heightSixth*3 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
+        btnRight = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getTURN_RIGHT()));
+        btnRight.setBounds(posX1 + labelWidth, heightSixth*3 - textSize/2 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize*2);
+        btnRight.addActionListener((e) -> actionPerformed(e));
+        contentPane.add(rightText);
+        contentPane.add(btnRight);
+        
+        JLabel leftText = new JLabel(Settings.LANGUAGE.getText("left") + ":");
+        leftText.setFont(new Font(leftText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        leftText.setBounds(posX1, heightSixth*4 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
+        btnLeft = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getTURN_LEFT()));
+        btnLeft.setBounds(posX1 + labelWidth, heightSixth*4 - textSize/2 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize*2);
+        btnLeft.addActionListener((e) -> actionPerformed(e));
+        contentPane.add(leftText);
+        contentPane.add(btnLeft);
+        
+        JLabel forwardText = new JLabel(Settings.LANGUAGE.getText("forward") + ":");
+        forwardText.setFont(new Font(forwardText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        forwardText.setBounds(posX2, heightSixth*3 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
+        btnForward = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getFORWARD()));
+        btnForward.setBounds(posX2 + labelWidth, heightSixth*3 - textSize/2 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize*2);
+        btnForward.addActionListener((e) -> actionPerformed(e));
+        contentPane.add(forwardText);
+        contentPane.add(btnForward);
+        
+        JLabel shootText = new JLabel(Settings.LANGUAGE.getText("shoot") + ":");
+        shootText.setFont(new Font(shootText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        shootText.setBounds(posX2, heightSixth*4 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
+        btnShoot = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getSHOOT()));
+        btnShoot.setBounds(posX2 + labelWidth, heightSixth*4 - textSize/2 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize*2);
+        btnShoot.addActionListener((e) -> actionPerformed(e));
+        contentPane.add(shootText);
+        contentPane.add(btnShoot);
+    }
+    
+    public void actionPerformed(ActionEvent e){
+        JOptionPane.showMessageDialog(null, "");
     }
     
     private void ApplyEnabled(){
-        
-        System.out.println(cbRes.getSelectedItem().toString() + "!=" + Settings.RESOLUTION.toString() + "||" + cbLang.getSelectedItem().toString() + "!=" + Settings.LANGUAGE.toString());
-        
         if ((cbRes.getSelectedItem().toString() == null ? Settings.RESOLUTION.toString() != null : !cbRes.getSelectedItem().toString().equals(Settings.RESOLUTION.toString())) 
             || (cbLang.getSelectedItem().toString() == null ? Settings.LANGUAGE.toString() != null : !cbLang.getSelectedItem().toString().equals(Settings.LANGUAGE.toString())))
             btnApply.setEnabled(true);

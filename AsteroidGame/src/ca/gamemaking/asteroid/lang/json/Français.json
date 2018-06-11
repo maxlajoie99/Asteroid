@@ -12,5 +12,9 @@
     "apply":"Appliquer",
     "cancel":"Annuler",
     "resolution":"Résolution",
-    "lang":"Langue"
+    "lang":"Langue",
+    "forward":"Avant",
+    "right":"Tourner à droite",
+    "left":"Tourner à gauche",
+    "shoot":"Tirer"
 }

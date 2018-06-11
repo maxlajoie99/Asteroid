@@ -12,5 +12,9 @@
     "apply":"Apply",
     "cancel":"Cancel",
     "resolution":"Resolution",
-    "lang":"Language"
+    "lang":"Language",
+    "forward":"Forward",
+    "right":"Turn Right",
+    "left":"Turn Left",
+    "shoot":"Shoot"
 }
