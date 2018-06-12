@@ -1,0 +1,3 @@
+Links that could be useful
+
+https://stackoverflow.com/questions/557903/how-can-i-wait-for-a-java-sound-clip-to-finish-playing-back
