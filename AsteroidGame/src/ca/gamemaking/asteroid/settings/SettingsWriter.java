@@ -3,6 +3,9 @@
  */
 package ca.gamemaking.asteroid.settings;
 
+import ca.gamemaking.asteroid.graphics.Resolution;
+import ca.gamemaking.asteroid.lang.Lang;
+import ca.gamemaking.asteroid.settings.controls.Controls;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.util.ArrayList;
@@ -35,6 +38,26 @@ public class SettingsWriter {
             e.printStackTrace();
         }
         
+    }
+    
+    public static void Rewrite(String path, Lang lang, Resolution res, Controls ctrls){
+        List<String> settings = new ArrayList();
+        
+        try {
+            File settingsFile = new File(path + Settings.FILENAME);
+            
+            ObjectMapper objMap = new ObjectMapper();
+            
+            settings.add(lang.toString());
+            settings.add(res.toString());
+            settings.add(ctrls.toString());
+            
+            objMap.writeValue(settingsFile, settings);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "There was an error writing the settings file");
+            e.printStackTrace();
+        }
     }
     
 }

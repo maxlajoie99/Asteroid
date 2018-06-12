@@ -18,5 +18,8 @@
     "left":"Gauche",
     "shoot":"Tirer",
     "confKey":"Configurer le contrôle",
-    "input":"Appuyez sur une touche pour continuer"
+    "input":"Appuyez sur une touche pour continuer",
+    "restartTitle":"Redémarrer le jeu?",
+    "restart":"Le jeu doit être redémarré pour que certains changements (Résolution/Langue) prennent effet. ",
+    "restart2":"Voulez-vous redémarrer maintenant?"
 }

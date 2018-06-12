@@ -18,5 +18,8 @@
     "left":"Turn Left",
     "shoot":"Shoot",
     "confKey":"Configure control",
-    "input":"Press any key to continue"
+    "input":"Press any key to continue",
+    "restartTitle":"Restart game?",
+    "restart":"The game must be restarted for some changes (Resolution/Lang) to take effect. ",
+    "restart2":"Would you like to restart now?"
 }

@@ -3,11 +3,13 @@
  */
 package ca.gamemaking.asteroid.settings;
 
+import ca.gamemaking.asteroid.Launcher;
+import ca.gamemaking.asteroid.graphics.Resolution;
 import ca.gamemaking.asteroid.graphics.json.ResolutionReaderJSON;
+import ca.gamemaking.asteroid.lang.Lang;
 import ca.gamemaking.asteroid.lang.LangDialog;
 import ca.gamemaking.asteroid.settings.controls.Controls;
 import ca.gamemaking.asteroid.settings.controls.InputDialog;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -17,7 +19,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -47,9 +48,16 @@ public class SettingsFrame extends JFrame{
     int sizeX;
     int sizeY;
     
+    boolean requireRestart;
+    
+    public static Controls tempControls;
+    
     public SettingsFrame(JFrame parent, String title, float scale){
         this.pack();
         this.setTitle(title);
+        
+        tempControls = new Controls(Settings.CONTROLS);
+        requireRestart = false;
         
         this.scale = scale;
         contentPane = this.getContentPane();
@@ -97,7 +105,7 @@ public class SettingsFrame extends JFrame{
         btnApply.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                ApplyChange();
             }
         });
         
@@ -116,7 +124,7 @@ public class SettingsFrame extends JFrame{
         contentPane.add(btnCancel);
     }
     
-    private void initResolution(){
+    private void initLang(){
         int heightSixth = sizeY/6  - this.getInsets().top - this.getInsets().bottom;
         int labelWidth = (int)(150 * scale);
         int posX = sizeX/2 + (int)(25 * scale);
@@ -133,7 +141,7 @@ public class SettingsFrame extends JFrame{
         cbLang.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                ApplyEnabled();
+                btnApplyEnabled();
             }
         });
         
@@ -141,7 +149,7 @@ public class SettingsFrame extends JFrame{
         contentPane.add(cbLang);
     }
     
-    private void initLang(){
+    private void initResolution(){
         int heightSixth = sizeY/6  - this.getInsets().top - this.getInsets().bottom;
         int labelWidth = (int)(150 * scale);
         int posX = (int)(25 * scale);
@@ -172,7 +180,7 @@ public class SettingsFrame extends JFrame{
         cbRes.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                ApplyEnabled();
+                btnApplyEnabled();
             }
         });
         
@@ -191,6 +199,7 @@ public class SettingsFrame extends JFrame{
         rightText.setFont(new Font(rightText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
         rightText.setBounds(posX1, heightSixth*3 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnRight = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getTURN_RIGHT()));
+        btnRight.setName("R");
         btnRight.setBounds(posX1 + labelWidth, heightSixth*3 - textSize/2 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize*2);
         btnRight.addActionListener((e) -> actionPerformed(e));
         contentPane.add(rightText);
@@ -200,6 +209,7 @@ public class SettingsFrame extends JFrame{
         leftText.setFont(new Font(leftText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
         leftText.setBounds(posX1, heightSixth*4 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnLeft = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getTURN_LEFT()));
+        btnLeft.setName("L");
         btnLeft.setBounds(posX1 + labelWidth, heightSixth*4 - textSize/2 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize*2);
         btnLeft.addActionListener((e) -> actionPerformed(e));
         contentPane.add(leftText);
@@ -209,6 +219,7 @@ public class SettingsFrame extends JFrame{
         forwardText.setFont(new Font(forwardText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
         forwardText.setBounds(posX2, heightSixth*3 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnForward = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getFORWARD()));
+        btnForward.setName("F");
         btnForward.setBounds(posX2 + labelWidth, heightSixth*3 - textSize/2 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize*2);
         btnForward.addActionListener((e) -> actionPerformed(e));
         contentPane.add(forwardText);
@@ -218,6 +229,7 @@ public class SettingsFrame extends JFrame{
         shootText.setFont(new Font(shootText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
         shootText.setBounds(posX2, heightSixth*4 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnShoot = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getSHOOT()));
+        btnShoot.setName("S");
         btnShoot.setBounds(posX2 + labelWidth, heightSixth*4 - textSize/2 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize*2);
         btnShoot.addActionListener((e) -> actionPerformed(e));
         contentPane.add(shootText);
@@ -225,14 +237,37 @@ public class SettingsFrame extends JFrame{
     }
     
     public void actionPerformed(ActionEvent e){
-        InputDialog id = new InputDialog(null, Settings.LANGUAGE.getText("confKey"));
+        JButton temp = (JButton)e.getSource();
+        InputDialog id = new InputDialog(null, Settings.LANGUAGE.getText("confKey"), temp);
+        btnApplyEnabled();
     }
     
-    private void ApplyEnabled(){
+    private void btnApplyEnabled(){
         if ((cbRes.getSelectedItem().toString() == null ? Settings.RESOLUTION.toString() != null : !cbRes.getSelectedItem().toString().equals(Settings.RESOLUTION.toString())) 
+            || (cbLang.getSelectedItem().toString() == null ? Settings.LANGUAGE.toString() != null : !cbLang.getSelectedItem().toString().equals(Settings.LANGUAGE.toString()))
+            || tempControls.getFORWARD() != Settings.CONTROLS.getFORWARD()
+            || tempControls.getTURN_RIGHT() != Settings.CONTROLS.getTURN_RIGHT()
+            || tempControls.getTURN_LEFT() != Settings.CONTROLS.getTURN_LEFT()
+            || tempControls.getSHOOT() != Settings.CONTROLS.getSHOOT())
+        {
+            if((cbRes.getSelectedItem().toString() == null ? Settings.RESOLUTION.toString() != null : !cbRes.getSelectedItem().toString().equals(Settings.RESOLUTION.toString())) 
             || (cbLang.getSelectedItem().toString() == null ? Settings.LANGUAGE.toString() != null : !cbLang.getSelectedItem().toString().equals(Settings.LANGUAGE.toString())))
+                requireRestart = true;
+            
             btnApply.setEnabled(true);
+        }
         else
             btnApply.setEnabled(false);
+    }
+    
+    private void ApplyChange(){
+        SettingsWriter.Rewrite(Settings.SETTINGSPATH, new Lang((String)cbLang.getSelectedItem()), (Resolution)cbRes.getSelectedItem(), tempControls);
+        Settings.CONTROLS = tempControls;
+        
+        if(requireRestart)
+            if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, Settings.LANGUAGE.getText("restart") + Settings.LANGUAGE.getText("restart2"),Settings.LANGUAGE.getText("restartTitle"),JOptionPane.YES_NO_OPTION))
+                Launcher.getGameFrame().dispose();
+        
+        this.dispose();
     }
 }

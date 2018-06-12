@@ -4,22 +4,24 @@
 package ca.gamemaking.asteroid.settings.controls;
 
 import ca.gamemaking.asteroid.settings.Settings;
+import ca.gamemaking.asteroid.settings.SettingsFrame;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  *
  * @author maxla
  */
 public class InputDialog extends JDialog{
-    public InputDialog(Frame f, String title){
+    
+    public InputDialog(Frame f, String title, JButton sender){
         super(f,title,true);
         
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -34,7 +36,12 @@ public class InputDialog extends JDialog{
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e.getKeyCode());
+                
+                if (SettingsFrame.tempControls.SetControl(sender.getName(), e.getKeyCode())){     
+                    sender.setText(KeyEvent.getKeyText(e.getKeyCode()));
+                }
+                
+                dispose();
             }
         }
         );
