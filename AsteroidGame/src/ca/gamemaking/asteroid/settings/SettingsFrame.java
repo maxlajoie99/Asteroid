@@ -48,6 +48,8 @@ public class SettingsFrame extends JFrame{
     int sizeX;
     int sizeY;
     
+    int baseWidth = 200;
+    
     boolean requireRestart;
     
     public static Controls tempControls;
@@ -126,7 +128,7 @@ public class SettingsFrame extends JFrame{
     
     private void initLang(){
         int heightSixth = sizeY/6  - this.getInsets().top - this.getInsets().bottom;
-        int labelWidth = (int)(150 * scale);
+        int labelWidth = (int)(baseWidth * scale);
         int posX = sizeX/2 + (int)(25 * scale);
         
         JLabel langText = new JLabel(Settings.LANGUAGE.getText("lang") + ":");
@@ -151,7 +153,7 @@ public class SettingsFrame extends JFrame{
     
     private void initResolution(){
         int heightSixth = sizeY/6  - this.getInsets().top - this.getInsets().bottom;
-        int labelWidth = (int)(150 * scale);
+        int labelWidth = (int)(baseWidth * scale);
         int posX = (int)(25 * scale);
         
         JLabel resText = new JLabel(Settings.LANGUAGE.getText("resolution") + ":");
@@ -190,7 +192,7 @@ public class SettingsFrame extends JFrame{
     
     private void initControls(){
         int heightSixth = sizeY/6;
-        int labelWidth = (int)(150 * scale);
+        int labelWidth = (int)(baseWidth * scale);
         int posX1 = (int)(25 * scale);
         int posX2 = sizeX/2 + (int)(25 * scale);
         

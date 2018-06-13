@@ -125,8 +125,8 @@ public class GameFrame extends JFrame {
         int creditsHeight = (int)(25*scale);
         int offsetCredits = (int)(5*scale);
         JButton btnCredits = new JButton(Settings.LANGUAGE.getText("credits"));
-        btnCredits.setBounds(Settings.RESOLUTION.getX() - creditsWidth - offsetCredits - this.getInsets().right, 
-                             Settings.RESOLUTION.getY() - creditsHeight - offsetCredits - this.getInsets().top, 
+        btnCredits.setBounds(Settings.RESOLUTION.getX() - creditsWidth - offsetCredits - this.getInsets().right - this.getInsets().left, 
+                             Settings.RESOLUTION.getY() - creditsHeight - offsetCredits - this.getInsets().top - this.getInsets().bottom, 
                              creditsWidth, 
                              creditsHeight);
         btnCredits.setFont(new Font(btnCredits.getFont().getFamily(),
@@ -185,7 +185,7 @@ public class GameFrame extends JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        MusicLoader.Serenity();
+        MusicLoader.StartPlaying();
     }
         
     private void StartGame(){
@@ -207,7 +207,7 @@ public class GameFrame extends JFrame {
                                 + Settings.LANGUAGE.getText("music")
                             +"</h2>"
                             +"<p style=\"margin-top:0px\">"
-                                + "\"" + Settings.LANGUAGE.getText("song1") + "\" " + Settings.LANGUAGE.getText("artist1") + "<br>"
+                                + Settings.LANGUAGE.getText("artist1") + "<br>"
                                 + "<a href="+Settings.LANGUAGE.getText("website1")+">" + Settings.LANGUAGE.getText("website1") + "</a>"
                             +"</p>"
                         + "</body>"
