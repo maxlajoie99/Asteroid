@@ -4,7 +4,7 @@
 package ca.gamemaking.asteroid.game;
 
 import ca.gamemaking.asteroid.Launcher;
-import ca.gamemaking.asteroid.game.object.Spaceship;
+import ca.gamemaking.asteroid.game.player.Spaceship;
 import java.awt.Graphics;
 
 /**

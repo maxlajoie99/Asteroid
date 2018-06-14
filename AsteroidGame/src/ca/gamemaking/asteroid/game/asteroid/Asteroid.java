@@ -1,12 +1,12 @@
 /*
  * Copyright 2018 © Maxime Lajoie - Tous droits réservés
  */
-package ca.gamemaking.asteroid.game.object;
+package ca.gamemaking.asteroid.game.asteroid;
 
 /**
  *
  * @author maxla
  */
-public class Missile {
+public class Asteroid {
     
 }
