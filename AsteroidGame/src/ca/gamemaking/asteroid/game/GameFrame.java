@@ -34,20 +34,33 @@ public class GameFrame extends JFrame {
     Container contentPane;
     JPanel background;
     
+    JButton btnStart;
+    JButton btnSettings;
+    JButton btnExit;
+    JButton btnCredits;
+    
     Random rnd;
     float scale = 1.0f;
+    
+    boolean drawTitle = true;
+    public boolean gameStarted = false;
+    public boolean pause = false;
+    
+    GameThread gamethread;
     
     public GameFrame() {
         initComponents();
         
         scale = Settings.RESOLUTION.getX()/1280f;
         rnd = new Random();
+        gamethread = new GameThread(60, getGraphics());
         
         initUI();
     }
     
     private void initUI(){
         contentPane = this.getContentPane();
+        contentPane.removeAll();
         contentPane.setLayout(null);
         
         background = new JPanel(){
@@ -64,12 +77,13 @@ public class GameFrame extends JFrame {
                 int sizeY = (int)(ImageLoader.TITLE_IMG.getHeight()*scale);
                 int offsetY = Settings.RESOLUTION.getY()/4;
                 
-                g.drawImage(ImageLoader.TITLE_IMG, 
-                            Settings.RESOLUTION.getX()/2 - sizeX/2, 
-                            Settings.RESOLUTION.getY()/2 - sizeY/2 - offsetY, 
-                            sizeX, 
-                            sizeY, 
-                            null);
+                if (drawTitle)
+                    g.drawImage(ImageLoader.TITLE_IMG, 
+                                Settings.RESOLUTION.getX()/2 - sizeX/2, 
+                                Settings.RESOLUTION.getY()/2 - sizeY/2 - offsetY, 
+                                sizeX, 
+                                sizeY, 
+                                null);
             }
         };
         background.setLayout(null);
@@ -82,7 +96,7 @@ public class GameFrame extends JFrame {
         int btnX = Settings.RESOLUTION.getX()/2 - btnWidth/2;
         int btnY = Settings.RESOLUTION.getY()/2 - btnHeight/2;
         
-        JButton btnStart = new JButton(Settings.LANGUAGE.getText("start"));
+        btnStart = new JButton(Settings.LANGUAGE.getText("start"));
         btnStart.setBounds(btnX,btnY,btnWidth,btnHeight);
         btnStart.setFont(new Font(btnStart.getFont().getFamily(),
                          Font.BOLD, 
@@ -90,12 +104,19 @@ public class GameFrame extends JFrame {
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                drawTitle = false;
+                background.remove(btnStart);
+                background.remove(btnSettings);
+                background.remove(btnExit);
+                background.remove(btnCredits);
+                background.repaint();
+        
                 StartGame();
             }
         });
         background.add(btnStart);
         
-        JButton btnSettings = new JButton(Settings.LANGUAGE.getText("settings"));
+        btnSettings = new JButton(Settings.LANGUAGE.getText("settings"));
         btnSettings.setBounds(btnX,btnY + offsetY,btnWidth,btnHeight);
         btnSettings.setFont(new Font(btnSettings.getFont().getFamily(),
                             Font.BOLD, 
@@ -108,7 +129,7 @@ public class GameFrame extends JFrame {
         });
         background.add(btnSettings);
         
-        JButton btnExit = new JButton(Settings.LANGUAGE.getText("exit"));
+        btnExit = new JButton(Settings.LANGUAGE.getText("exit"));
         btnExit.setBounds(btnX,btnY + offsetY*2,btnWidth,btnHeight);
         btnExit.setFont(new Font(btnExit.getFont().getFamily(),
                         Font.BOLD, 
@@ -124,7 +145,7 @@ public class GameFrame extends JFrame {
         int creditsWidth = (int)(100*scale);
         int creditsHeight = (int)(25*scale);
         int offsetCredits = (int)(5*scale);
-        JButton btnCredits = new JButton(Settings.LANGUAGE.getText("credits"));
+        btnCredits = new JButton(Settings.LANGUAGE.getText("credits"));
         btnCredits.setBounds(Settings.RESOLUTION.getX() - creditsWidth - offsetCredits - this.getInsets().right - this.getInsets().left, 
                              Settings.RESOLUTION.getY() - creditsHeight - offsetCredits - this.getInsets().top - this.getInsets().bottom, 
                              creditsWidth, 
@@ -189,12 +210,16 @@ public class GameFrame extends JFrame {
     }
         
     private void StartGame(){
-        
+        gameStarted = true;
+        gamethread.start();
     }
+    
+    /*private void EndGame(){
+        initUI();
+    }*/
     
     private void ShowSettings(){
         SettingsFrame sd = new SettingsFrame(this, Settings.LANGUAGE.getText("settings"), scale);
-        
     }
     
     private void ShowCredits(){
@@ -203,6 +228,7 @@ public class GameFrame extends JFrame {
                             +"<h1>"
                                 + Settings.LANGUAGE.getText("credits").toUpperCase()
                             +"</h1>"
+                            +"<p>" + Settings.LANGUAGE.getText("copyright") + "</p>"
                             +"<h2>"
                                 + Settings.LANGUAGE.getText("music")
                             +"</h2>"
