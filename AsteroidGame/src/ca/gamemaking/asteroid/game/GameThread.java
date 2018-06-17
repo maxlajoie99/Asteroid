@@ -7,7 +7,7 @@ import ca.gamemaking.asteroid.Launcher;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class GameThread extends Thread{
     

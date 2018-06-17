@@ -5,7 +5,7 @@ package ca.gamemaking.asteroid.game.missile;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class Missile {
     

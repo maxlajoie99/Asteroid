@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class SettingsFrame extends JFrame{
     

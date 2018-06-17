@@ -5,7 +5,7 @@ package ca.gamemaking.asteroid.game.asteroid;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class Asteroid {
     

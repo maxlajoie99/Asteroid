@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class ImageLoader {
     

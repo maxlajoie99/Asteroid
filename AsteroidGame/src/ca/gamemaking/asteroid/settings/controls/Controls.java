@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class Controls {
     

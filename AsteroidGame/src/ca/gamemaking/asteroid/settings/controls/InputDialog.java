@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class InputDialog extends JDialog{
     

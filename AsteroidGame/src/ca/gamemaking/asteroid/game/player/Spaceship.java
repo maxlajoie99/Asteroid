@@ -6,13 +6,12 @@ package ca.gamemaking.asteroid.game.player;
 import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class Spaceship {
     

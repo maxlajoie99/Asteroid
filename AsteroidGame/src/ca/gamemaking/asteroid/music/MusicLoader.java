@@ -11,7 +11,7 @@ import javax.sound.sampled.LineEvent.Type;
 
 /**
  *
- * @author maxla
+ * @author Maxime Lajoie
  */
 public class MusicLoader {
     
