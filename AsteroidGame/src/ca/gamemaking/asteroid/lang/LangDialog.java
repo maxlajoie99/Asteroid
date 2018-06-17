@@ -67,7 +67,7 @@ public class LangDialog extends JDialog{
     
     public static List<String> getLangs(){
         
-        List<String> list = new ArrayList();
+        List<String> list = new ArrayList<>();
         
         list.add("English");
         list.add("Français");

@@ -31,7 +31,7 @@ public class ResolutionDialog extends JDialog{
         
         super(f,title,true);
         this.toFront();
-        this.setSize(300,100);
+        this.setSize(300,125);
         this.setLocationRelativeTo(f);
         this.setResizable(false);
         

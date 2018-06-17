@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 public class ResolutionReaderJSON {
     
     public static List<Resolution> Read(String path){
-        List<Resolution> resList = new ArrayList();
+        List<Resolution> resList = new ArrayList<>();
         
         try {
             File resFile = new File(path + ResolutionWriterJSON.FILENAME);

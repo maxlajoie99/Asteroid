@@ -20,7 +20,7 @@ public class SettingsReader {
     
     public static boolean Read(String path){
         
-        List<String> tempList = new ArrayList();
+        List<String> tempList = new ArrayList<>();
         String tempLang;
         String tempRes;
         String tempControls;

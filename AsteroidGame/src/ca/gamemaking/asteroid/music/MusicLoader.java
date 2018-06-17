@@ -58,7 +58,7 @@ public class MusicLoader {
     
     private static List<String> getMusicList(){
         
-        List<String> musics = new ArrayList();
+        List<String> musics = new ArrayList<>();
         
         //Ahrix songs
         musics.add("ANewStart");

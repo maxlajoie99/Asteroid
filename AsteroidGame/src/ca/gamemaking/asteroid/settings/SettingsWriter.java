@@ -20,7 +20,7 @@ public class SettingsWriter {
     
     public static void Write(String path){
         
-        List<String> settings = new ArrayList();
+        List<String> settings = new ArrayList<>();
         
         try {
             File settingsFile = new File(path + Settings.FILENAME);
@@ -41,7 +41,7 @@ public class SettingsWriter {
     }
     
     public static void Rewrite(String path, Lang lang, Resolution res, Controls ctrls){
-        List<String> settings = new ArrayList();
+        List<String> settings = new ArrayList<>();
         
         try {
             File settingsFile = new File(path + Settings.FILENAME);

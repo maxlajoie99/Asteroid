@@ -14,7 +14,7 @@ public class DefaultResolutions {
     
     public static List<Resolution> getResolutions(){
         
-        List<Resolution> resList = new ArrayList();
+        List<Resolution> resList = new ArrayList<>();
         
         resList.add(new Resolution(800, 600));
         resList.add(new Resolution(1024, 768));
