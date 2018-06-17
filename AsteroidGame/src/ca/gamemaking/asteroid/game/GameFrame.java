@@ -3,6 +3,7 @@
  */
 package ca.gamemaking.asteroid.game;
 
+import ca.gamemaking.asteroid.game.player.Spaceship;
 import ca.gamemaking.asteroid.graphics.images.ImageLoader;
 import ca.gamemaking.asteroid.music.MusicLoader;
 import ca.gamemaking.asteroid.settings.Settings;
@@ -13,9 +14,13 @@ import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -48,6 +53,7 @@ public class GameFrame extends JFrame {
     public boolean pause = false;
     
     GameThread gamethread;
+    Spaceship player;
     
     public GameFrame() {
         initComponents();
@@ -60,6 +66,8 @@ public class GameFrame extends JFrame {
         gamethread = new GameThread(Settings.TARGET_FPS);
         
         initUI();
+        
+        initFrameListeners();
     }
     
     private void CreateStars(){
@@ -175,15 +183,40 @@ public class GameFrame extends JFrame {
         
         contentPane.add(background);
     }
-
-    @Override
-    public void paint(Graphics g){
-        super.paint(g);
+    
+    private void initFrameListeners(){
         
+        this.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                
+            }
+        });
         
         
     }
-    
+
+    @Override
+    public void paint(Graphics g){
+        BufferedImage buffer = new BufferedImage(Settings.RESOLUTION.getX(), Settings.RESOLUTION.getY(), BufferedImage.TYPE_INT_ARGB);
+        Graphics bg = buffer.createGraphics();
+        
+        super.paint(bg);
+        
+        if (player != null)
+            player.paint((Graphics2D)bg);
+        
+        g.drawImage(buffer, 0, 0, null);
+        bg.dispose();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -224,6 +257,10 @@ public class GameFrame extends JFrame {
     private void StartGame(){
         gameStarted = true;
         gamethread.start();
+        
+        
+        player = new Spaceship();
+        
     }
     
     /*private void EndGame(){
@@ -271,4 +308,4 @@ public class GameFrame extends JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-}
+    }
