@@ -132,8 +132,8 @@ public class SettingsFrame extends JFrame{
         int posX = sizeX/2 + (int)(25 * scale);
         
         JLabel langText = new JLabel(Settings.LANGUAGE.getText("lang") + ":");
-        int textSize = langText.getFont().getSize()*2;
-        langText.setFont(new Font(langText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        int textSize = (int)(langText.getFont().getSize() * scale * 2);
+        langText.setFont(new Font(langText.getFont().getFamily(), Font.BOLD, textSize));
         langText.setBounds(posX, heightSixth, labelWidth, textSize);
         
         cbLang = new JComboBox(LangDialog.getLangs().toArray());
@@ -157,8 +157,8 @@ public class SettingsFrame extends JFrame{
         int posX = (int)(25 * scale);
         
         JLabel resText = new JLabel(Settings.LANGUAGE.getText("resolution") + ":");
-        int textSize = resText.getFont().getSize()*2;
-        resText.setFont(new Font(resText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        int textSize = (int)(resText.getFont().getSize() * scale * 2);
+        resText.setFont(new Font(resText.getFont().getFamily(), Font.BOLD, textSize));
         resText.setBounds(posX, heightSixth, labelWidth, textSize);
         
         cbRes = new JComboBox(ResolutionReaderJSON.Read(Settings.SETTINGSDIR).toArray());
@@ -197,8 +197,8 @@ public class SettingsFrame extends JFrame{
         int posX2 = sizeX/2 + (int)(25 * scale);
         
         JLabel rightText = new JLabel(Settings.LANGUAGE.getText("right") + ":");
-        int textSize = rightText.getFont().getSize()*2;
-        rightText.setFont(new Font(rightText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        int textSize = (int)(rightText.getFont().getSize() * scale * 2);
+        rightText.setFont(new Font(rightText.getFont().getFamily(), Font.BOLD, textSize));
         rightText.setBounds(posX1, heightSixth*3 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnRight = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getTURN_RIGHT()));
         btnRight.setName("R");
@@ -208,7 +208,7 @@ public class SettingsFrame extends JFrame{
         contentPane.add(btnRight);
         
         JLabel leftText = new JLabel(Settings.LANGUAGE.getText("left") + ":");
-        leftText.setFont(new Font(leftText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        leftText.setFont(new Font(leftText.getFont().getFamily(), Font.BOLD, textSize));
         leftText.setBounds(posX1, heightSixth*4 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnLeft = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getTURN_LEFT()));
         btnLeft.setName("L");
@@ -218,7 +218,7 @@ public class SettingsFrame extends JFrame{
         contentPane.add(btnLeft);
         
         JLabel forwardText = new JLabel(Settings.LANGUAGE.getText("forward") + ":");
-        forwardText.setFont(new Font(forwardText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        forwardText.setFont(new Font(forwardText.getFont().getFamily(), Font.BOLD, textSize));
         forwardText.setBounds(posX2, heightSixth*3 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnForward = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getFORWARD()));
         btnForward.setName("F");
@@ -228,7 +228,7 @@ public class SettingsFrame extends JFrame{
         contentPane.add(btnForward);
         
         JLabel shootText = new JLabel(Settings.LANGUAGE.getText("shoot") + ":");
-        shootText.setFont(new Font(shootText.getFont().getFamily(), Font.BOLD, (int)(textSize * scale)));
+        shootText.setFont(new Font(shootText.getFont().getFamily(), Font.BOLD, textSize));
         shootText.setBounds(posX2, heightSixth*4 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnShoot = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getSHOOT()));
         btnShoot.setName("S");
