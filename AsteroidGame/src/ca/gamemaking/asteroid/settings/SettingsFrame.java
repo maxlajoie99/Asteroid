@@ -19,6 +19,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -30,15 +31,14 @@ import javax.swing.JOptionPane;
  * @author Maxime Lajoie
  */
 public class SettingsFrame extends JFrame{
-    
-    float scale;
+
     Container contentPane;
     
     JButton btnApply;
     JButton btnCancel;
     
-    JComboBox cbRes;
-    JComboBox cbLang;
+    JComboBox<Resolution> cbRes;
+    JComboBox<String> cbLang;
     
     JButton btnForward;
     JButton btnRight;
@@ -54,18 +54,17 @@ public class SettingsFrame extends JFrame{
     
     public static Controls tempControls;
     
-    public SettingsFrame(JFrame parent, String title, float scale){
+    public SettingsFrame(JFrame parent, String title){
         this.pack();
         this.setTitle(title);
         
         tempControls = new Controls(Settings.CONTROLS);
         requireRestart = false;
         
-        this.scale = scale;
         contentPane = this.getContentPane();
         
-        sizeX = Settings.RESOLUTION.getX() - (int)(350*scale);
-        sizeY = Settings.RESOLUTION.getY() - (int)(200*scale);
+        sizeX = Settings.RESOLUTION.getX() - (int)(350 * Settings.SCALE);
+        sizeY = Settings.RESOLUTION.getY() - (int)(200 * Settings.SCALE);
         
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(sizeX,sizeY);
@@ -95,9 +94,9 @@ public class SettingsFrame extends JFrame{
     }
     
     private void initOptions(){
-        int btnWidth = (int)(125 * scale);
-        int btnHeight = (int)(30 * scale);
-        int offset = (int)(5 * scale);
+        int btnWidth = (int)(130 * Settings.SCALE);
+        int btnHeight = (int)(30 * Settings.SCALE);
+        int offset = (int)(5 * Settings.SCALE);
         
         btnApply = new JButton(Settings.LANGUAGE.getText("apply"));
         btnApply.setBounds(sizeX - btnWidth*2 - offset*2 - this.getInsets().right - this.getInsets().left,
@@ -128,16 +127,16 @@ public class SettingsFrame extends JFrame{
     
     private void initLang(){
         int heightSixth = sizeY/6  - this.getInsets().top - this.getInsets().bottom;
-        int labelWidth = (int)(baseWidth * scale);
-        int posX = sizeX/2 + (int)(25 * scale);
+        int labelWidth = (int)(baseWidth * Settings.SCALE);
+        int posX = sizeX/2 + (int)(25 * Settings.SCALE);
         
         JLabel langText = new JLabel(Settings.LANGUAGE.getText("lang") + ":");
-        int textSize = (int)(langText.getFont().getSize() * scale * 2);
+        int textSize = (int)(langText.getFont().getSize() * Settings.SCALE * 2);
         langText.setFont(new Font(langText.getFont().getFamily(), Font.BOLD, textSize));
         langText.setBounds(posX, heightSixth, labelWidth, textSize);
         
-        cbLang = new JComboBox(LangDialog.getLangs().toArray());
-        cbLang.setBounds(langText.getLocation().x + labelWidth, heightSixth, labelWidth, langText.getSize().height);
+        cbLang = new JComboBox<String>(new Vector<String>(LangDialog.getLangs()));
+        cbLang.setBounds(langText.getLocation().x + labelWidth, heightSixth - textSize/4, labelWidth, (int)(textSize * 1.5));
         cbLang.setSelectedItem(Settings.LANGUAGE.toString());
         
         cbLang.addItemListener(new ItemListener() {
@@ -153,16 +152,16 @@ public class SettingsFrame extends JFrame{
     
     private void initResolution(){
         int heightSixth = sizeY/6  - this.getInsets().top - this.getInsets().bottom;
-        int labelWidth = (int)(baseWidth * scale);
-        int posX = (int)(25 * scale);
+        int labelWidth = (int)(baseWidth * Settings.SCALE);
+        int posX = (int)(25 * Settings.SCALE);
         
         JLabel resText = new JLabel(Settings.LANGUAGE.getText("resolution") + ":");
-        int textSize = (int)(resText.getFont().getSize() * scale * 2);
+        int textSize = (int)(resText.getFont().getSize() * Settings.SCALE * 2);
         resText.setFont(new Font(resText.getFont().getFamily(), Font.BOLD, textSize));
         resText.setBounds(posX, heightSixth, labelWidth, textSize);
         
-        cbRes = new JComboBox(ResolutionReaderJSON.Read(Settings.SETTINGSDIR).toArray());
-        cbRes.setBounds(resText.getLocation().x + labelWidth, heightSixth, labelWidth, resText.getSize().height);
+        cbRes = new JComboBox<Resolution>(new Vector<Resolution>(ResolutionReaderJSON.Read(Settings.SETTINGSDIR)));
+        cbRes.setBounds(resText.getLocation().x + labelWidth, heightSixth- textSize/4, labelWidth, (int)(textSize * 1.5));
         
         int index = -1;
         for(int i = 0; i < cbRes.getItemCount();i++)
@@ -192,12 +191,12 @@ public class SettingsFrame extends JFrame{
     
     private void initControls(){
         int heightSixth = sizeY/6;
-        int labelWidth = (int)(baseWidth * scale);
-        int posX1 = (int)(25 * scale);
-        int posX2 = sizeX/2 + (int)(25 * scale);
+        int labelWidth = (int)(baseWidth * Settings.SCALE);
+        int posX1 = (int)(25 * Settings.SCALE);
+        int posX2 = sizeX/2 + (int)(25 * Settings.SCALE);
         
         JLabel rightText = new JLabel(Settings.LANGUAGE.getText("right") + ":");
-        int textSize = (int)(rightText.getFont().getSize() * scale * 2);
+        int textSize = (int)(rightText.getFont().getSize() * Settings.SCALE * 2);
         rightText.setFont(new Font(rightText.getFont().getFamily(), Font.BOLD, textSize));
         rightText.setBounds(posX1, heightSixth*3 - this.getInsets().top - this.getInsets().bottom, labelWidth, textSize);
         btnRight = new JButton(KeyEvent.getKeyText(Settings.CONTROLS.getTURN_RIGHT()));

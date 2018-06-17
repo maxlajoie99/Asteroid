@@ -23,6 +23,7 @@ public class Settings {
     public static Resolution RESOLUTION;
     
     public static  int TARGET_FPS = 60;
+    public static float SCALE;
     
     public static Controls CONTROLS;
 }

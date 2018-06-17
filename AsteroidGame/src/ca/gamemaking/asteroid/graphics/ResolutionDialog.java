@@ -10,6 +10,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -23,7 +24,7 @@ import javax.swing.JPanel;
 public class ResolutionDialog extends JDialog{
     
     private List<Resolution> resList;
-    private JComboBox cbResolutions;
+    private JComboBox<Resolution> cbResolutions;
     
     private Resolution res;
     
@@ -48,7 +49,7 @@ public class ResolutionDialog extends JDialog{
         JLabel text = new JLabel("Game resolution : ");
         pane.add(text);
         
-        cbResolutions = new JComboBox(resList.toArray());
+        cbResolutions = new JComboBox<Resolution>(new Vector<Resolution>(resList));
         pane.add(cbResolutions);
         
         JLabel text2 = new JLabel("(Actual window may be smaller)");

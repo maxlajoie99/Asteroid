@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -21,7 +22,7 @@ import javax.swing.JPanel;
  */
 public class LangDialog extends JDialog{
     
-    private JComboBox cbLangs;
+    private JComboBox<String> cbLangs;
     
     private String value;
     
@@ -46,7 +47,7 @@ public class LangDialog extends JDialog{
         JLabel text = new JLabel("Please choose a language from the list before continuing...");
         pane.add(text);
         
-        cbLangs = new JComboBox(getLangs().toArray());
+        cbLangs = new JComboBox<String>(new Vector<String>(getLangs()));
         pane.add(cbLangs);
         
         JButton btn = new JButton("Confirm");
