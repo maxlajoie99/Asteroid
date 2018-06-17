@@ -22,5 +22,7 @@ public class Settings {
     public static Lang LANGUAGE;
     public static Resolution RESOLUTION;
     
+    public static  int TARGET_FPS = 60;
+    
     public static Controls CONTROLS;
 }

@@ -7,13 +7,13 @@ import ca.gamemaking.asteroid.graphics.images.ImageLoader;
 import ca.gamemaking.asteroid.music.MusicLoader;
 import ca.gamemaking.asteroid.settings.Settings;
 import javax.swing.JFrame;
-import static ca.gamemaking.asteroid.settings.Settings.*;
 import ca.gamemaking.asteroid.settings.SettingsFrame;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -33,6 +33,7 @@ public class GameFrame extends JFrame {
 
     Container contentPane;
     JPanel background;
+    Point[] stars;
     
     JButton btnStart;
     JButton btnSettings;
@@ -53,9 +54,20 @@ public class GameFrame extends JFrame {
         
         scale = Settings.RESOLUTION.getX()/1280f;
         rnd = new Random();
-        gamethread = new GameThread(60, getGraphics());
+        
+        CreateStars();
+        
+        gamethread = new GameThread(Settings.TARGET_FPS);
         
         initUI();
+    }
+    
+    private void CreateStars(){
+        stars = new Point[(int)(120 * scale)];
+        
+        for (int i = 0; i < stars.length; i++) {
+            stars[i] = new Point(rnd.nextInt(Settings.RESOLUTION.getX()), rnd.nextInt(Settings.RESOLUTION.getY()));
+        }
     }
     
     private void initUI(){
@@ -69,8 +81,8 @@ public class GameFrame extends JFrame {
                 super.paint(g);
                 
                 g.setColor(Color.WHITE);
-                for (int i = 0; i < (int)(120 * scale); i++) {
-                    g.fillOval(rnd.nextInt(Settings.RESOLUTION.getX()), rnd.nextInt(Settings.RESOLUTION.getY()), 5, 5);
+                for (int i = 0; i < stars.length; i++) {
+                    g.fillOval(stars[i].x, stars[i].y, 5, 5);
                 }
                 
                 int sizeX = (int)(ImageLoader.TITLE_IMG.getWidth()*scale);
@@ -200,7 +212,7 @@ public class GameFrame extends JFrame {
 
     public void run() {
         this.setName("Asteroid");
-        this.setTitle(LANGUAGE.getText("title"));
+        this.setTitle(Settings.LANGUAGE.getText("title"));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Settings.RESOLUTION.getX(), Settings.RESOLUTION.getY());
         this.setResizable(false);
