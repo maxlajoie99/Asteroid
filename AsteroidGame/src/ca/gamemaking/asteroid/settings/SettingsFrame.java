@@ -82,6 +82,7 @@ public class SettingsFrame extends JFrame{
             public void windowClosed(WindowEvent e){
                 parent.setEnabled(true);
                 parent.toFront();
+                parent.requestFocus();
             }
         });
         

@@ -191,7 +191,7 @@ public class GameFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                
+                System.out.println(e.getKeyCode());
             }
 
             @Override
@@ -200,7 +200,7 @@ public class GameFrame extends JFrame {
             }
         });
         
-        
+        //this.removeKeyListener(this.getKeyListeners()[0]);
     }
 
     @Override
@@ -250,13 +250,15 @@ public class GameFrame extends JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        this.setFocusable(true);
+        this.requestFocus();
         MusicLoader.StartPlaying();
     }
         
     private void StartGame(){
         gameStarted = true;
         gamethread.start();
-        
+        this.requestFocus();
         
         player = new Spaceship();
         
@@ -287,24 +289,25 @@ public class GameFrame extends JFrame {
                         + "</body>"
                         + "</html>");
                 
-                creditsPane.addHyperlinkListener(new HyperlinkListener() {
-                    @Override
-                    public void hyperlinkUpdate(HyperlinkEvent e) {
-                        if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)){
-                            Desktop d = Desktop.getDesktop();
-                            try {
-                                d.browse(e.getURL().toURI());
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }                            
-                        }
-                    }
-                });
-                creditsPane.setEditable(false);
-                creditsPane.setBackground(new JLabel().getBackground());
+        creditsPane.addHyperlinkListener(new HyperlinkListener() {
+            @Override
+            public void hyperlinkUpdate(HyperlinkEvent e) {
+                if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)){
+                    Desktop d = Desktop.getDesktop();
+                    try {
+                        d.browse(e.getURL().toURI());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }                            
+                }
+            }
+        });
+        creditsPane.setEditable(false);
+        creditsPane.setBackground(new JLabel().getBackground());
                 
-                JOptionPane.showMessageDialog(null, creditsPane, Settings.LANGUAGE.getText("credits"),JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, creditsPane, Settings.LANGUAGE.getText("credits"),JOptionPane.PLAIN_MESSAGE);
+        this.requestFocus();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    }
+}

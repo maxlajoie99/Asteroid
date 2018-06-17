@@ -15,11 +15,8 @@ public class ImageLoader {
     public static BufferedImage TITLE_IMG;
     static {
         try {
-            
-            TITLE_IMG = ImageIO.read(ImageLoader.class.getResourceAsStream("title.png"));
-            
+            TITLE_IMG = ImageIO.read(ImageLoader.class.getResourceAsStream("title.png"));        
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     

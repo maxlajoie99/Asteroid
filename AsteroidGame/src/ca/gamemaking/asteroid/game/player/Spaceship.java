@@ -21,6 +21,9 @@ public class Spaceship {
     int[] shapeX;
     int[] shapeY;
     
+    int offset18 = (int)(Settings.SCALE * 18);
+    int offset24 = (int)(Settings.SCALE * 24);
+    
     public Spaceship(){
         position = new Point(Settings.RESOLUTION.getX()/2, Settings.RESOLUTION.getY()/2);
         UpdateShape();
@@ -36,21 +39,21 @@ public class Spaceship {
         shapeY = new int[nbPoints];
         
         shapeX[0] = position.x;
-        shapeY[0] = position.y - 24;
+        shapeY[0] = position.y - offset24;
         
-        shapeX[1] = position.x - 18;
-        shapeY[1] = position.y + 24;
+        shapeX[1] = position.x - offset18;
+        shapeY[1] = position.y + offset24;
         
         shapeX[2] = position.x;
-        shapeY[2] = position.y + 18;
+        shapeY[2] = position.y + offset18;
         
-        shapeX[3] = position.x + 18;
-        shapeY[3] = position.y + 24;
+        shapeX[3] = position.x + offset18;
+        shapeY[3] = position.y + offset24;
     }
     
     public void paint(Graphics2D g2d){
         g2d.setColor(Color.WHITE);
-        g2d.setStroke(new BasicStroke(3));
+        g2d.setStroke(new BasicStroke(3 * Settings.SCALE));
         
         g2d.drawPolygon(shapeX, shapeY, nbPoints);
     }

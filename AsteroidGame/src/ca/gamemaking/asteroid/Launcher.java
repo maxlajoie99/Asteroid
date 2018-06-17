@@ -46,6 +46,9 @@ public class Launcher {
             
             SettingsWriter.Write(Settings.SETTINGSPATH);
         }
+        else {
+            Settings.RESOLUTION.Adjust();
+        }
         
         System.out.println(Settings.LANGUAGE.getText("launch"));
         
