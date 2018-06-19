@@ -29,7 +29,7 @@ public class GameThread extends Thread{
             lastLoopTime = now;
             double delta = updateLength / ((double)OPTIMAL_TIME);
             
-            Update(delta);
+            Launcher.getGameFrame().Update(delta);
             
             //repaint
             Launcher.getGameFrame().repaint();
@@ -40,12 +40,5 @@ public class GameThread extends Thread{
             } catch (Exception e) {
             }
         }   //End of loop
-        
     }
-    
-    private void Update(double deltaTime){
-        Launcher.getGameFrame().player.Move(deltaTime);
-        
-    }
-    
 }

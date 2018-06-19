@@ -220,6 +220,11 @@ public class GameFrame extends JFrame {
         g.drawImage(buffer, 0, 0, null);
         bg.dispose();
     }
+    
+    public void Update(double deltaTime){
+        player.Move(deltaTime);
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
