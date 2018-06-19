@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class ResolutionDialog extends JDialog{
     

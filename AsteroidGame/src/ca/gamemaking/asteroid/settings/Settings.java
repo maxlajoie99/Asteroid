@@ -10,7 +10,7 @@ import java.io.File;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class Settings {
     

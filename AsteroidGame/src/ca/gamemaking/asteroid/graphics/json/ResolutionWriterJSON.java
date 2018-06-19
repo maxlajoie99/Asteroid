@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class ResolutionWriterJSON {
     

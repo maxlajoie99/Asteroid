@@ -10,7 +10,7 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class Resolution {
     

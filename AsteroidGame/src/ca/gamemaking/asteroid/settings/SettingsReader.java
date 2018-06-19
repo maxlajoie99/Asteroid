@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class SettingsReader {
     

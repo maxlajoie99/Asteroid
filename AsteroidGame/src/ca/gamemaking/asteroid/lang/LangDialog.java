@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class LangDialog extends JDialog{
     

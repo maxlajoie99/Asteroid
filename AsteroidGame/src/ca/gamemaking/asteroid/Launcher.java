@@ -15,7 +15,7 @@ import ca.gamemaking.asteroid.settings.controls.Controls;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class Launcher {
     

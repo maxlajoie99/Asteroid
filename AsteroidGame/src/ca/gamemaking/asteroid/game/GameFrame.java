@@ -32,7 +32,7 @@ import javax.swing.event.HyperlinkListener;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class GameFrame extends JFrame {
 
@@ -52,7 +52,7 @@ public class GameFrame extends JFrame {
     public boolean pause = false;
     
     GameThread gamethread;
-    Spaceship player;
+    public Spaceship player;
     
     public GameFrame() {
         initComponents();
@@ -191,12 +191,14 @@ public class GameFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e.getKeyCode());
+                if (gameStarted)
+                    player.Input(e);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                
+                if (gameStarted)
+                    player.Input(null);
             }
         });
         
@@ -212,6 +214,8 @@ public class GameFrame extends JFrame {
         
         if (player != null)
             player.paint((Graphics2D)bg);
+        
+        
         
         g.drawImage(buffer, 0, 0, null);
         bg.dispose();
@@ -256,12 +260,11 @@ public class GameFrame extends JFrame {
     }
         
     private void StartGame(){
+        player = new Spaceship();
+        
         gameStarted = true;
         gamethread.start();
         this.requestFocus();
-        
-        player = new Spaceship();
-        
     }
     
     /*private void EndGame(){

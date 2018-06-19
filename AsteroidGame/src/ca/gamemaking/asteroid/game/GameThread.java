@@ -22,7 +22,6 @@ public class GameThread extends Thread{
     public void run(){
         long lastLoopTime = System.nanoTime();
         final long OPTIMAL_TIME = 1000000000 / REFRESH_RATE;
-        long lastFpsTime = 0;
         
         while(running){
             long now = System.nanoTime();
@@ -30,30 +29,22 @@ public class GameThread extends Thread{
             lastLoopTime = now;
             double delta = updateLength / ((double)OPTIMAL_TIME);
             
-            lastFpsTime += updateLength;
-            if (lastFpsTime >= 1000000000)
-                lastFpsTime = 0;
-            
-            //update game
-            if (delta >= 1.0)
-            {
-                System.out.println("Update");
-                Update(delta);
-            }
+            Update(delta);
             
             //repaint
             Launcher.getGameFrame().repaint();
             
             try {
                 long gameTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
-                System.out.println(gameTime);
                 Thread.sleep(gameTime);
             } catch (Exception e) {
             }
         }   //End of loop
+        
     }
     
     private void Update(double deltaTime){
+        Launcher.getGameFrame().player.Move(deltaTime);
         
     }
     

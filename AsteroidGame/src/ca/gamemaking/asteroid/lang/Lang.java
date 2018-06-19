@@ -4,15 +4,15 @@
 package ca.gamemaking.asteroid.lang;
 
 import ca.gamemaking.asteroid.lang.json.LangReaderJSON;
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
- * @author mlajoie
+ * @author Maxime Lajoie
  */
 public class Lang {
     
-    Map<String, String> fields;
+    HashMap<String, String> fields;
     private String name;
     
     public Lang(String name){
