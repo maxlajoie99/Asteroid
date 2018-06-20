@@ -8,9 +8,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.util.HashSet;
 
 /**
  *
@@ -21,18 +21,18 @@ public class Spaceship {
     Point2D.Double position;
     Point2D.Double direction;
     
-    final double MAX_SPEED = 5.0;
+    final double MAX_SPEED = 7.0;
+    final double SPEED_INCREMENT = 0.15;
     double current_speed = 0.0;
     
     double rotation = 90.0;
+    final double ROTATION_SPEED = 3.5;
     
     int nbPoints = 4;
     Point2D.Double[] shape;
     
     int offset18 = (int)(Settings.SCALE * 18);
     int offset24 = (int)(Settings.SCALE * 24);
-    
-    KeyEvent input;
     
     public Spaceship(){
         position = new Point2D.Double(Settings.RESOLUTION.getX()/2, Settings.RESOLUTION.getY()/2);
@@ -85,31 +85,27 @@ public class Spaceship {
         return (x * Math.sin(Math.toRadians(angle))) + (y * Math.cos(Math.toRadians(angle)));
     }
     
-    public void Input(KeyEvent e){
-        input = e;
-    }
-    
-    public void Move(double delta){
+    public void Move(double delta, HashSet<Integer> inputs){
         //Manage spaceship speed
-        if (input != null && input.getKeyCode() == Settings.CONTROLS.getFORWARD()){
-            current_speed += 0.1;
+        if (inputs.contains(Settings.CONTROLS.getFORWARD())){
+            current_speed += SPEED_INCREMENT;
             if (current_speed >= MAX_SPEED)
                 current_speed = MAX_SPEED;
         }
         else{
-            current_speed -= 0.1;
+            current_speed -= SPEED_INCREMENT;
             if (current_speed <= 0)
                 current_speed = 0;
         }
         
-        if (input != null && input.getKeyCode() == Settings.CONTROLS.getTURN_RIGHT()){
+        if (inputs.contains(Settings.CONTROLS.getTURN_RIGHT())){
             rotation %= 360;
-            rotation += 5;
+            rotation += ROTATION_SPEED;
         }
         
-        if (input != null && input.getKeyCode() == Settings.CONTROLS.getTURN_LEFT()){
+        if (inputs.contains(Settings.CONTROLS.getTURN_LEFT())){
             rotation %= 360;
-            rotation -= 5;
+            rotation -= ROTATION_SPEED;
         }
         
         direction.x = Math.cos(Math.toRadians(rotation));

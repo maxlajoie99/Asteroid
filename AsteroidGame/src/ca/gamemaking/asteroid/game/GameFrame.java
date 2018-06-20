@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -53,6 +54,7 @@ public class GameFrame extends JFrame {
     
     GameThread gamethread;
     public Spaceship player;
+    private HashSet<Integer> keyPressed;
     
     public GameFrame() {
         initComponents();
@@ -185,20 +187,19 @@ public class GameFrame extends JFrame {
     
     private void initFrameListeners(){
         
+        keyPressed = new HashSet<>();
         this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {}
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (gameStarted)
-                    player.Input(e);
+                keyPressed.add(e.getKeyCode());
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if (gameStarted)
-                    player.Input(null);
+                keyPressed.remove(e.getKeyCode());
             }
         });
         
@@ -222,7 +223,7 @@ public class GameFrame extends JFrame {
     }
     
     public void Update(double deltaTime){
-        player.Move(deltaTime);
+        player.Move(deltaTime, keyPressed);
         
     }
 
