@@ -11,8 +11,10 @@ import ca.gamemaking.asteroid.Launcher;
  */
 public class GameThread extends Thread{
     
-    final long REFRESH_RATE;
+    final int REFRESH_RATE;
+    
     boolean running = true;
+    boolean pause = false;
     
     public GameThread(int fps){
         REFRESH_RATE = fps;
@@ -22,23 +24,35 @@ public class GameThread extends Thread{
     public void run(){
         long lastLoopTime = System.nanoTime();
         final long OPTIMAL_TIME = 1000000000 / REFRESH_RATE;
+        long lastGameTime = OPTIMAL_TIME/1000000;
         
         while(running){
             long now = System.nanoTime();
             long updateLength = now - lastLoopTime;
             lastLoopTime = now;
-            double delta = updateLength / ((double)OPTIMAL_TIME);
             
-            Launcher.getGameFrame().Update(delta);
+            Launcher.getGameFrame().Update(lastGameTime/1000.0);
             
             //repaint
             Launcher.getGameFrame().repaint();
             
             try {
                 long gameTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
+                lastGameTime = gameTime;
                 Thread.sleep(gameTime);
             } catch (Exception e) {
             }
         }   //End of loop
+        
     }
+    
+    public void pause(){
+        pause = true;
+    }
+    
+    public void unpause(){
+        pause = false;
+    }
+    
+    
 }
