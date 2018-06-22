@@ -14,7 +14,6 @@ public class GameThread extends Thread{
     final int REFRESH_RATE;
     
     boolean running = true;
-    boolean pause = false;
     
     public GameThread(int fps){
         REFRESH_RATE = fps;
@@ -45,14 +44,4 @@ public class GameThread extends Thread{
         }   //End of loop
         
     }
-    
-    public void pause(){
-        pause = true;
-    }
-    
-    public void unpause(){
-        pause = false;
-    }
-    
-    
 }

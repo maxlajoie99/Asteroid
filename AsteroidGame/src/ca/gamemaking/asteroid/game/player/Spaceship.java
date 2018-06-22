@@ -3,6 +3,8 @@
  */
 package ca.gamemaking.asteroid.game.player;
 
+import ca.gamemaking.asteroid.Launcher;
+import ca.gamemaking.asteroid.game.missile.Missile;
 import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -27,6 +29,9 @@ public class Spaceship {
     
     double rotation = 90.0;
     final double ROTATION_SPEED = 210;
+    
+    final double SHOT_DELAY = 0.5;
+    double delay = SHOT_DELAY;
     
     int nbPointsShape = 4;
     Point2D.Double[] shape;
@@ -122,7 +127,7 @@ public class Spaceship {
         return (x * Math.sin(Math.toRadians(angle))) + (y * Math.cos(Math.toRadians(angle)));
     }
     
-    public void Move(double delta, HashSet<Integer> inputs){
+    public void Update(double delta, HashSet<Integer> inputs){
         if (inputs.contains(Settings.CONTROLS.getFORWARD())){
             forward = true;
             current_speed += SPEED_INCREMENT * delta;
@@ -148,6 +153,16 @@ public class Spaceship {
         
         direction.x = Math.cos(Math.toRadians(rotation));
         direction.y = Math.sin(Math.toRadians(rotation));
+        
+        delay += delta;
+        if (inputs.contains(Settings.CONTROLS.getSHOOT())){
+            if (delay >= SHOT_DELAY)
+            {
+                //shoot
+                Launcher.getGameFrame().missiles.add(new Missile(position.x, position.y, direction.x, direction.y, Settings.SCALE * 24, rotation));
+                delay = 0.0;
+            }
+        }
         
         position.setLocation(position.x + (direction.x * (current_speed * delta)), position.y + (direction.y * (current_speed * delta)));
     }

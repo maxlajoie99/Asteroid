@@ -3,6 +3,7 @@
  */
 package ca.gamemaking.asteroid.game;
 
+import ca.gamemaking.asteroid.game.missile.Missile;
 import ca.gamemaking.asteroid.game.player.Spaceship;
 import ca.gamemaking.asteroid.graphics.images.ImageLoader;
 import ca.gamemaking.asteroid.music.MusicLoader;
@@ -21,7 +22,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -54,6 +58,7 @@ public class GameFrame extends JFrame {
     
     GameThread gamethread;
     public Spaceship player;
+    public List<Missile> missiles;
     private HashSet<Integer> keyPressed;
     
     public GameFrame() {
@@ -216,6 +221,14 @@ public class GameFrame extends JFrame {
         if (player != null)
             player.paint((Graphics2D)bg);
         
+        if (missiles != null){
+            //Clone the list and iterate over
+            List<Missile> missilesCopy = new ArrayList<>(missiles);
+            missilesCopy.forEach((m) -> {
+                m.paint((Graphics2D)bg);
+            });
+        }
+            
         
         
         g.drawImage(buffer, 0, 0, null);
@@ -223,7 +236,14 @@ public class GameFrame extends JFrame {
     }
     
     public void Update(double deltaTime){
-        player.Move(deltaTime, keyPressed);
+        player.Update(deltaTime, keyPressed);
+        
+        //Clone the list and iterate over it
+        List<Missile> missilesCopy = new ArrayList<>(missiles);
+        missilesCopy.forEach((m) -> {
+            m.Update(deltaTime);
+        });
+        
         
     }
 
@@ -267,6 +287,7 @@ public class GameFrame extends JFrame {
         
     private void StartGame(){
         player = new Spaceship();
+        missiles = new LinkedList<>();
         
         gameStarted = true;
         gamethread.start();
