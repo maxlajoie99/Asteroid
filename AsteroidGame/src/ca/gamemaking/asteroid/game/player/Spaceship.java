@@ -22,11 +22,11 @@ public class Spaceship {
     Point2D.Double direction;
     
     final double MAX_SPEED = 500.0;
-    final double SPEED_INCREMENT = 35;
+    final double SPEED_INCREMENT = 350.0;
     double current_speed = 0.0;
     
     double rotation = 90.0;
-    final double ROTATION_SPEED = 180;//3.5;
+    final double ROTATION_SPEED = 210;
     
     int nbPointsShape = 4;
     Point2D.Double[] shape;
@@ -125,13 +125,13 @@ public class Spaceship {
     public void Move(double delta, HashSet<Integer> inputs){
         if (inputs.contains(Settings.CONTROLS.getFORWARD())){
             forward = true;
-            current_speed += SPEED_INCREMENT;
+            current_speed += SPEED_INCREMENT * delta;
             if (current_speed >= MAX_SPEED)
                 current_speed = MAX_SPEED;
         }
         else{
             forward = false;
-            current_speed -= SPEED_INCREMENT/2;
+            current_speed -= SPEED_INCREMENT * delta;
             if (current_speed <= 0)
                 current_speed = 0;
         }
