@@ -20,19 +20,22 @@ public class Missile {
     final double TTL = 5.0;
     double aliveTime = 0.0;
     
-    double speed = 650;
+    double speed = 675;
     
     double angle;
     
     Point2D.Double position;
     Point2D.Double direction;
     
-    int nbPoints = 3;
+    int nbPoints = 5;
     Point2D.Double[] shape;
     
-    public Missile(double posX, double posY, double dirX, double dirY, double offset, double angle){
-        position = new Point2D.Double(posX + dirX*offset, posY + dirY * offset);
-        direction = new Point2D.Double(dirX, dirY);
+    public Missile(double posX, double posY, double offset, double angle){
+        direction = new Point2D.Double();
+        direction.x = Math.cos(Math.toRadians(angle));
+        direction.y = Math.sin(Math.toRadians(angle));
+        position = new Point2D.Double(posX + direction.x * offset, posY + direction.y * offset);
+        
         this.angle = angle;
         CreateShape();
     }
@@ -41,9 +44,11 @@ public class Missile {
         shape = new Point2D.Double[nbPoints];
         
         //TODO change shape and scale it
-        shape[0] = new Point2D.Double(0, 5);
-        shape[1] = new Point2D.Double(0, -5);
-        shape[2] = new Point2D.Double(15, 0);
+        shape[0] = new Point2D.Double(0, 4 * Settings.SCALE);
+        shape[1] = new Point2D.Double(0, -4 * Settings.SCALE);
+        shape[2] = new Point2D.Double(20 * Settings.SCALE, 4 * Settings.SCALE);
+        shape[3] = new Point2D.Double(27 * Settings.SCALE, 0);
+        shape[4] = new Point2D.Double(20 * Settings.SCALE, -4 * Settings.SCALE);
     }
     
     private double RotateX(double x,double y, double angle){
