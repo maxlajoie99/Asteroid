@@ -3,6 +3,7 @@
  */
 package ca.gamemaking.asteroid.game;
 
+import ca.gamemaking.asteroid.game.asteroid.Asteroid;
 import ca.gamemaking.asteroid.game.missile.Missile;
 import ca.gamemaking.asteroid.game.player.Spaceship;
 import ca.gamemaking.asteroid.graphics.images.ImageLoader;
@@ -59,6 +60,7 @@ public class GameFrame extends JFrame {
     GameThread gamethread;
     public Spaceship player;
     public List<Missile> missiles;
+    public List<Asteroid> asteroids;
     private HashSet<Integer> keyPressed;
     
     public GameFrame() {
@@ -229,8 +231,13 @@ public class GameFrame extends JFrame {
             });
         }
             
-        
-        
+        if (asteroids != null){
+            List<Asteroid> asteroidsCopy = new ArrayList<>(asteroids);
+            asteroidsCopy.forEach((a) -> {
+                a.paint((Graphics2D)bg);
+            });
+        }
+
         g.drawImage(buffer, 0, 0, null);
         bg.dispose();
     }
@@ -244,6 +251,16 @@ public class GameFrame extends JFrame {
             m.Update(deltaTime);
         });
         
+        //Temporary way to create asteroids
+        if (keyPressed.contains(KeyEvent.VK_0)){
+            Asteroid t = new Asteroid(Settings.RESOLUTION.getX()/2, Settings.RESOLUTION.getY()/2);
+            asteroids.add(t);
+        }
+        
+        List<Asteroid> asteroidsCopy = new ArrayList<>(asteroids);
+        asteroidsCopy.forEach((a) -> {
+            a.Update(deltaTime);
+        });
         
     }
 
@@ -288,6 +305,7 @@ public class GameFrame extends JFrame {
     private void StartGame(){
         player = new Spaceship();
         missiles = new LinkedList<>();
+        asteroids = new LinkedList<>();
         
         gameStarted = true;
         gamethread.start();
