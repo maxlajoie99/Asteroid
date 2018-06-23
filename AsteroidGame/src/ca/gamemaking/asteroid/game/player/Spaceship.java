@@ -7,6 +7,7 @@ import ca.gamemaking.asteroid.Launcher;
 import ca.gamemaking.asteroid.game.asteroid.Asteroid;
 import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.settings.Settings;
+import ca.gamemaking.asteroid.sound.SoundPlayer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -158,6 +159,7 @@ public class Spaceship {
     public void Update(double delta, HashSet<Integer> inputs){
         if (inputs.contains(Settings.CONTROLS.getFORWARD())){
             forward = true;
+            SoundPlayer.Play(SoundPlayer.THRUST);
             current_speed += SPEED_INCREMENT * delta;
             if (current_speed >= MAX_SPEED)
                 current_speed = MAX_SPEED;
@@ -186,6 +188,7 @@ public class Spaceship {
         if (inputs.contains(Settings.CONTROLS.getSHOOT())){
             if (delay >= SHOT_DELAY)
             {
+                SoundPlayer.Play(SoundPlayer.SHOOT);
                 Launcher.getGameFrame().rockets.add(new Rocket(position.x, position.y, Settings.SCALE * 24, rotation));
                 delay = 0.0;
             }
@@ -215,6 +218,7 @@ public class Spaceship {
     
     public void Kill(){
         //TODO Kill player
+        SoundPlayer.Play(SoundPlayer.SPACESHIP_EXPLOSION);
         Launcher.getGameFrame().RemoveLife();
     }
     

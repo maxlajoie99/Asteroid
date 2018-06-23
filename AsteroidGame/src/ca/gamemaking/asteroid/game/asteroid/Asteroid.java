@@ -6,6 +6,7 @@ package ca.gamemaking.asteroid.game.asteroid;
 import ca.gamemaking.asteroid.Launcher;
 import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.settings.Settings;
+import ca.gamemaking.asteroid.sound.SoundPlayer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -179,7 +180,8 @@ public class Asteroid {
             if(!a1.isEmpty())
             {
                 //TODO Animate this shit
-                //TODO Split asteroid?
+                //TODO Split asteroid?    
+                SoundPlayer.Play(SoundPlayer.ASTEROID_EXPLOSION);
                 m.Destroy();
                 this.Destroy();
             }
