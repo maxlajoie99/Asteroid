@@ -9,11 +9,13 @@ import ca.gamemaking.asteroid.settings.Settings;
 import ca.gamemaking.asteroid.sound.SoundPlayer;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
+import javax.swing.JPanel;
 
 /**
  *
@@ -179,7 +181,6 @@ public class Asteroid {
 
             if(!a1.isEmpty())
             {
-                //TODO Animate this shit
                 //TODO Split asteroid?    
                 SoundPlayer.Play(SoundPlayer.ASTEROID_EXPLOSION);
                 m.Destroy();
@@ -193,6 +194,7 @@ public class Asteroid {
     }
     
     public void Destroy(){
+        Launcher.getGameFrame().explosions.add(new Explosion(position.x, position.y));
         Launcher.getGameFrame().asteroids.remove(this);
     }
     

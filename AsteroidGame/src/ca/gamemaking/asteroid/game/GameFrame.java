@@ -4,6 +4,7 @@
 package ca.gamemaking.asteroid.game;
 
 import ca.gamemaking.asteroid.game.asteroid.Asteroid;
+import ca.gamemaking.asteroid.game.asteroid.Explosion;
 import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.game.player.Spaceship;
 import ca.gamemaking.asteroid.graphics.images.ImageLoader;
@@ -64,6 +65,7 @@ public class GameFrame extends JFrame {
     public Spaceship player;
     public List<Rocket> rockets;
     public List<Asteroid> asteroids;
+    public List<Explosion> explosions;
     private HashSet<Integer> keyPressed;
     
     int playerLives = 0;
@@ -245,6 +247,13 @@ public class GameFrame extends JFrame {
             });
         }
         
+        if (explosions != null){
+            List<Explosion> explosionsCopy = new ArrayList<>(explosions);
+            explosionsCopy.forEach((e) -> {
+                e.paint((Graphics2D)bg);
+            });
+        }
+        
         if (gameStarted){
             bg.setFont(new Font(bg.getFont().getFamily(), Font.BOLD, (int)(35 * Settings.SCALE)));
             int x = Settings.RESOLUTION.getX() - (int)(100 * Settings.SCALE);
@@ -280,6 +289,11 @@ public class GameFrame extends JFrame {
             rocketsCopy.forEach((m) -> {
                 a.RocketCollision(m);
             });
+        });
+        
+        List<Explosion> explosionsCopy = new ArrayList<>(explosions);
+        explosionsCopy.forEach((e) -> {
+            e.Update(deltaTime);
         });
         
         player.AsteroidCollision(asteroidsCopy);
@@ -329,6 +343,7 @@ public class GameFrame extends JFrame {
         player = new Spaceship();
         rockets = new LinkedList<>();
         asteroids = new LinkedList<>();
+        explosions = new LinkedList<>();
         
         //TODO Create asteroids on start
         
