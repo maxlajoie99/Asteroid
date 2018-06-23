@@ -4,7 +4,7 @@
 package ca.gamemaking.asteroid.game;
 
 import ca.gamemaking.asteroid.game.asteroid.Asteroid;
-import ca.gamemaking.asteroid.game.missile.Missile;
+import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.game.player.Spaceship;
 import ca.gamemaking.asteroid.graphics.images.ImageLoader;
 import ca.gamemaking.asteroid.music.MusicLoader;
@@ -62,7 +62,7 @@ public class GameFrame extends JFrame {
     
     GameThread gamethread;
     public Spaceship player;
-    public List<Missile> missiles;
+    public List<Rocket> rockets;
     public List<Asteroid> asteroids;
     private HashSet<Integer> keyPressed;
     
@@ -230,10 +230,10 @@ public class GameFrame extends JFrame {
         if (player != null)
             player.paint((Graphics2D)bg);
         
-        if (missiles != null){
+        if (rockets != null){
             //Clone the list and iterate over
-            List<Missile> missilesCopy = new ArrayList<>(missiles);
-            missilesCopy.forEach((m) -> {
+            List<Rocket> rocketsCopy = new ArrayList<>(rockets);
+            rocketsCopy.forEach((m) -> {
                 m.paint((Graphics2D)bg);
             });
         }
@@ -262,8 +262,8 @@ public class GameFrame extends JFrame {
         player.Update(deltaTime, keyPressed);
         
         //Clone the list and iterate over it
-        List<Missile> missilesCopy = new ArrayList<>(missiles);
-        missilesCopy.forEach((m) -> {
+        List<Rocket> rocketsCopy = new ArrayList<>(rockets);
+        rocketsCopy.forEach((m) -> {
             m.Update(deltaTime);
         });
         
@@ -277,8 +277,8 @@ public class GameFrame extends JFrame {
         asteroidsCopy.forEach((a) -> {
             a.Update(deltaTime);
             //Detect collision with missiles
-            missilesCopy.forEach((m) -> {
-                a.MissileCollision(m);
+            rocketsCopy.forEach((m) -> {
+                a.RocketCollision(m);
             });
         });
         
@@ -327,7 +327,7 @@ public class GameFrame extends JFrame {
     private void StartGame(){
         playerLives = Settings.DEFAULT_NB_LIVES;
         player = new Spaceship();
-        missiles = new LinkedList<>();
+        rockets = new LinkedList<>();
         asteroids = new LinkedList<>();
         
         //TODO Create asteroids on start

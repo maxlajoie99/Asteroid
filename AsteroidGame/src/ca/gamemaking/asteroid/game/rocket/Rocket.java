@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 © Maxime Lajoie - Tous droits réservés
  */
-package ca.gamemaking.asteroid.game.missile;
+package ca.gamemaking.asteroid.game.rocket;
 
 import ca.gamemaking.asteroid.Launcher;
 import ca.gamemaking.asteroid.settings.Settings;
@@ -16,7 +16,7 @@ import java.awt.geom.Point2D;
  *
  * @author Maxime Lajoie
  */
-public class Missile {
+public class Rocket {
     
     final double TTL = 1.75;
     double aliveTime = 0.0;
@@ -32,7 +32,7 @@ public class Missile {
     int nbPoints = 5;
     Point2D.Double[] shape;
     
-    public Missile(double posX, double posY, double offset, double angle){
+    public Rocket(double posX, double posY, double offset, double angle){
         direction = new Point2D.Double();
         direction.x = Math.cos(Math.toRadians(angle));
         direction.y = Math.sin(Math.toRadians(angle));
@@ -115,7 +115,7 @@ public class Missile {
     }
     
     public void Destroy(){
-        Launcher.getGameFrame().missiles.remove(this);
+        Launcher.getGameFrame().rockets.remove(this);
     }
     
     public Area GetArea(){

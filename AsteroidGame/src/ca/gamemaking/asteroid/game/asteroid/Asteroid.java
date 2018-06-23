@@ -4,7 +4,7 @@
 package ca.gamemaking.asteroid.game.asteroid;
 
 import ca.gamemaking.asteroid.Launcher;
-import ca.gamemaking.asteroid.game.missile.Missile;
+import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -171,7 +171,7 @@ public class Asteroid {
         Teleportation();
     }
     
-    public void MissileCollision(Missile m){
+    public void RocketCollision(Rocket m){
         if (m.GetArea() != null && a != null){
             Area a1 = new Area(a);
             a1.intersect(new Area(m.GetArea()));

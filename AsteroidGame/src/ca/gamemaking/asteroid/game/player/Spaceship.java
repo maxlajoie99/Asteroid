@@ -5,7 +5,7 @@ package ca.gamemaking.asteroid.game.player;
 
 import ca.gamemaking.asteroid.Launcher;
 import ca.gamemaking.asteroid.game.asteroid.Asteroid;
-import ca.gamemaking.asteroid.game.missile.Missile;
+import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -186,7 +186,7 @@ public class Spaceship {
         if (inputs.contains(Settings.CONTROLS.getSHOOT())){
             if (delay >= SHOT_DELAY)
             {
-                Launcher.getGameFrame().missiles.add(new Missile(position.x, position.y, Settings.SCALE * 24, rotation));
+                Launcher.getGameFrame().rockets.add(new Rocket(position.x, position.y, Settings.SCALE * 24, rotation));
                 delay = 0.0;
             }
         }
