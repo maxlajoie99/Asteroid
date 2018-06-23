@@ -63,6 +63,8 @@ public class GameFrame extends JFrame {
     public List<Asteroid> asteroids;
     private HashSet<Integer> keyPressed;
     
+    int playerLives = 0;
+    
     public GameFrame() {
         initComponents();
         
@@ -237,6 +239,15 @@ public class GameFrame extends JFrame {
                 a.paint((Graphics2D)bg);
             });
         }
+        
+        if (gameStarted){
+            bg.setFont(new Font(bg.getFont().getFamily(), Font.BOLD, (int)(35 * Settings.SCALE)));
+            int x = Settings.RESOLUTION.getX() - (int)(100 * Settings.SCALE);
+            int y = (int)(100 * Settings.SCALE);
+            bg.drawString(String.format("%02d", playerLives), x, y);
+            
+            //TODO Points system drawing here
+        }
 
         g.drawImage(buffer, 0, 0, null);
         bg.dispose();
@@ -309,6 +320,7 @@ public class GameFrame extends JFrame {
     }
         
     private void StartGame(){
+        playerLives = Settings.DEFAULT_NB_LIVES;
         player = new Spaceship();
         missiles = new LinkedList<>();
         asteroids = new LinkedList<>();
@@ -319,6 +331,8 @@ public class GameFrame extends JFrame {
         gamethread.start();
         this.requestFocus();
     }
+    
+    public void RemoveLife(){ playerLives--; }
     
     /*private void EndGame(){
         initUI();

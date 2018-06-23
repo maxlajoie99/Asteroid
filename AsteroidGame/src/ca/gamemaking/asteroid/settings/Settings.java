@@ -24,6 +24,7 @@ public class Settings {
     
     public static  int TARGET_FPS = 60;
     public static float SCALE;
+    public static int DEFAULT_NB_LIVES = 5;
     
     public static Controls CONTROLS;
 }

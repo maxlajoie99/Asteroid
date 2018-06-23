@@ -193,6 +193,7 @@ public class Spaceship {
     
     public void Kill(){
         //TODO Kill player
+        Launcher.getGameFrame().RemoveLife();
     }
     
 }
