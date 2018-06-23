@@ -186,7 +186,6 @@ public class Spaceship {
         if (inputs.contains(Settings.CONTROLS.getSHOOT())){
             if (delay >= SHOT_DELAY)
             {
-                //shoot
                 Launcher.getGameFrame().missiles.add(new Missile(position.x, position.y, Settings.SCALE * 24, rotation));
                 delay = 0.0;
             }

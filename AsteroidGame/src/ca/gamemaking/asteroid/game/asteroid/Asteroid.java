@@ -120,6 +120,28 @@ public class Asteroid {
         return (x * Math.sin(Math.toRadians(angle))) + (y * Math.cos(Math.toRadians(angle)));
     }
     
+    private void Teleportation(){
+        
+        int offset = a != null ? Math.min(a.getBounds().width, a.getBounds().height): (int)(24 * Settings.SCALE);
+        
+        int minX = Launcher.getGameFrame().is.left - offset;
+        int maxX = Settings.RESOLUTION.getX() - Launcher.getGameFrame().is.right + offset;
+        
+        int minY = Launcher.getGameFrame().is.top - offset;
+        int maxY = Settings.RESOLUTION.getY() - Launcher.getGameFrame().is.bottom + offset;
+        
+        if (position.x > maxX)
+            position.x = minX;
+        if (position.x < minX)
+            position.x = maxX;
+        
+        if (position.y > maxY)
+            position.y = minY;
+        if (position.y < minY)
+            position.y = maxY;
+        
+    }
+    
     public void paint(Graphics2D g2d){
         g2d.setColor(Color.WHITE);
         g2d.setStroke(new BasicStroke(1 * Settings.SCALE));
@@ -146,6 +168,7 @@ public class Asteroid {
         angle += angleSpeed * delta;
         
         position.setLocation(position.x + (direction.x * (speed * delta)), position.y + (direction.y * (speed * delta)));
+        Teleportation();
     }
     
     public void MissileCollision(Missile m){

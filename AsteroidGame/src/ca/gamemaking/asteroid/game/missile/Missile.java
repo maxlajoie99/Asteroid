@@ -18,10 +18,10 @@ import java.awt.geom.Point2D;
  */
 public class Missile {
     
-    final double TTL = 5.0;
+    final double TTL = 1.75;
     double aliveTime = 0.0;
     
-    double speed = 675;
+    double speed = 625;
     
     double angle;
     
@@ -61,6 +61,28 @@ public class Missile {
         return (x * Math.sin(Math.toRadians(angle))) + (y * Math.cos(Math.toRadians(angle)));
     }
     
+    private void Teleportation(){
+        
+        int offset = (int)(27 * Settings.SCALE);
+        
+        int minX = Launcher.getGameFrame().is.left - offset;
+        int maxX = Settings.RESOLUTION.getX() - Launcher.getGameFrame().is.right + offset;
+        
+        int minY = Launcher.getGameFrame().is.top - offset;
+        int maxY = Settings.RESOLUTION.getY() - Launcher.getGameFrame().is.bottom + offset;
+        
+        if (position.x > maxX)
+            position.x = minX;
+        if (position.x < minX)
+            position.x = maxX;
+        
+        if (position.y > maxY)
+            position.y = minY;
+        if (position.y < minY)
+            position.y = maxY;
+        
+    }
+    
     public void paint(Graphics2D g2d){
         g2d.setColor(Color.WHITE);
         g2d.setStroke(new BasicStroke(1 * Settings.SCALE));
@@ -89,6 +111,7 @@ public class Missile {
             Destroy();
         
         position.setLocation(position.x + (direction.x * (speed * delta)), position.y + (direction.y * (speed * delta)));
+        Teleportation();
     }
     
     public void Destroy(){
