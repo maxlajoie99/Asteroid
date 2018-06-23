@@ -71,6 +71,8 @@ public class SoundPlayer {
                 shoot.start();
                 break;
             case THRUST:
+                if (thrust.isRunning())
+                    break;
                 thrust.setFramePosition(0);
                 thrust.start();
                 break;
