@@ -260,7 +260,13 @@ public class GameFrame extends JFrame {
         List<Asteroid> asteroidsCopy = new ArrayList<>(asteroids);
         asteroidsCopy.forEach((a) -> {
             a.Update(deltaTime);
+            //Detect collision with missiles
+            missilesCopy.forEach((m) -> {
+                a.MissileCollision(m);
+            });
         });
+        
+        player.AsteroidCollision(asteroidsCopy);
         
     }
 
@@ -306,6 +312,8 @@ public class GameFrame extends JFrame {
         player = new Spaceship();
         missiles = new LinkedList<>();
         asteroids = new LinkedList<>();
+        
+        //TODO Create asteroids on start
         
         gameStarted = true;
         gamethread.start();

@@ -8,6 +8,7 @@ import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
@@ -26,6 +27,7 @@ public class Missile {
     
     Point2D.Double position;
     Point2D.Double direction;
+    Area a;
     
     int nbPoints = 5;
     Point2D.Double[] shape;
@@ -76,15 +78,25 @@ public class Missile {
         }
         path.closePath();
         
-        g2d.draw(path);
+        a = new Area(path);
+        
+        g2d.draw(a);
     }
     
     public void Update(double delta){
         aliveTime += delta;
         if (aliveTime >= TTL)
-            Launcher.getGameFrame().missiles.remove(this);
+            Destroy();
         
         position.setLocation(position.x + (direction.x * (speed * delta)), position.y + (direction.y * (speed * delta)));
+    }
+    
+    public void Destroy(){
+        Launcher.getGameFrame().missiles.remove(this);
+    }
+    
+    public Area GetArea(){
+        return a;
     }
     
 }

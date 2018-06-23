@@ -3,10 +3,13 @@
  */
 package ca.gamemaking.asteroid.game.asteroid;
 
+import ca.gamemaking.asteroid.Launcher;
+import ca.gamemaking.asteroid.game.missile.Missile;
 import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -21,6 +24,7 @@ public class Asteroid {
     Point2D.Double direction;
     
     Point2D.Double[] shape;
+    Area a = null;
     
     double speed = 50;
     int min_speed = 50;
@@ -103,6 +107,9 @@ public class Asteroid {
                 shape[6] = new Point2D.Double(-48 * Settings.SCALE, 48 * Settings.SCALE);
                 break;
         }
+        
+        
+        
     }
     
     private double RotateX(double x,double y, double angle){
@@ -130,13 +137,38 @@ public class Asteroid {
         }
         path.closePath();
         
-        g2d.draw(path);
+        a = new Area(path);
+        
+        g2d.draw(a);
     }
     
     public void Update(double delta){
         angle += angleSpeed * delta;
         
         position.setLocation(position.x + (direction.x * (speed * delta)), position.y + (direction.y * (speed * delta)));
+    }
+    
+    public void MissileCollision(Missile m){
+        if (m.GetArea() != null && a != null){
+            Area a1 = new Area(a);
+            a1.intersect(new Area(m.GetArea()));
+
+            if(!a1.isEmpty())
+            {
+                //TODO Animate this shit
+                //TODO Split asteroid?
+                m.Destroy();
+                this.Destroy();
+            }
+        }
+    }
+    
+    public Area GetArea(){
+        return a;
+    }
+    
+    public void Destroy(){
+        Launcher.getGameFrame().asteroids.remove(this);
     }
     
 }

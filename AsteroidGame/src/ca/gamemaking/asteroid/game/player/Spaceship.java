@@ -4,15 +4,18 @@
 package ca.gamemaking.asteroid.game.player;
 
 import ca.gamemaking.asteroid.Launcher;
+import ca.gamemaking.asteroid.game.asteroid.Asteroid;
 import ca.gamemaking.asteroid.game.missile.Missile;
 import ca.gamemaking.asteroid.settings.Settings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  *
@@ -22,6 +25,7 @@ public class Spaceship {
     
     Point2D.Double position;
     Point2D.Double direction;
+    Area a;
     
     final double MAX_SPEED = 500.0;
     final double SPEED_INCREMENT = 350.0;
@@ -98,7 +102,9 @@ public class Spaceship {
         }
         path.closePath();
         
-        g2d.draw(path);
+        a = new Area(path);
+        
+        g2d.draw(a);
         
         if(forward){
             //Draw little fire
@@ -166,4 +172,27 @@ public class Spaceship {
         
         position.setLocation(position.x + (direction.x * (current_speed * delta)), position.y + (direction.y * (current_speed * delta)));
     }
+    
+    public void AsteroidCollision(List<Asteroid> ars){
+        for (Asteroid ar : ars){
+            if (ar.GetArea() != null && a != null){
+                Area a1 = new Area(a);
+                a1.intersect(new Area(ar.GetArea()));
+
+                if(!a1.isEmpty())
+                {
+                    //TODO Animate this shit
+                    //TODO Split asteroid?
+                    ar.Destroy();
+                    this.Kill();
+                    break;
+                }
+            }
+        }
+    }
+    
+    public void Kill(){
+        //TODO Kill player
+    }
+    
 }
