@@ -220,6 +220,7 @@ public class Spaceship {
         //TODO Kill player
         SoundPlayer.Play(SoundPlayer.SPACESHIP_EXPLOSION);
         Launcher.getGameFrame().RemoveLife();
+        Launcher.getGameFrame().player = new Spaceship();   //TODO Maybe change that?
     }
     
 }
