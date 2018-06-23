@@ -25,6 +25,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -69,6 +71,7 @@ public class GameFrame extends JFrame {
     private HashSet<Integer> keyPressed;
     
     int playerLives = 0;
+    long points = 0;
     
     public GameFrame() {
         initComponents();
@@ -260,7 +263,13 @@ public class GameFrame extends JFrame {
             int y = (int)(100 * Settings.SCALE);
             bg.drawString(String.format("%02d", playerLives), x, y);
             
-            //TODO Points system drawing here
+            bg.setFont(new Font(bg.getFont().getFamily(), Font.BOLD, (int)(25 * Settings.SCALE)));
+            x = Settings.RESOLUTION.getX()/2 - (int)(115*Settings.SCALE);
+            y = (int)(75 * Settings.SCALE);
+            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            dfs.setGroupingSeparator(' ');
+            DecimalFormat df = new DecimalFormat("000,000,000,000", dfs);
+            bg.drawString(df.format(points), x, y);
         }
 
         g.drawImage(buffer, 0, 0, null);
