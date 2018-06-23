@@ -133,6 +133,28 @@ public class Spaceship {
         return (x * Math.sin(Math.toRadians(angle))) + (y * Math.cos(Math.toRadians(angle)));
     }
     
+    private void Teleportation(){
+        
+        int offset = (int)(24 * Settings.SCALE);
+        
+        int minX = Launcher.getGameFrame().is.left - offset;
+        int maxX = Settings.RESOLUTION.getX() - Launcher.getGameFrame().is.right + offset;
+        
+        int minY = Launcher.getGameFrame().is.top - offset;
+        int maxY = Settings.RESOLUTION.getY() - Launcher.getGameFrame().is.bottom + offset;
+        
+        if (position.x > maxX)
+            position.x = minX;
+        if (position.x < minX)
+            position.x = maxX;
+        
+        if (position.y > maxY)
+            position.y = minY;
+        if (position.y < minY)
+            position.y = maxY;
+        
+    }
+    
     public void Update(double delta, HashSet<Integer> inputs){
         if (inputs.contains(Settings.CONTROLS.getFORWARD())){
             forward = true;
@@ -171,6 +193,7 @@ public class Spaceship {
         }
         
         position.setLocation(position.x + (direction.x * (current_speed * delta)), position.y + (direction.y * (current_speed * delta)));
+        Teleportation();
     }
     
     public void AsteroidCollision(List<Asteroid> ars){

@@ -17,6 +17,7 @@ import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +47,8 @@ public class GameFrame extends JFrame {
     JPanel background;
     Point[] stars;
     
+    public Insets is;
+    
     JButton btnStart;
     JButton btnSettings;
     JButton btnExit;
@@ -67,6 +70,8 @@ public class GameFrame extends JFrame {
     
     public GameFrame() {
         initComponents();
+        
+        is = this.getInsets();
         
         rnd = new Random();
         Settings.SCALE = Settings.RESOLUTION.getX()/1280f;
@@ -176,8 +181,8 @@ public class GameFrame extends JFrame {
         int creditsHeight = (int)(25*Settings.SCALE);
         int offsetCredits = (int)(5*Settings.SCALE);
         btnCredits = new JButton(Settings.LANGUAGE.getText("credits"));
-        btnCredits.setBounds(Settings.RESOLUTION.getX() - creditsWidth - offsetCredits - this.getInsets().right - this.getInsets().left, 
-                             Settings.RESOLUTION.getY() - creditsHeight - offsetCredits - this.getInsets().top - this.getInsets().bottom, 
+        btnCredits.setBounds(Settings.RESOLUTION.getX() - creditsWidth - offsetCredits - is.right - is.left, 
+                             Settings.RESOLUTION.getY() - creditsHeight - offsetCredits - is.top - is.bottom, 
                              creditsWidth, 
                              creditsHeight);
         btnCredits.setFont(new Font(btnCredits.getFont().getFamily(),
