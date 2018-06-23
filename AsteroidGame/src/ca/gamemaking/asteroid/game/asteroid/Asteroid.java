@@ -9,13 +9,11 @@ import ca.gamemaking.asteroid.settings.Settings;
 import ca.gamemaking.asteroid.sound.SoundPlayer;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
-import javax.swing.JPanel;
 
 /**
  *
@@ -35,6 +33,8 @@ public class Asteroid {
     
     Random rnd;
     
+    int value;
+    
     double angle = 0;
     double angleSpeed = 0;
     int min_angleSpeed = 15;
@@ -43,6 +43,9 @@ public class Asteroid {
     public Asteroid(double posX, double posY){
         position = new Point2D.Double(posX, posY);
         rnd = new Random();
+        
+        //TODO Different values for asteroids?
+        value = 100;
         
         speed = rnd.nextInt(max_speed - min_speed) + min_speed;
         angleSpeed = rnd.nextInt(max_angleSpeed - min_angleSpeed) + min_angleSpeed;
@@ -183,6 +186,7 @@ public class Asteroid {
             {
                 //TODO Split asteroid?    
                 SoundPlayer.Play(SoundPlayer.ASTEROID_EXPLOSION);
+                Launcher.getGameFrame().AddPoints(value);
                 m.Destroy();
                 this.Destroy();
             }

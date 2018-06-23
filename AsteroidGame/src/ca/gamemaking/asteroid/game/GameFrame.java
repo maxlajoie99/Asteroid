@@ -72,6 +72,7 @@ public class GameFrame extends JFrame {
     
     int playerLives = 0;
     long points = 0;
+    int pointsSinceLastLife = 0;
     
     public GameFrame() {
         initComponents();
@@ -354,6 +355,9 @@ public class GameFrame extends JFrame {
         asteroids = new LinkedList<>();
         explosions = new LinkedList<>();
         
+        points = 0;
+        pointsSinceLastLife = 0;
+        
         //TODO Create asteroids on start
         
         gameStarted = true;
@@ -361,11 +365,24 @@ public class GameFrame extends JFrame {
         this.requestFocus();
     }
     
-    public void RemoveLife(){ playerLives--; }
+    public void RemoveLife(){ 
+        playerLives--; 
+        if (playerLives < 0)
+            System.out.println("End game now"); //TODO End game here
+    }
     
     /*private void EndGame(){
         initUI();
     }*/
+    
+    public void AddPoints(int nb){
+        points += nb;
+        pointsSinceLastLife += nb;
+        if (pointsSinceLastLife >= Settings.DEFAULT_NB_POINTS_FOR_NEW_LIFE){
+            playerLives++;
+            pointsSinceLastLife -= Settings.DEFAULT_NB_POINTS_FOR_NEW_LIFE;
+        }
+    }
     
     private void ShowSettings(){
         SettingsFrame sd = new SettingsFrame(this, Settings.LANGUAGE.getText("settings"));

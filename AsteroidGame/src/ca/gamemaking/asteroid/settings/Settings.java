@@ -24,7 +24,9 @@ public class Settings {
     
     public static  int TARGET_FPS = 60;
     public static float SCALE;
+    
     public static int DEFAULT_NB_LIVES = 5;
+    public static int DEFAULT_NB_POINTS_FOR_NEW_LIFE = 10000;
     
     public static Controls CONTROLS;
 }
