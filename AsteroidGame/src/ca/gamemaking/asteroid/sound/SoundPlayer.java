@@ -18,6 +18,7 @@ public class SoundPlayer {
     public final static String THRUST = "Sound_Thrust.wav";
     public final static String ASTEROID_EXPLOSION = "Sound_AsteroidExplosion.wav";
     public final static String SPACESHIP_EXPLOSION = "Sound_SpaceShipExplosion.wav";
+    public final static String EXTRA_LIFE = "Sound_ExtraLife.wav";
     
     static Clip shoot;
     static{
@@ -63,6 +64,17 @@ public class SoundPlayer {
         }
     }
     
+    static Clip extraLife;
+    static{
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(SoundPlayer.class.getResourceAsStream(EXTRA_LIFE));
+            extraLife = AudioSystem.getClip();
+            extraLife.open(audioStream);
+            setVolume(extraLife, 1.0f);
+        } catch (Exception e) {
+        }
+    }
+    
     public static void Play(String soundName){
         
         switch(soundName){
@@ -87,6 +99,10 @@ public class SoundPlayer {
                 explosionS.flush();
                 explosionS.setFramePosition(0);
                 explosionS.start();
+                break;
+            case EXTRA_LIFE:
+                extraLife.setFramePosition(0);
+                extraLife.start();
                 break;
         }
     }

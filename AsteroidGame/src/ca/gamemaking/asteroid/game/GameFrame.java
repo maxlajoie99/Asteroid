@@ -12,6 +12,7 @@ import ca.gamemaking.asteroid.music.MusicLoader;
 import ca.gamemaking.asteroid.settings.Settings;
 import javax.swing.JFrame;
 import ca.gamemaking.asteroid.settings.SettingsFrame;
+import ca.gamemaking.asteroid.sound.SoundPlayer;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -387,6 +388,7 @@ public class GameFrame extends JFrame {
         if (pointsSinceLastLife >= Settings.DEFAULT_NB_POINTS_FOR_NEW_LIFE){
             playerLives++;
             pointsSinceLastLife -= Settings.DEFAULT_NB_POINTS_FOR_NEW_LIFE;
+            SoundPlayer.Play(SoundPlayer.EXTRA_LIFE);
         }
     }
     
