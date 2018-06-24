@@ -44,4 +44,8 @@ public class GameThread extends Thread{
         }   //End of loop
         
     }
+    
+    public void stopThread(){
+        running = false;
+    }
 }

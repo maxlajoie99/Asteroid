@@ -84,8 +84,6 @@ public class GameFrame extends JFrame {
         
         CreateStars();
         
-        gamethread = new GameThread(Settings.TARGET_FPS);
-        
         initUI();
         
         initFrameListeners();
@@ -233,32 +231,32 @@ public class GameFrame extends JFrame {
         
         super.paint(bg);
         
-        if (player != null)
-            player.paint((Graphics2D)bg);
-        
-        if (rockets != null){
-            //Clone the list and iterate over
-            List<Rocket> rocketsCopy = new ArrayList<>(rockets);
-            rocketsCopy.forEach((m) -> {
-                m.paint((Graphics2D)bg);
-            });
-        }
-            
-        if (asteroids != null){
-            List<Asteroid> asteroidsCopy = new ArrayList<>(asteroids);
-            asteroidsCopy.forEach((a) -> {
-                a.paint((Graphics2D)bg);
-            });
-        }
-        
-        if (explosions != null){
-            List<Explosion> explosionsCopy = new ArrayList<>(explosions);
-            explosionsCopy.forEach((e) -> {
-                e.paint((Graphics2D)bg);
-            });
-        }
-        
         if (gameStarted){
+            if (player != null)
+                player.paint((Graphics2D)bg);
+
+            if (rockets != null){
+                //Clone the list and iterate over
+                List<Rocket> rocketsCopy = new ArrayList<>(rockets);
+                rocketsCopy.forEach((m) -> {
+                    m.paint((Graphics2D)bg);
+                });
+            }
+
+            if (asteroids != null){
+                List<Asteroid> asteroidsCopy = new ArrayList<>(asteroids);
+                asteroidsCopy.forEach((a) -> {
+                    a.paint((Graphics2D)bg);
+                });
+            }
+
+            if (explosions != null){
+                List<Explosion> explosionsCopy = new ArrayList<>(explosions);
+                explosionsCopy.forEach((e) -> {
+                    e.paint((Graphics2D)bg);
+                });
+            }
+
             bg.setFont(new Font(bg.getFont().getFamily(), Font.BOLD, (int)(35 * Settings.SCALE)));
             int x = Settings.RESOLUTION.getX() - (int)(100 * Settings.SCALE);
             int y = (int)(100 * Settings.SCALE);
@@ -361,6 +359,7 @@ public class GameFrame extends JFrame {
         //TODO Create asteroids on start
         
         gameStarted = true;
+        gamethread = new GameThread(Settings.TARGET_FPS);
         gamethread.start();
         this.requestFocus();
     }
@@ -368,12 +367,19 @@ public class GameFrame extends JFrame {
     public void RemoveLife(){ 
         playerLives--; 
         if (playerLives < 0)
-            System.out.println("End game now"); //TODO End game here
+            EndGame();
     }
     
-    /*private void EndGame(){
+    private void EndGame(){
+        
+        asteroids.clear();
+        rockets.clear();
+        explosions.clear();
+        gameStarted = false;
+        drawTitle = true;
+        gamethread.stopThread();
         initUI();
-    }*/
+    }
     
     public void AddPoints(int nb){
         points += nb;
