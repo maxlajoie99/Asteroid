@@ -13,102 +13,107 @@ import javax.sound.sampled.FloatControl;
  * @author Maxime Lajoie
  */
 public class SoundPlayer {
+    public static final String SHOOT = "Sound_Shooting.wav";
+    public static final String THRUST = "Sound_Thrust.wav";
+    public static final String ASTEROID_EXPLOSION = "Sound_AsteroidExplosion.wav";
+    public static final String SPACESHIP_EXPLOSION = "Sound_SpaceShipExplosion.wav";
+    public static final String EXTRA_LIFE = "Sound_ExtraLife.wav";
     
-    public final static String SHOOT = "Sound_Shooting.wav";
-    public final static String THRUST = "Sound_Thrust.wav";
-    public final static String ASTEROID_EXPLOSION = "Sound_AsteroidExplosion.wav";
-    public final static String SPACESHIP_EXPLOSION = "Sound_SpaceShipExplosion.wav";
-    public final static String EXTRA_LIFE = "Sound_ExtraLife.wav";
-    
-    static Clip shoot;
-    static{
+    private static Clip SHOOT_CLIP;
+    static {
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(SoundPlayer.class.getResourceAsStream(SHOOT));
-            shoot = AudioSystem.getClip();
-            shoot.open(audioStream);
-            setVolume(shoot, 0.85f);
+            SHOOT_CLIP = AudioSystem.getClip();
+            SHOOT_CLIP.open(audioStream);
+            SetVolume(SHOOT_CLIP, 0.85f);
         } catch (Exception e) {
+            System.out.println("There was an error loading " + SHOOT);
         }
     }
     
-    static Clip thrust;
-    static{
+    private static Clip THRUSTER_CLIP;
+    static {
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(SoundPlayer.class.getResourceAsStream(THRUST));
-            thrust = AudioSystem.getClip();
-            thrust.open(audioStream);
-            setVolume(thrust, 1.00f);
+            THRUSTER_CLIP = AudioSystem.getClip();
+            THRUSTER_CLIP.open(audioStream);
+            SetVolume(THRUSTER_CLIP, 1.00f);
         } catch (Exception e) {
+            System.out.println("There was an error loading " + THRUST);
         }
     }
     
-    static Clip explosionA;
-    static{
+    private static Clip EXPLOSION_ASTEROID_CLIP;
+    static {
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(SoundPlayer.class.getResourceAsStream(ASTEROID_EXPLOSION));
-            explosionA = AudioSystem.getClip();
-            explosionA.open(audioStream);
-            setVolume(explosionA, 0.9f);
+            EXPLOSION_ASTEROID_CLIP = AudioSystem.getClip();
+            EXPLOSION_ASTEROID_CLIP.open(audioStream);
+            SetVolume(EXPLOSION_ASTEROID_CLIP, 0.9f);
         } catch (Exception e) {
+            System.out.println("There was an error loading " + ASTEROID_EXPLOSION);
         }
     }
     
-    static Clip explosionS;
-    static{
+    private static Clip EXPLOSION_SHIP_CLIP;
+    static {
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(SoundPlayer.class.getResourceAsStream(SPACESHIP_EXPLOSION));
-            explosionS = AudioSystem.getClip();
-            explosionS.open(audioStream);
-            setVolume(explosionS, 0.9f);
+            EXPLOSION_SHIP_CLIP = AudioSystem.getClip();
+            EXPLOSION_SHIP_CLIP.open(audioStream);
+            SetVolume(EXPLOSION_SHIP_CLIP, 0.9f);
         } catch (Exception e) {
+            System.out.println("There was an error loading " + SPACESHIP_EXPLOSION);
         }
     }
     
-    static Clip extraLife;
-    static{
+    private static Clip EXTRA_LIFE_CLIP;
+    static {
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(SoundPlayer.class.getResourceAsStream(EXTRA_LIFE));
-            extraLife = AudioSystem.getClip();
-            extraLife.open(audioStream);
-            setVolume(extraLife, 1.0f);
+            EXTRA_LIFE_CLIP = AudioSystem.getClip();
+            EXTRA_LIFE_CLIP.open(audioStream);
+            SetVolume(EXTRA_LIFE_CLIP, 1.0f);
         } catch (Exception e) {
+            System.out.println("There was an error loading " + EXTRA_LIFE);
         }
     }
     
-    public static void Play(String soundName){
-        
-        switch(soundName){
+    public static void play(String soundName) {
+        switch(soundName) {
             case SHOOT:
-                shoot.setFramePosition(0);
-                shoot.start();
+                SHOOT_CLIP.setFramePosition(0);
+                SHOOT_CLIP.start();
                 break;
             case THRUST:
-                if (thrust.isRunning())
+                if (THRUSTER_CLIP.isRunning()) {
                     break;
-                thrust.setFramePosition(0);
-                thrust.start();
+                }
+
+                THRUSTER_CLIP.setFramePosition(0);
+                THRUSTER_CLIP.start();
                 break;
             case ASTEROID_EXPLOSION:
-                explosionA.stop();
-                explosionA.flush();
-                explosionA.setFramePosition(0);
-                explosionA.start();
+                EXPLOSION_ASTEROID_CLIP.stop();
+                EXPLOSION_ASTEROID_CLIP.flush();
+                EXPLOSION_ASTEROID_CLIP.setFramePosition(0);
+                EXPLOSION_ASTEROID_CLIP.start();
                 break;
             case SPACESHIP_EXPLOSION:
-                explosionS.stop();
-                explosionS.flush();
-                explosionS.setFramePosition(0);
-                explosionS.start();
+                EXPLOSION_SHIP_CLIP.stop();
+                EXPLOSION_SHIP_CLIP.flush();
+                EXPLOSION_SHIP_CLIP.setFramePosition(0);
+                EXPLOSION_SHIP_CLIP.start();
                 break;
             case EXTRA_LIFE:
-                extraLife.setFramePosition(0);
-                extraLife.start();
+                EXTRA_LIFE_CLIP.setFramePosition(0);
+                EXTRA_LIFE_CLIP.start();
                 break;
         }
     }
     
-    private static void setVolume(Clip audio, float scale){
-        FloatControl volume = (FloatControl)audio.getControl(FloatControl.Type.MASTER_GAIN);
+    private static void SetVolume(Clip audio, float scale){
+        FloatControl volume = (FloatControl) audio.getControl(FloatControl.Type.MASTER_GAIN);
         float range = volume.getMaximum() - volume.getMinimum();
         float gain = (range * scale) + volume.getMinimum();
         volume.setValue(gain);

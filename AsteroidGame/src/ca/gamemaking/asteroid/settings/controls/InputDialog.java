@@ -19,9 +19,9 @@ import javax.swing.JPanel;
  *
  * @author Maxime Lajoie
  */
-public class InputDialog extends JDialog{
+public class InputDialog extends JDialog {
     
-    public InputDialog(Frame f, String title, JButton sender){
+    public InputDialog(Frame f, String title, JButton sender) {
         super(f,title,true);
         
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -31,30 +31,27 @@ public class InputDialog extends JDialog{
         this.setLocationRelativeTo(f);
         this.setResizable(false);
         
-        initUI();
+        InitUI();
         
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                
-                if (SettingsFrame.tempControls.SetControl(sender.getName(), e.getKeyCode())){     
+                if (SettingsFrame.tempControls.setControl(sender.getName(), e.getKeyCode())) {
                     sender.setText(KeyEvent.getKeyText(e.getKeyCode()));
                 }
                 
                 dispose();
             }
-        }
-        );
+        });
         
         this.setVisible(true);
     }
     
-    private void initUI(){
-        
+    private void InitUI() {
         JPanel pane = new JPanel();
         
         JLabel text = new JLabel(Settings.LANGUAGE.getText("input"), JLabel.CENTER);
-        text.setFont(new Font(text.getFont().getFamily(),Font.BOLD,20));
+        text.setFont(new Font(text.getFont().getFamily(), Font.BOLD,20));
         pane.add(text);
         
         this.getContentPane().setLayout(new BorderLayout());

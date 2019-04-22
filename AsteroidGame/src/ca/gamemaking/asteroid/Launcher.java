@@ -18,36 +18,23 @@ import ca.gamemaking.asteroid.settings.controls.Controls;
  * @author Maxime Lajoie
  */
 public class Launcher {
-    
-    static GameFrame gameFrame;
-    static Lang lang;
-    static Resolution res;
-    
-    public static GameFrame getGameFrame(){
-        return gameFrame;
-    }
+    private static GameFrame gameFrame;
     
     public static void main(String[] args){
+        boolean exists = SettingsReader.read(Settings.SETTINGS_PATH);
         
-        boolean exists = SettingsReader.Read(Settings.SETTINGSPATH);
-        
-        if (!exists){
+        if (!exists) {
             ResolutionDialog resDialog = new ResolutionDialog(null, "Resolution");
-            res = resDialog.getValue();
-            res.Adjust();
-            Settings.RESOLUTION = res;
-        
+            Settings.RESOLUTION = resDialog.getValue().adjust();
+
             LangDialog lcDialog = new LangDialog(null, "Lang");
-            lang = new Lang(lcDialog.getValue());
-            Settings.LANGUAGE = lang;
+            Settings.LANGUAGE = new Lang(lcDialog.getValue());
+
+            Settings.CONTROLS = new Controls();
             
-            Controls ctrls = new Controls();
-            Settings.CONTROLS = ctrls;
-            
-            SettingsWriter.Write(Settings.SETTINGSPATH);
-        }
-        else {
-            Settings.RESOLUTION.Adjust();
+            SettingsWriter.write(Settings.SETTINGS_PATH);
+        } else {
+            Settings.RESOLUTION.adjust();
         }
         
         System.out.println(Settings.LANGUAGE.getText("launch"));
@@ -55,5 +42,8 @@ public class Launcher {
         gameFrame = new GameFrame();
         gameFrame.run();
     }
-    
+
+    public static GameFrame getGameFrame(){
+        return gameFrame;
+    }
 }

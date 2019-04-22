@@ -17,47 +17,33 @@ import javax.swing.JOptionPane;
  * @author Maxime Lajoie
  */
 public class SettingsWriter {
-    
-    public static void Write(String path){
-        
+    public static void write(String path) {
         List<String> settings = new ArrayList<>();
-        
+        settings.add(Settings.LANGUAGE.toString());
+        settings.add(Settings.RESOLUTION.toString());
+        settings.add(Settings.CONTROLS.toString());
+
+        File settingsFile = new File(path + Settings.FILENAME);
+
         try {
-            File settingsFile = new File(path + Settings.FILENAME);
-            
-            ObjectMapper objMap = new ObjectMapper();
-            
-            settings.add(Settings.LANGUAGE.toString());
-            settings.add(Settings.RESOLUTION.toString());
-            settings.add(Settings.CONTROLS.toString());
-            
-            objMap.writeValue(settingsFile, settings);
-            
+            Settings.OBJECT_MAPPER.writeValue(settingsFile, settings);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "There was an error writing the settings file");
-            e.printStackTrace();
-        }
-        
-    }
-    
-    public static void Rewrite(String path, Lang lang, Resolution res, Controls ctrls){
-        List<String> settings = new ArrayList<>();
-        
-        try {
-            File settingsFile = new File(path + Settings.FILENAME);
-            
-            ObjectMapper objMap = new ObjectMapper();
-            
-            settings.add(lang.toString());
-            settings.add(res.toString());
-            settings.add(ctrls.toString());
-            
-            objMap.writeValue(settingsFile, settings);
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "There was an error writing the settings file");
-            e.printStackTrace();
         }
     }
     
+    public static void rewrite(String path, Lang lang, Resolution res, Controls ctrls){
+        List<String> settings = new ArrayList<>();
+        settings.add(lang.toString());
+        settings.add(res.toString());
+        settings.add(ctrls.toString());
+
+        File settingsFile = new File(path + Settings.FILENAME);
+
+        try {
+            Settings.OBJECT_MAPPER.writeValue(settingsFile, settings);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "There was an error writing the settings file");
+        }
+    }
 }

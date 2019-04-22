@@ -11,22 +11,20 @@ import java.util.HashMap;
  * @author Maxime Lajoie
  */
 public class Lang {
-    
-    HashMap<String, String> fields;
+    private HashMap<String, String> fields;
     private String name;
     
-    public Lang(String name){
+    public Lang(String name) {
         this.name = name;
-        fields = LangReaderJSON.ReadFile(this.name);
+        fields = LangReaderJSON.readFile(name);
     }
     
-    public String getText(String text){
+    public String getText(String text) {
         return fields.get(text);
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         return this.name;
     }
-    
 }

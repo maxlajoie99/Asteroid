@@ -5,7 +5,6 @@ package ca.gamemaking.asteroid.graphics.json;
 
 import ca.gamemaking.asteroid.graphics.DefaultResolutions;
 import ca.gamemaking.asteroid.settings.Settings;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import javax.swing.JOptionPane;
 
@@ -14,30 +13,24 @@ import javax.swing.JOptionPane;
  * @author Maxime Lajoie
  */
 public class ResolutionWriterJSON {
+    public static final String FILENAME = "Resolutions.json";
     
-    public static String FILENAME = "Resolutions.json";
-    
-    public static void Write(String path){
-        
+    public static void write(String path) {
         try {
-            
-            File gameDir = new File(Settings.GAMEMAKINGDIR);
-            if(!gameDir.exists())
+            File gameDir = new File(Settings.GAMEMAKING_DIR);
+            if(!gameDir.exists()) {
                 gameDir.mkdir();
-            
-            File settingsDir = new File(Settings.SETTINGSDIR);
-            if(!settingsDir.exists())
+            }
+
+            File settingsDir = new File(Settings.SETTINGS_DIR);
+            if(!settingsDir.exists()) {
                 settingsDir.mkdir();
-            
-            ObjectMapper objmap = new ObjectMapper();
-            objmap.writeValue(new File(path + FILENAME), DefaultResolutions.getResolutions());
-            
+            }
+
+            Settings.OBJECT_MAPPER.writeValue(new File(path + FILENAME), DefaultResolutions.DEFAULT_RESOLUTIONS);
         } catch (Exception e) {
-            
             JOptionPane.showMessageDialog(null, "There was an error writing the resolutions file. Exiting...");
             System.exit(0);
         }
-        
     }
-    
 }

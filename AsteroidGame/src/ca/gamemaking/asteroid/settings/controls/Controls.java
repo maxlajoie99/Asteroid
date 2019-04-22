@@ -10,24 +10,23 @@ import java.awt.event.KeyEvent;
  * @author Maxime Lajoie
  */
 public class Controls {
-    
     private int FORWARD;
     private int TURN_RIGHT;
     private int TURN_LEFT;
     private int SHOOT;
     
-    public Controls(){
+    public Controls() {
         SetDefault();
     }
     
-    public Controls(Controls clone){
+    public Controls(Controls clone) {
         this.FORWARD = clone.FORWARD;
         this.TURN_LEFT = clone.TURN_LEFT;
         this.TURN_RIGHT = clone.TURN_RIGHT;
         this.SHOOT = clone.SHOOT;
     }
     
-    public Controls(int FORWARD, int TURN_RIGHT, int TURN_LEFT, int SHOOT){
+    public Controls(int FORWARD, int TURN_RIGHT, int TURN_LEFT, int SHOOT) {
         this.FORWARD = FORWARD;
         this.TURN_RIGHT = TURN_RIGHT;
         this.TURN_LEFT = TURN_LEFT;
@@ -37,12 +36,11 @@ public class Controls {
     public Controls(String controls){
         String[] subControls = controls.split(";");
         
-        if(subControls.length == 4){
-            for(String control : subControls){
+        if(subControls.length == 4) {
+            for(String control : subControls) {
                 String[] subControl = control.split(":");
-                if (subControl.length == 2){
-                    switch (subControl[0])
-                    {
+                if (subControl.length == 2) {
+                    switch (subControl[0]) {
                         case "FORWARD":
                             FORWARD = Integer.parseInt(subControl[1]);
                             break;
@@ -56,12 +54,12 @@ public class Controls {
                             SHOOT = Integer.parseInt(subControl[1]);
                             break;
                         default:
-                            System.out.println("Not a valid control name");
+                            System.out.println("Invalid control name");
                     }
                 }
             }
-        }
-        else{  
+        } else {
+            System.out.println(Controls.class.getName() + ": Wrong format, reverting to default");
             SetDefault();
         }
     }
@@ -72,9 +70,10 @@ public class Controls {
 
     public boolean setFORWARD(int FORWARD) {
         boolean valid;
-        if (valid = checkValidity(FORWARD))
+        if (valid = CheckValidity(FORWARD)) {
             this.FORWARD = FORWARD;
-        
+        }
+
         return valid;
     }
 
@@ -84,9 +83,10 @@ public class Controls {
 
     public boolean setTURN_RIGHT(int TURN_RIGHT) {
         boolean valid;
-        if (valid = checkValidity(TURN_RIGHT))
+        if (valid = CheckValidity(TURN_RIGHT)) {
             this.TURN_RIGHT = TURN_RIGHT;
-        
+        }
+
         return valid;
     }
 
@@ -96,9 +96,10 @@ public class Controls {
 
     public boolean setTURN_LEFT(int TURN_LEFT) {
         boolean valid;
-        if (valid = checkValidity(TURN_LEFT))
+        if (valid = CheckValidity(TURN_LEFT)) {
             this.TURN_LEFT = TURN_LEFT;
-        
+        }
+
         return valid;
     }
 
@@ -108,21 +109,22 @@ public class Controls {
 
     public boolean setSHOOT(int SHOOT) {
         boolean valid;
-        if (valid = checkValidity(SHOOT))
+        if (valid = CheckValidity(SHOOT)) {
             this.SHOOT = SHOOT;
-        
+        }
+
         return valid;
     }
     
-    public void SetDefault(){
+    private void SetDefault() {
         FORWARD = KeyEvent.VK_W;
         TURN_RIGHT = KeyEvent.VK_D;
         TURN_LEFT = KeyEvent.VK_A;
         SHOOT = KeyEvent.VK_SPACE;
     }
     
-    public boolean SetControl(String controlName, int keyCode){
-        switch (controlName){
+    public boolean setControl(String controlName, int keyCode) {
+        switch (controlName) {
             case "R":
                 return setTURN_RIGHT(keyCode);
             case "L":
@@ -137,9 +139,11 @@ public class Controls {
         }
     }
     
-    private boolean checkValidity(int keycode){
-        
-        return (keycode != FORWARD) && (keycode != TURN_RIGHT) && (keycode != TURN_LEFT) && (keycode != SHOOT);  
+    private boolean CheckValidity(int keycode) {
+        return (keycode != FORWARD)
+                && (keycode != TURN_RIGHT)
+                && (keycode != TURN_LEFT)
+                && (keycode != SHOOT);
     }
     
     @Override
@@ -149,5 +153,4 @@ public class Controls {
               +"TURN_LEFT:" + TURN_LEFT + ";"
               +"SHOOT:" + SHOOT;
     }
-    
 }

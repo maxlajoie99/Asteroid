@@ -8,10 +8,8 @@ import ca.gamemaking.asteroid.game.asteroid.Asteroid;
 import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.settings.Settings;
 import ca.gamemaking.asteroid.sound.SoundPlayer;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
+
+import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -23,55 +21,65 @@ import java.util.List;
  * @author Maxime Lajoie
  */
 public class Spaceship {
-    
-    Point2D.Double position;
-    Point2D.Double direction;
-    Area a;
-    
-    final double MAX_SPEED = 500.0;
-    final double SPEED_INCREMENT = 350.0;
-    double current_speed = 0.0;
-    
-    double rotation = 90.0;
-    final double ROTATION_SPEED = 210;
-    
-    final double SHOT_DELAY = 0.5;
-    double delay = SHOT_DELAY;
-    
-    int nbPointsShape = 4;
-    Point2D.Double[] shape;
-    
-    int nbPointsFire = 11;
-    Point2D.Double[] fire;
-    
-    boolean forward = false;
-    
-    public Spaceship(){
-        position = new Point2D.Double(Settings.RESOLUTION.getX()/2, Settings.RESOLUTION.getY()/2);
+    private static final Stroke SHIP_STROKE = new BasicStroke(3 * Settings.SCALE);
+    private static final Stroke FIRE_STROKE = new BasicStroke(2 * Settings.SCALE);
+
+    private static final double MAX_SPEED = 500.0;
+    private static final double SPEED_INCREMENT = 350.0;
+    private static final double ROTATION_SPEED = 210;
+    private static final double SHOT_DELAY = 0.5;
+
+    private static final int NB_POINTS_SHIP = 4;
+    private static final int NB_POINTS_FIRE = 11;
+
+    private Point2D.Double position;
+    private Point2D.Double direction;
+    private Area area;
+
+    private double currentSpeed = 0.0;
+    private boolean forward = false;
+    private double rotation = 90.0;
+    private double delay = SHOT_DELAY;
+
+    private Point2D.Double[] ship;
+    private Point2D.Double[] fire;
+
+    private int screenMinX;
+    private int screenMinY;
+    private int screenMaxX;
+    private int screenMaxY;
+
+    public Spaceship() {
+        position = new Point2D.Double(Settings.RESOLUTION.getX() / 2, Settings.RESOLUTION.getY() / 2);
+
         CreateShape();
         CreateFire();
+        CalculateScreen();
+
         direction = new Point2D.Double(0.0,0.0);
     }
     
-    public Spaceship(Point pos){
+    public Spaceship(Point pos) {
         position = new Point2D.Double(pos.x, pos.y);
+
         CreateShape();
         CreateFire();
+        CalculateScreen();
+
         direction = new Point2D.Double(0.0,0.0);
     }
-    
-    //http://www.rocketshipgames.com/blogs/tjkopena/2015/02/asteroids-drawing-objects/
-    private void CreateShape(){
-        shape = new Point2D.Double[nbPointsShape];
+
+    private void CreateShape() {
+        ship = new Point2D.Double[NB_POINTS_SHIP];
         
-        shape[0] = new Point2D.Double(Settings.SCALE * 24, 0);
-        shape[1] = new Point2D.Double(-Settings.SCALE * 24, -Settings.SCALE * 18);
-        shape[2] = new Point2D.Double(-Settings.SCALE * 18, 0);
-        shape[3] = new Point2D.Double(-Settings.SCALE * 24, Settings.SCALE * 18);
+        ship[0] = new Point2D.Double(Settings.SCALE * 24, 0);
+        ship[1] = new Point2D.Double(-Settings.SCALE * 24, -Settings.SCALE * 18);
+        ship[2] = new Point2D.Double(-Settings.SCALE * 18, 0);
+        ship[3] = new Point2D.Double(-Settings.SCALE * 24, Settings.SCALE * 18);
     }
     
-    private void CreateFire(){
-        fire = new Point2D.Double[nbPointsFire];
+    private void CreateFire() {
+        fire = new Point2D.Double[NB_POINTS_FIRE];
         
         fire[0] = new Point2D.Double(-Settings.SCALE * 20, Settings.SCALE * 6);
         fire[1] = new Point2D.Double(-Settings.SCALE * 30, Settings.SCALE * 16);
@@ -85,98 +93,91 @@ public class Spaceship {
         fire[9] = new Point2D.Double(-Settings.SCALE * 30, -Settings.SCALE * 16);
         fire[10] = new Point2D.Double(-Settings.SCALE * 20, -Settings.SCALE * 6);
     }
+
+    private void CalculateScreen() {
+        int offset = (int)(24 * Settings.SCALE);
+
+        screenMinX = Launcher.getGameFrame().insets.left - offset;
+        screenMaxX = Settings.RESOLUTION.getX() - Launcher.getGameFrame().insets.right + offset;
+
+        screenMinY = Launcher.getGameFrame().insets.top - offset;
+        screenMaxY = Settings.RESOLUTION.getY() - Launcher.getGameFrame().insets.bottom + offset;
+    }
     
-    public void paint(Graphics2D g2d){
+    public void paint(Graphics2D g2d) {
+        Path2D.Double path = DrawPath(ship, NB_POINTS_SHIP);
+        path.closePath();
+        
+        area = new Area(path);
+
         g2d.setColor(Color.WHITE);
-        g2d.setStroke(new BasicStroke(3 * Settings.SCALE));
+        g2d.setStroke(SHIP_STROKE);
+        g2d.draw(area);
         
+        if (forward) {
+            //Draw little fire
+            Path2D.Double pathFire = DrawPath(fire, NB_POINTS_FIRE);
+
+            g2d.setStroke(FIRE_STROKE);
+            g2d.draw(pathFire);
+        }
+    }
+
+    private Path2D.Double DrawPath(Point2D.Double[] shape, int nbPoints) {
         double x,y;
-        x = RotateX(shape[0].x, shape[0].y, rotation) + position.x;
-        y = RotateY(shape[0].x, shape[0].y, rotation) + position.y;
-        
         Path2D.Double path = new Path2D.Double();
-        path.moveTo(x,y);
-        for (int i = 1; i < nbPointsShape; i++) {
+        path.moveTo(RotateX(shape[0].x, shape[0].y, rotation) + position.x, RotateY(shape[0].x, shape[0].y, rotation) + position.y);
+        for (int i = 1; i < nbPoints; i++) {
             x = RotateX(shape[i].x, shape[i].y, rotation) + position.x;
             y = RotateY(shape[i].x, shape[i].y, rotation) + position.y;
             path.lineTo(x, y);
         }
-        path.closePath();
-        
-        a = new Area(path);
-        
-        g2d.draw(a);
-        
-        if(forward){
-            //Draw little fire
-            g2d.setStroke(new BasicStroke(2 * Settings.SCALE));
-            
-            double xFire,yFire;
-            xFire = RotateX(fire[0].x, fire[0].y, rotation) + position.x;
-            yFire = RotateY(fire[0].x, fire[0].y, rotation) + position.y;
-        
-            Path2D.Double pathFire = new Path2D.Double();
-            pathFire.moveTo(xFire,yFire);
-            for (int i = 1; i < nbPointsFire; i++) {
-                xFire = RotateX(fire[i].x, fire[i].y, rotation) + position.x;
-                yFire = RotateY(fire[i].x, fire[i].y, rotation) + position.y;
-                pathFire.lineTo(xFire, yFire);
-            }
-            g2d.draw(pathFire);
-        }
+
+        return path;
     }
     
-    private double RotateX(double x,double y, double angle){
+    private double RotateX(double x, double y, double angle) {
         return (x * Math.cos(Math.toRadians(angle))) - (y * Math.sin(Math.toRadians(angle)));
     }
     
-    private double RotateY(double x,double y, double angle){
+    private double RotateY(double x, double y, double angle) {
         return (x * Math.sin(Math.toRadians(angle))) + (y * Math.cos(Math.toRadians(angle)));
     }
-    
-    private void Teleportation(){
-        
-        int offset = (int)(24 * Settings.SCALE);
-        
-        int minX = Launcher.getGameFrame().is.left - offset;
-        int maxX = Settings.RESOLUTION.getX() - Launcher.getGameFrame().is.right + offset;
-        
-        int minY = Launcher.getGameFrame().is.top - offset;
-        int maxY = Settings.RESOLUTION.getY() - Launcher.getGameFrame().is.bottom + offset;
-        
-        if (position.x > maxX)
-            position.x = minX;
-        if (position.x < minX)
-            position.x = maxX;
-        
-        if (position.y > maxY)
-            position.y = minY;
-        if (position.y < minY)
-            position.y = maxY;
-        
+
+    private void Teleportation() {
+        if (position.x > screenMaxX)
+            position.x = screenMinX;
+        if (position.x < screenMinX)
+            position.x = screenMaxX;
+
+        if (position.y > screenMaxY)
+            position.y = screenMinY;
+        if (position.y < screenMinY)
+            position.y = screenMaxY;
     }
     
-    public void Update(double delta, HashSet<Integer> inputs){
-        if (inputs.contains(Settings.CONTROLS.getFORWARD())){
+    public void update(double delta, HashSet<Integer> inputs) {
+        if (inputs.contains(Settings.CONTROLS.getFORWARD())) {
             forward = true;
-            SoundPlayer.Play(SoundPlayer.THRUST);
-            current_speed += SPEED_INCREMENT * delta;
-            if (current_speed >= MAX_SPEED)
-                current_speed = MAX_SPEED;
-        }
-        else{
+            SoundPlayer.play(SoundPlayer.THRUST);
+            currentSpeed += SPEED_INCREMENT * delta;
+            if (currentSpeed >= MAX_SPEED) {
+                currentSpeed = MAX_SPEED;
+            }
+        } else {
             forward = false;
-            current_speed -= SPEED_INCREMENT * delta;
-            if (current_speed <= 0)
-                current_speed = 0;
+            currentSpeed -= SPEED_INCREMENT * delta;
+            if (currentSpeed <= 0) {
+                currentSpeed = 0;
+            }
         }
         
-        if (inputs.contains(Settings.CONTROLS.getTURN_RIGHT())){
+        if (inputs.contains(Settings.CONTROLS.getTURN_RIGHT())) {
             rotation %= 360;
             rotation += ROTATION_SPEED * delta;
         }
         
-        if (inputs.contains(Settings.CONTROLS.getTURN_LEFT())){
+        if (inputs.contains(Settings.CONTROLS.getTURN_LEFT())) {
             rotation %= 360;
             rotation -= ROTATION_SPEED * delta;
         }
@@ -185,42 +186,38 @@ public class Spaceship {
         direction.y = Math.sin(Math.toRadians(rotation));
         
         delay += delta;
-        if (inputs.contains(Settings.CONTROLS.getSHOOT())){
-            if (delay >= SHOT_DELAY)
-            {
-                SoundPlayer.Play(SoundPlayer.SHOOT);
+        if (inputs.contains(Settings.CONTROLS.getSHOOT())) {
+            if (delay >= SHOT_DELAY) {
+                SoundPlayer.play(SoundPlayer.SHOOT);
                 Launcher.getGameFrame().rockets.add(new Rocket(position.x, position.y, Settings.SCALE * 24, rotation));
                 delay = 0.0;
             }
         }
         
-        position.setLocation(position.x + (direction.x * (current_speed * delta)), position.y + (direction.y * (current_speed * delta)));
+        position.setLocation(position.x + (direction.x * (currentSpeed * delta)), position.y + (direction.y * (currentSpeed * delta)));
         Teleportation();
     }
     
-    public void AsteroidCollision(List<Asteroid> ars){
-        for (Asteroid ar : ars){
-            if (ar.GetArea() != null && a != null){
-                Area a1 = new Area(a);
-                a1.intersect(new Area(ar.GetArea()));
+    public void collideAsteroids(List<Asteroid> ars) {
+        for (Asteroid ar : ars) {
+            if (ar.getArea() != null && area != null) {
+                Area a1 = new Area(area);
+                a1.intersect(new Area(ar.getArea()));
 
-                if(!a1.isEmpty())
-                {
-                    //TODO Animate this shit
-                    //TODO Split asteroid?
-                    ar.Destroy();
-                    this.Kill();
+                if(!a1.isEmpty()) {
+                    ar.destroy();
+                    this.kill();
+
                     break;
                 }
             }
         }
     }
     
-    public void Kill(){
-        //TODO Kill player
-        SoundPlayer.Play(SoundPlayer.SPACESHIP_EXPLOSION);
+    public void kill() {
+        //TODO kill player
+        SoundPlayer.play(SoundPlayer.SPACESHIP_EXPLOSION);
         Launcher.getGameFrame().RemoveLife();
         Launcher.getGameFrame().player = new Spaceship();   //TODO Maybe change that?
     }
-    
 }

@@ -16,34 +16,35 @@ import java.awt.geom.Point2D;
  * @author Maxime Lajoie
  */
 public class Explosion {
-    
-    double aliveTime = 0.0;
-    final double TTL = 0.6;
-    
-    double growth = 200 * Settings.SCALE;
-    
-    Point2D.Double position;
-    double size = 0;
-    
+    private static final double TTL = 0.6;
+    private static final double GROW_SPEED = 200 * Settings.SCALE;
+
+    private static final Stroke STROKE = new BasicStroke(1 * Settings.SCALE);
+
+    private double aliveTime = 0.0;
+    private double size = 0;
+
+    private Point2D.Double position;
+
     public Explosion(double posX, double posY){
         position = new Point2D.Double(posX, posY);
     }
     
-    public void paint(Graphics2D g2d){
-        g2d.setStroke(new BasicStroke(1 * Settings.SCALE));
-        Ellipse2D.Double boom = new Ellipse2D.Double(position.x - size/2, position.y - size/2, size, size);
+    public void paint(Graphics2D g2d) {
+        Ellipse2D.Double boom = new Ellipse2D.Double(position.x - size / 2, position.y - size / 2, size, size);
+        g2d.setStroke(STROKE);
         g2d.draw(boom);
     }
     
-    public void Update(double delta){
-        size += growth * delta;
+    public void update(double delta) {
+        size += GROW_SPEED * delta;
         aliveTime += delta;
-        if (aliveTime >= TTL)
-            Destroy();
+        if (aliveTime >= TTL) {
+            destroy();
+        }
     }
     
-    public void Destroy(){
+    public void destroy(){
         Launcher.getGameFrame().explosions.remove(this);
     }
-    
 }

@@ -7,55 +7,54 @@ import ca.gamemaking.asteroid.Launcher;
 import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.settings.Settings;
 import ca.gamemaking.asteroid.sound.SoundPlayer;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
+
+import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
-import java.util.Random;
 
 /**
  *
  * @author Maxime Lajoie
  */
 public class Asteroid {
-    
-    Point2D.Double position;
-    Point2D.Double direction;
-    
-    Point2D.Double[] shape;
-    Area a = null;
-    
-    double speed = 50;
-    int min_speed = 50;
-    int max_speed = 250;
-    
-    Random rnd;
-    
-    int value;
-    
-    double angle = 0;
-    double angleSpeed = 0;
-    int min_angleSpeed = 15;
-    int max_angleSpeed = 90;
-    
-    public Asteroid(double posX, double posY){
+
+    private static final int VALUE = 100;
+    private static final int MIN_SPEED = 50;
+    private static final int MAX_SPEED = 250;
+    private static final int MIN_ANGULAR_SPEED = 15;
+    private static final int MAX_ANGULAR_SPEED = 90;
+
+    private static final Stroke STROKE = new BasicStroke(1 * Settings.SCALE);
+
+    private Point2D.Double position;
+    private Point2D.Double direction;
+    private Point2D.Double[] shape;
+    private Area area;
+
+    private double moveSpeed;
+    private double angularSpeed;
+
+    private double currentAngle = 0;
+
+    private int screenMinX;
+    private int screenMinY;
+    private int screenMaxX;
+    private int screenMaxY;
+
+    public Asteroid(double posX, double posY) {
         position = new Point2D.Double(posX, posY);
-        rnd = new Random();
-        
-        //TODO Different values for asteroids?
-        value = 100;
-        
-        speed = rnd.nextInt(max_speed - min_speed) + min_speed;
-        angleSpeed = rnd.nextInt(max_angleSpeed - min_angleSpeed) + min_angleSpeed;
+
+        moveSpeed = Settings.RANDOM.nextInt(MAX_SPEED - MIN_SPEED) + MIN_SPEED;
+        angularSpeed = Settings.RANDOM.nextInt(MAX_ANGULAR_SPEED - MIN_ANGULAR_SPEED) + MIN_ANGULAR_SPEED;
         
         GenerateDirection();
         CreateShape();
+        CalculateScreen();
     }
     
-    private void GenerateDirection(){ 
-        double startAngle = rnd.nextInt(360);
+    private void GenerateDirection() {
+        double startAngle = Settings.RANDOM.nextInt(360);
         
         direction = new Point2D.Double();
         
@@ -63,8 +62,8 @@ public class Asteroid {
         direction.y = Math.sin(Math.toRadians(startAngle));
     }
     
-    private void CreateShape(){
-        switch(rnd.nextInt(4)){
+    private void CreateShape() {
+        switch(Settings.RANDOM.nextInt(4)) {
             case 0: 
                 shape = new Point2D.Double[9];
                 shape[0] = new Point2D.Double(0, 48 * Settings.SCALE);
@@ -113,93 +112,87 @@ public class Asteroid {
                 shape[6] = new Point2D.Double(-48 * Settings.SCALE, 48 * Settings.SCALE);
                 break;
         }
-        
-        
-        
+    }
+
+    private void CalculateScreen() {
+        int offset = (int)(24 * Settings.SCALE);
+
+        screenMinX = Launcher.getGameFrame().insets.left - offset;
+        screenMaxX = Settings.RESOLUTION.getX() - Launcher.getGameFrame().insets.right + offset;
+
+        screenMinY = Launcher.getGameFrame().insets.top - offset;
+        screenMaxY = Settings.RESOLUTION.getY() - Launcher.getGameFrame().insets.bottom + offset;
     }
     
-    private double RotateX(double x,double y, double angle){
+    private double RotateX(double x, double y, double angle) {
         return (x * Math.cos(Math.toRadians(angle))) - (y * Math.sin(Math.toRadians(angle)));
     }
     
-    private double RotateY(double x,double y, double angle){
+    private double RotateY(double x, double y, double angle) {
         return (x * Math.sin(Math.toRadians(angle))) + (y * Math.cos(Math.toRadians(angle)));
     }
     
-    private void Teleportation(){
+    private void Teleportation() {
+        if (position.x > screenMaxX)
+            position.x = screenMinX;
+        if (position.x < screenMinX)
+            position.x = screenMaxX;
         
-        int offset = a != null ? Math.min(a.getBounds().width, a.getBounds().height): (int)(24 * Settings.SCALE);
-        
-        int minX = Launcher.getGameFrame().is.left - offset;
-        int maxX = Settings.RESOLUTION.getX() - Launcher.getGameFrame().is.right + offset;
-        
-        int minY = Launcher.getGameFrame().is.top - offset;
-        int maxY = Settings.RESOLUTION.getY() - Launcher.getGameFrame().is.bottom + offset;
-        
-        if (position.x > maxX)
-            position.x = minX;
-        if (position.x < minX)
-            position.x = maxX;
-        
-        if (position.y > maxY)
-            position.y = minY;
-        if (position.y < minY)
-            position.y = maxY;
-        
+        if (position.y > screenMaxY)
+            position.y = screenMinY;
+        if (position.y < screenMinY)
+            position.y = screenMaxY;
     }
     
-    public void paint(Graphics2D g2d){
-        g2d.setColor(Color.WHITE);
-        g2d.setStroke(new BasicStroke(1 * Settings.SCALE));
-        
-        double x,y;
-        x = RotateX(shape[0].x, shape[0].y, angle) + position.x;
-        y = RotateY(shape[0].x, shape[0].y, angle) + position.y;
+    public void paint(Graphics2D g2d) {
+        double x, y;
+        x = RotateX(shape[0].x, shape[0].y, currentAngle) + position.x;
+        y = RotateY(shape[0].x, shape[0].y, currentAngle) + position.y;
         
         Path2D.Double path = new Path2D.Double();
         path.moveTo(x,y);
-        for (int i = 1; i < shape.length; i++) {
-            x = RotateX(shape[i].x, shape[i].y, angle) + position.x;
-            y = RotateY(shape[i].x, shape[i].y, angle) + position.y;
+        for (Point2D.Double point : shape) {
+            x = RotateX(point.x, point.y, currentAngle) + position.x;
+            y = RotateY(point.x, point.y, currentAngle) + position.y;
             path.lineTo(x, y);
         }
         path.closePath();
         
-        a = new Area(path);
-        
-        g2d.draw(a);
+        area = new Area(path);
+
+        g2d.setColor(Color.WHITE);
+        g2d.setStroke(STROKE);
+        g2d.draw(area);
     }
     
-    public void Update(double delta){
-        angle += angleSpeed * delta;
+    public void update(double delta) {
+        currentAngle += angularSpeed * delta;
         
-        position.setLocation(position.x + (direction.x * (speed * delta)), position.y + (direction.y * (speed * delta)));
+        position.setLocation(position.x + (direction.x * (moveSpeed * delta)), position.y + (direction.y * (moveSpeed * delta)));
         Teleportation();
     }
     
-    public void RocketCollision(Rocket m){
-        if (m.GetArea() != null && a != null){
-            Area a1 = new Area(a);
-            a1.intersect(new Area(m.GetArea()));
+    public void collideRocket(Rocket m) {
+        if (m.getArea() != null && area != null) {
+            Area a1 = new Area(area);
+            a1.intersect(m.getArea());
 
-            if(!a1.isEmpty())
-            {
-                //TODO Split asteroid?    
-                SoundPlayer.Play(SoundPlayer.ASTEROID_EXPLOSION);
-                Launcher.getGameFrame().AddPoints(value);
-                m.Destroy();
-                this.Destroy();
+            if (!a1.isEmpty()) {
+                SoundPlayer.play(SoundPlayer.ASTEROID_EXPLOSION);
+                Launcher.getGameFrame().AddPoints(VALUE);
+
+                m.destroy();
+                this.destroy();
             }
         }
     }
     
-    public Area GetArea(){
-        return a;
+    public Area getArea(){
+        return area;
     }
     
-    public void Destroy(){
+    public void destroy(){
         Launcher.getGameFrame().explosions.add(new Explosion(position.x, position.y));
         Launcher.getGameFrame().asteroids.remove(this);
     }
-    
 }

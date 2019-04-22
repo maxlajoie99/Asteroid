@@ -11,13 +11,13 @@ import javax.imageio.ImageIO;
  * @author Maxime Lajoie
  */
 public class ImageLoader {
-    
-    public static BufferedImage TITLE_IMG;
-    static {
+    public static final BufferedImage TITLE_IMG = LoadImage("title.png");
+
+    private static BufferedImage LoadImage(String name) {
         try {
-            TITLE_IMG = ImageIO.read(ImageLoader.class.getResourceAsStream("title.png"));        
+            return ImageIO.read(ImageLoader.class.getResourceAsStream(name));
         } catch (Exception e) {
+            return null;
         }
     }
-    
 }

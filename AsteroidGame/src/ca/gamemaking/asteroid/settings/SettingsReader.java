@@ -17,43 +17,38 @@ import java.util.List;
  * @author Maxime Lajoie
  */
 public class SettingsReader {
-    
-    public static boolean Read(String path){
-        
-        List<String> tempList = new ArrayList<>();
+    public static boolean read(String path) {
+        List<String> tempList;
         String tempLang;
-        String tempRes;
+        String tempResolution;
         String tempControls;
         
         try {
             File settingsFile = new File(path + Settings.FILENAME);
+
+            tempList = Settings.OBJECT_MAPPER.readValue(settingsFile, new TypeReference<List<String>>() {});
             
-            ObjectMapper objMap = new ObjectMapper();
-            
-            tempList = objMap.readValue(settingsFile, new TypeReference<List<String>>(){});
-            
-            tempLang = (tempList.get(0) instanceof String) ? (String) tempList.get(0) : null;
-            tempRes = (tempList.get(1) instanceof String) ? (String) tempList.get(1) : null;
-            tempControls = (tempList.get(2) instanceof String) ? (String) tempList.get(2) : null;
+            tempLang = tempList.get(0);
+            tempResolution = tempList.get(1);
+            tempControls = tempList.get(2);
             
             System.out.println(tempLang);
-            System.out.println(tempRes);
+            System.out.println(tempResolution);
             System.out.println(tempControls);
             
-            if (tempLang == null || tempRes == null || tempControls == null)
+            if (tempLang == null || tempResolution == null || tempControls == null) {
                 return false;
-            
+            }
+
             Settings.LANGUAGE = new Lang(tempLang);
-            Settings.RESOLUTION = new Resolution(tempRes);
+            Settings.RESOLUTION = new Resolution(tempResolution);
             Settings.CONTROLS = new Controls(tempControls);
             
             return true;
-            
         } catch (Exception e) {
             System.out.println("Error : " + e.getMessage());
         }
         
         return false;
     }
-    
 }
