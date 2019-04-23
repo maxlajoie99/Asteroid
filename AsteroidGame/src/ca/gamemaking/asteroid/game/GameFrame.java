@@ -65,14 +65,35 @@ public class GameFrame extends JFrame {
     private int playerLives = 0;
     private long points = 0;
     private int pointsSinceLastLife = 0;
-    
+
+    private final Font POINTS_FONT;
+    private final Point POINTS_POS = new Point();
+
+    private final Font LIVES_FONT;
+    private final Point LIVES_POS = new Point();
+
+    private final Font PAUSE_FONT;
+    private final Point PAUSE_POS = new Point();
+
     public GameFrame() {
         initComponents();
         
         insets = this.getInsets();
 
         Settings.SCALE = Settings.RESOLUTION.getX() / 1280f;
-        
+
+        LIVES_FONT = new Font(this.getFont().getFamily(), Font.BOLD, (int)(35 * Settings.SCALE));
+        LIVES_POS.x = Settings.RESOLUTION.getX() - (int)(100 * Settings.SCALE);
+        LIVES_POS.y = (int)(100 * Settings.SCALE);
+
+        POINTS_FONT = new Font(this.getFont().getFamily(), Font.BOLD, (int)(35 * Settings.SCALE));
+        POINTS_POS.x = Settings.RESOLUTION.getX() / 2 - (int)(115 * Settings.SCALE);
+        POINTS_POS.y = (int)(75 * Settings.SCALE);
+
+        PAUSE_FONT = new Font(this.getFont().getFamily(), Font.BOLD, (int)(125 * Settings.SCALE));
+        PAUSE_POS.x = Settings.RESOLUTION.getX() / 2 - (int)(425 * Settings.SCALE / 2);
+        PAUSE_POS.y = Settings.RESOLUTION.getY() / 2 + PAUSE_FONT.getSize() / 2;
+
         CreateStars();
         
         InitUI();
@@ -186,6 +207,7 @@ public class GameFrame extends JFrame {
             public void keyPressed(KeyEvent e) {
                 if (gameStarted && e.getKeyCode() == KeyEvent.VK_P) {
                     pause = !pause;
+                    repaint(); //To write the text
                 }
 
                 keyPressed.add(e.getKeyCode());
@@ -224,22 +246,23 @@ public class GameFrame extends JFrame {
                 explosions.parallelStream().forEach((e) -> e.paint(graphics2D));
             }
 
-            graphics2D.setFont(new Font(graphics2D.getFont().getFamily(), Font.BOLD, (int)(35 * Settings.SCALE)));
-            int x = Settings.RESOLUTION.getX() - (int)(100 * Settings.SCALE);
-            int y = (int)(100 * Settings.SCALE);
-            graphics2D.drawString(String.format("%02d", playerLives), x, y);
+            graphics2D.setFont(LIVES_FONT);
+            graphics2D.drawString(String.format("%02d", playerLives), LIVES_POS.x, LIVES_POS.y);
             
-            graphics2D.setFont(new Font(graphics2D.getFont().getFamily(), Font.BOLD, (int)(25 * Settings.SCALE)));
-            x = Settings.RESOLUTION.getX() / 2 - (int)(115 * Settings.SCALE);
-            y = (int)(75 * Settings.SCALE);
-            graphics2D.drawString(Settings.POINT_FORMAT.format(points), x, y);
+            graphics2D.setFont(POINTS_FONT);
+            graphics2D.drawString(Settings.POINT_FORMAT.format(points), POINTS_POS.x, POINTS_POS.y);
+
+            if (pause) {
+                graphics2D.setFont(PAUSE_FONT);
+                graphics2D.drawString("PAUSE", PAUSE_POS.x, PAUSE_POS.y);
+            }
         }
 
         g.drawImage(buffer, 0, 0, null);
         graphics2D.dispose();
     }
     
-    public void update(double deltaTime){
+    public void update(double deltaTime) {
         player.update(deltaTime, keyPressed);
         
         //Clone the list and iterate over it
