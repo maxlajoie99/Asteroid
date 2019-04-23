@@ -217,7 +217,7 @@ public class Spaceship {
     public void kill() {
         //TODO kill player
         SoundPlayer.play(SoundPlayer.SPACESHIP_EXPLOSION);
-        Launcher.getGameFrame().RemoveLife();
+        Launcher.getGameFrame().removeLife();
         Launcher.getGameFrame().player = new Spaceship();   //TODO Maybe change that?
     }
 }

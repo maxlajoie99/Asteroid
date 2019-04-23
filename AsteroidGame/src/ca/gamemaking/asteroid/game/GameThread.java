@@ -23,13 +23,16 @@ public class GameThread extends Thread{
         long lastLoopTime;
         final long OPTIMAL_TIME = 1000000000 / REFRESH_RATE;
         long lastGameTime = OPTIMAL_TIME / 1000000;
-        
+        GameFrame game = Launcher.getGameFrame();
+
         while(running) {
             lastLoopTime = System.nanoTime();
-            
-            Launcher.getGameFrame().update(lastGameTime / 1000.0);
-            Launcher.getGameFrame().repaint();
-            
+
+            if (!game.isPaused()) {
+                game.update(lastGameTime / 1000.0);
+                game.repaint();
+            }
+
             lastGameTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000;
 
             try {

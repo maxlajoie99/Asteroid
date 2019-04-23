@@ -184,6 +184,10 @@ public class GameFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
+                if (gameStarted && e.getKeyCode() == KeyEvent.VK_P) {
+                    pause = !pause;
+                }
+
                 keyPressed.add(e.getKeyCode());
             }
 
@@ -319,8 +323,12 @@ public class GameFrame extends JFrame {
 
         this.requestFocus();
     }
-    
-    public void RemoveLife() {
+
+    public boolean isPaused() {
+        return pause;
+    }
+
+    public void removeLife() {
         playerLives--; 
         if (playerLives < 0) {
             EndGame();
@@ -339,7 +347,7 @@ public class GameFrame extends JFrame {
         InitUI();
     }
     
-    public void AddPoints(int nb) {
+    public void addPoints(int nb) {
         points += nb;
         pointsSinceLastLife += nb;
         if (pointsSinceLastLife >= Settings.DEFAULT_NB_POINTS_FOR_NEW_LIFE){

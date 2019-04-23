@@ -179,7 +179,7 @@ public class Asteroid {
 
             if (!a1.isEmpty()) {
                 SoundPlayer.play(SoundPlayer.ASTEROID_EXPLOSION);
-                Launcher.getGameFrame().AddPoints(VALUE);
+                Launcher.getGameFrame().addPoints(VALUE);
 
                 m.destroy();
                 this.destroy();
