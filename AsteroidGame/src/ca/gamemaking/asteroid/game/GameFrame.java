@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.stream.IntStream;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -40,6 +41,11 @@ import javax.swing.event.HyperlinkEvent;
 public class GameFrame extends JFrame {
     private static final int STAR_SIZE = 5;
     private static final long END_WAIT_TIME = 2000;
+    private static final double MIN_SPAWN_TIME = 4.5;
+    private static final double MAX_SPAWN_TIME = 10.25;
+    private static final int MIN_SPAWN_AMOUNT = 3;
+    private static final int MAX_SPAWN_AMOUNT = 6;
+    private static final int MAX_ASTEROIDS_AT_TIME = 12;
 
     private JPanel background;
     private Point[] stars;
@@ -65,6 +71,9 @@ public class GameFrame extends JFrame {
     private int playerLives = 0;
     private long points = 0;
     private int pointsSinceLastLife = 0;
+    private double minDistance;
+    private double currentTime = 0.0;
+    private double currentDelay = 0.0;
 
     private Font POINTS_FONT;
     private Font LIVES_FONT;
@@ -273,16 +282,16 @@ public class GameFrame extends JFrame {
     
     public void update(double deltaTime) {
         player.update(deltaTime, keyPressed);
-        
-        //Clone the list and iterate over it
+
+        currentTime += deltaTime;
+        if (currentTime > currentDelay && asteroids.stream().filter(Objects::nonNull).count() < MAX_ASTEROIDS_AT_TIME) {
+            currentTime = 0.0;
+            currentDelay = Settings.RANDOM.nextDouble() * (MAX_SPAWN_TIME - MIN_SPAWN_TIME) + MIN_SPAWN_TIME;
+            CreateAsteroids(Settings.RANDOM.nextInt(MAX_SPAWN_AMOUNT - MIN_SPAWN_AMOUNT) + MIN_SPAWN_AMOUNT);
+        }
+
         List<Rocket> rocketsCopy = new ArrayList<>(rockets);
         rocketsCopy.parallelStream().filter(Objects::nonNull).forEach((m) -> m.update(deltaTime));
-        
-        //Temporary way to create asteroids
-        if (keyPressed.contains(KeyEvent.VK_0)) {
-            Asteroid t = new Asteroid(Settings.RESOLUTION.getX() / 2, Settings.RESOLUTION.getY() / 2);
-            asteroids.add(t);
-        }
         
         List<Asteroid> asteroidsCopy = new ArrayList<>(asteroids);
         asteroidsCopy.parallelStream().filter(Objects::nonNull).forEach((a) -> {
@@ -337,6 +346,7 @@ public class GameFrame extends JFrame {
         
     private void StartGame() {
         playerLives = Settings.DEFAULT_NB_LIVES;
+        minDistance = Math.pow(300 * Settings.SCALE, 2);
 
         player = new Spaceship();
         rockets = new LinkedList<>();
@@ -345,12 +355,12 @@ public class GameFrame extends JFrame {
         
         points = 0;
         pointsSinceLastLife = 0;
-        
-        //TODO Create asteroids on start
-        
+
         gameStarted = true;
         gamethread = new GameThread(Settings.TARGET_FPS);
         gamethread.start();
+
+        CreateAsteroids(10);
 
         this.requestFocus();
     }
@@ -364,6 +374,25 @@ public class GameFrame extends JFrame {
         if (playerLives < 0) {
             EndGame();
         }
+    }
+
+    private void CreateAsteroids(int number) {
+        IntStream.range(0, number).forEach(i -> CreateAsteroid());
+    }
+
+    private void CreateAsteroid() {
+        int x,y;
+
+        do {
+            x = Settings.RANDOM.nextInt(Settings.RESOLUTION.getX());
+            y = Settings.RANDOM.nextInt(Settings.RESOLUTION.getY());
+        } while (!ValidAsteroidPosition(x, y));
+
+        asteroids.add(new Asteroid(x, y));
+    }
+
+    private boolean ValidAsteroidPosition(int x, int y) {
+        return player.getPosition().distanceSq(x, y) > minDistance;
     }
     
     private void EndGame() {

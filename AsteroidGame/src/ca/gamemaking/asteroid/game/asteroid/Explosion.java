@@ -5,9 +5,8 @@ package ca.gamemaking.asteroid.game.asteroid;
 
 import ca.gamemaking.asteroid.Launcher;
 import ca.gamemaking.asteroid.settings.Settings;
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
+
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
@@ -33,6 +32,7 @@ public class Explosion {
     public void paint(Graphics2D g2d) {
         Ellipse2D.Double boom = new Ellipse2D.Double(position.x - size / 2, position.y - size / 2, size, size);
         g2d.setStroke(STROKE);
+        g2d.setColor(Color.WHITE);
         g2d.draw(boom);
     }
     

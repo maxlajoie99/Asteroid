@@ -115,7 +115,7 @@ public class Asteroid {
     }
 
     private void CalculateScreen() {
-        int offset = (int)(24 * Settings.SCALE);
+        int offset = (int)(48 * Settings.SCALE);
 
         screenMinX = Launcher.getGameFrame().insets.left - offset;
         screenMaxX = Settings.RESOLUTION.getX() - Launcher.getGameFrame().insets.right + offset;

@@ -211,6 +211,9 @@ public class Spaceship {
             return;
 
         for (Asteroid ar : ars) {
+            if (ar == null)
+                continue;
+
             if (ar.getArea() != null && area != null) {
                 Area a1 = new Area(area);
                 a1.intersect(new Area(ar.getArea()));
@@ -223,6 +226,10 @@ public class Spaceship {
                 }
             }
         }
+    }
+
+    public Point2D.Double getPosition() {
+        return position;
     }
     
     private void Kill() {
