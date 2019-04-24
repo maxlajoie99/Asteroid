@@ -11,6 +11,9 @@ import java.util.HashMap;
  * @author Maxime Lajoie
  */
 public class Lang {
+    public static final String PAUSE = "PAUSE";
+    public static final String GAME_OVER = "GAME OVER!";
+
     private HashMap<String, String> fields;
     private String name;
     

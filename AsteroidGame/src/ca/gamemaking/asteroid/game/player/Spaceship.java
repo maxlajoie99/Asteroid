@@ -24,6 +24,11 @@ public class Spaceship {
     private static final Stroke SHIP_STROKE = new BasicStroke(3 * Settings.SCALE);
     private static final Stroke FIRE_STROKE = new BasicStroke(2 * Settings.SCALE);
 
+    private static final Color STANDARD_COLOR = Color.WHITE;
+    private static final Color INVULNERABILITY_COLOR = Color.CYAN;
+
+    private static final double INVULNERABILITY_TIME = 5.0;
+
     private static final double MAX_SPEED = 500.0;
     private static final double SPEED_INCREMENT = 350.0;
     private static final double ROTATION_SPEED = 210;
@@ -36,6 +41,7 @@ public class Spaceship {
     private Point2D.Double direction;
     private Area area;
 
+    private double currentInvulnerabilityTime = 0.0;
     private double currentSpeed = 0.0;
     private boolean forward = false;
     private double rotation = 90.0;
@@ -110,14 +116,12 @@ public class Spaceship {
         
         area = new Area(path);
 
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(currentInvulnerabilityTime < INVULNERABILITY_TIME ? INVULNERABILITY_COLOR : STANDARD_COLOR);
         g2d.setStroke(SHIP_STROKE);
         g2d.draw(area);
         
         if (forward) {
-            //Draw little fire
             Path2D.Double pathFire = DrawPath(fire, NB_POINTS_FIRE);
-
             g2d.setStroke(FIRE_STROKE);
             g2d.draw(pathFire);
         }
@@ -157,6 +161,10 @@ public class Spaceship {
     }
     
     public void update(double delta, HashSet<Integer> inputs) {
+        if (currentInvulnerabilityTime < INVULNERABILITY_TIME) {
+            currentInvulnerabilityTime += delta;
+        }
+
         if (inputs.contains(Settings.CONTROLS.getFORWARD())) {
             forward = true;
             SoundPlayer.play(SoundPlayer.THRUST);
@@ -199,6 +207,9 @@ public class Spaceship {
     }
     
     public void collideAsteroids(List<Asteroid> ars) {
+        if (currentInvulnerabilityTime < INVULNERABILITY_TIME)
+            return;
+
         for (Asteroid ar : ars) {
             if (ar.getArea() != null && area != null) {
                 Area a1 = new Area(area);
@@ -206,7 +217,7 @@ public class Spaceship {
 
                 if(!a1.isEmpty()) {
                     ar.destroy();
-                    this.kill();
+                    this.Kill();
 
                     break;
                 }
@@ -214,10 +225,9 @@ public class Spaceship {
         }
     }
     
-    public void kill() {
-        //TODO kill player
+    private void Kill() {
         SoundPlayer.play(SoundPlayer.SPACESHIP_EXPLOSION);
         Launcher.getGameFrame().removeLife();
-        Launcher.getGameFrame().player = new Spaceship();   //TODO Maybe change that?
+        Launcher.getGameFrame().player = new Spaceship();
     }
 }

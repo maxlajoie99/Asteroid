@@ -8,6 +8,7 @@ import ca.gamemaking.asteroid.game.asteroid.Explosion;
 import ca.gamemaking.asteroid.game.rocket.Rocket;
 import ca.gamemaking.asteroid.game.player.Spaceship;
 import ca.gamemaking.asteroid.graphics.images.ImageLoader;
+import ca.gamemaking.asteroid.lang.Lang;
 import ca.gamemaking.asteroid.music.MusicLoader;
 import ca.gamemaking.asteroid.settings.Settings;
 import ca.gamemaking.asteroid.settings.SettingsFrame;
@@ -23,10 +24,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -41,6 +39,7 @@ import javax.swing.event.HyperlinkEvent;
  */
 public class GameFrame extends JFrame {
     private static final int STAR_SIZE = 5;
+    private static final long END_WAIT_TIME = 2000;
 
     private JPanel background;
     private Point[] stars;
@@ -53,6 +52,7 @@ public class GameFrame extends JFrame {
     private boolean drawTitle = true;
     private boolean gameStarted = false;
     private boolean pause = false;
+    private boolean ending = false;
     private GameThread gamethread;
     private HashSet<Integer> keyPressed;
 
@@ -66,14 +66,13 @@ public class GameFrame extends JFrame {
     private long points = 0;
     private int pointsSinceLastLife = 0;
 
-    private final Font POINTS_FONT;
+    private Font POINTS_FONT;
+    private Font LIVES_FONT;
+    private Font PAUSE_FONT;
     private final Point POINTS_POS = new Point();
-
-    private final Font LIVES_FONT;
     private final Point LIVES_POS = new Point();
-
-    private final Font PAUSE_FONT;
     private final Point PAUSE_POS = new Point();
+    private final Point END_TEXT_POS = new Point();
 
     public GameFrame() {
         initComponents();
@@ -82,6 +81,14 @@ public class GameFrame extends JFrame {
 
         Settings.SCALE = Settings.RESOLUTION.getX() / 1280f;
 
+        CreateStars();
+
+        InitFonts();
+        InitUI();
+        InitFrameListeners();
+    }
+
+    private void InitFonts() {
         LIVES_FONT = new Font(this.getFont().getFamily(), Font.BOLD, (int)(35 * Settings.SCALE));
         LIVES_POS.x = Settings.RESOLUTION.getX() - (int)(100 * Settings.SCALE);
         LIVES_POS.y = (int)(100 * Settings.SCALE);
@@ -94,12 +101,10 @@ public class GameFrame extends JFrame {
         PAUSE_POS.x = Settings.RESOLUTION.getX() / 2 - (int)(425 * Settings.SCALE / 2);
         PAUSE_POS.y = Settings.RESOLUTION.getY() / 2 + PAUSE_FONT.getSize() / 2;
 
-        CreateStars();
-        
-        InitUI();
-        InitFrameListeners();
+        END_TEXT_POS.x = Settings.RESOLUTION.getX() / 2 - (int)(800 * Settings.SCALE / 2);
+        END_TEXT_POS.y = Settings.RESOLUTION.getY() / 2 + PAUSE_FONT.getSize() / 2;
     }
-    
+
     private void CreateStars() {
         stars = new Point[(int)(120 * Settings.SCALE)];
         for (int i = 0; i < stars.length; i++) {
@@ -205,7 +210,7 @@ public class GameFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (gameStarted && e.getKeyCode() == KeyEvent.VK_P) {
+                if (gameStarted && e.getKeyCode() == KeyEvent.VK_P && !ending) {
                     pause = !pause;
                     repaint(); //To write the text
                 }
@@ -235,17 +240,18 @@ public class GameFrame extends JFrame {
             }
 
             if (rockets != null) {
-                rockets.parallelStream().forEach((m) -> m.paint(graphics2D));
+                new ArrayList<>(rockets).parallelStream().filter(Objects::nonNull).forEach((m) -> m.paint(graphics2D));
             }
 
             if (asteroids != null) {
-                asteroids.parallelStream().forEach((a) -> a.paint(graphics2D));
+                new ArrayList<>(asteroids).parallelStream().filter(Objects::nonNull).forEach((a) -> a.paint(graphics2D));
             }
 
             if (explosions != null) {
-                explosions.parallelStream().forEach((e) -> e.paint(graphics2D));
+                new ArrayList<>(explosions).parallelStream().filter(Objects::nonNull).forEach((e) -> e.paint(graphics2D));
             }
 
+            graphics2D.setColor(Color.WHITE);
             graphics2D.setFont(LIVES_FONT);
             graphics2D.drawString(String.format("%02d", playerLives), LIVES_POS.x, LIVES_POS.y);
             
@@ -254,7 +260,10 @@ public class GameFrame extends JFrame {
 
             if (pause) {
                 graphics2D.setFont(PAUSE_FONT);
-                graphics2D.drawString("PAUSE", PAUSE_POS.x, PAUSE_POS.y);
+                graphics2D.drawString(Lang.PAUSE, PAUSE_POS.x, PAUSE_POS.y);
+            } else if (ending) {
+                graphics2D.setFont(PAUSE_FONT);
+                graphics2D.drawString(Lang.GAME_OVER, END_TEXT_POS.x, END_TEXT_POS.y);
             }
         }
 
@@ -267,7 +276,7 @@ public class GameFrame extends JFrame {
         
         //Clone the list and iterate over it
         List<Rocket> rocketsCopy = new ArrayList<>(rockets);
-        rocketsCopy.parallelStream().forEach((m) -> m.update(deltaTime));
+        rocketsCopy.parallelStream().filter(Objects::nonNull).forEach((m) -> m.update(deltaTime));
         
         //Temporary way to create asteroids
         if (keyPressed.contains(KeyEvent.VK_0)) {
@@ -276,14 +285,13 @@ public class GameFrame extends JFrame {
         }
         
         List<Asteroid> asteroidsCopy = new ArrayList<>(asteroids);
-        asteroidsCopy.parallelStream().forEach((a) -> {
+        asteroidsCopy.parallelStream().filter(Objects::nonNull).forEach((a) -> {
             a.update(deltaTime);
             //Detect collision with missiles
-            rocketsCopy.parallelStream().forEach(a::collideRocket);
+            rocketsCopy.parallelStream().filter(Objects::nonNull).forEach(a::collideRocket);
         });
-        
-        List<Explosion> explosionsCopy = new ArrayList<>(explosions);
-        explosionsCopy.parallelStream().forEach((e) -> e.update(deltaTime));
+
+        new ArrayList<>(explosions).parallelStream().filter(Objects::nonNull).forEach(e -> e.update(deltaTime));
         
         player.collideAsteroids(asteroidsCopy);
     }
@@ -359,12 +367,27 @@ public class GameFrame extends JFrame {
     }
     
     private void EndGame() {
+        player = null;
+        playerLives = 0;
+
         asteroids.clear();
         rockets.clear();
         explosions.clear();
 
-        gameStarted = false;
         gamethread.stopThread();
+        gamethread = null;
+        pause = false;
+        ending = true;
+
+        try {
+            this.repaint();
+            Thread.sleep(END_WAIT_TIME);
+        } catch (Exception e) {
+            System.out.println("There was an error while ending the game");
+        }
+
+        ending = false;
+        gameStarted = false;
 
         drawTitle = true;
         InitUI();
